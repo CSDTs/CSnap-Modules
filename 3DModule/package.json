@@ -1,0 +1,7 @@
+{
+    "name": "3DModule",
+    "version": "1.0.0",
+    "dependencies": {
+                },
+    "libraries": ["three.js"]
+}
