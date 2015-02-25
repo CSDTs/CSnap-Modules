@@ -121,7 +121,7 @@ Modules, and the community site
 --------------
 
 To add a module to the community site, go into the admin panel. As of 2/24/15, the
-URL is: https://communitysite.csdt.rpi.edu/admin . Find the modules option, and click
+URL is: https://community.csdt.rpi.edu/admin . Find the modules option, and click
 on it, and then "add module" in the new screen. Enter in the name of the module (this should
 be the same as the name in package.json!) and upload a zipped file containing the module. When you save it,
 you may notice the module name is changed slightly. Don't worry about it, this is
