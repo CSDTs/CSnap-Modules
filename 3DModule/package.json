@@ -1,5 +1,6 @@
 {
     "name": "3DModule",
+    "description": "This module transforms the canvas and costumes into a 3D space.",
     "version": "1.0.0",
     "dependencies": {
                 },

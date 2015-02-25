@@ -1,5 +1,6 @@
 {
     "name": "BeadLoomModule",
+    "description": "The bead loom module adapts the coordinate display to allow the unit size to be changed. This lets users explore a Cartesian system with beads larger than one pixel.",
     "version": "1.1.0",
     "dependencies": {
                 }
