@@ -1,0 +1,7 @@
+{
+    "name": "CostumeColorModule",
+    "description": "The costume color module allows a user to change the color of current costumes while adhering to existing shading. Used in conjunction with translate by percent.",
+    "version": "1.0.0",
+    "dependencies": { "TranslateModule": ">1.0.0"
+                }
+}

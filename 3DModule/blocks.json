@@ -1,0 +1,38 @@
+{
+		"turn3D": {
+		   "type": "command",
+		   "category": "motion",
+			"spec": "turn x: %n y: %n z: %n degrees",
+			"defaults": [0, 0, 0]
+		},
+		"point3D": {
+			"type": "command",
+			"category": "motion",
+			"spec": "point x: %n y: %n z: %n degrees",
+			"defaults": [0, 0, 0]
+		},
+		"gotoXYZ": {
+			"type": "command",
+			"category": "motion",
+			"spec": "go to x: %n y: %n z: %n",
+			"defaults": [0, 0, 0]
+		},
+		"changeZPosition": {
+			"type": "command",
+			"category": "motion",
+			"spec": "change z by %n",
+			'defaults": [10]
+		},
+		"setZPosition": {
+			"type": "command",
+			"category": "motion",
+   		"spec": "set z to %n",
+			"defaults": [0]
+		},
+		"zPosition": {
+			"type": "reporter",
+			"category": "motion",
+			"spec": "z position"
+		}
+
+}
