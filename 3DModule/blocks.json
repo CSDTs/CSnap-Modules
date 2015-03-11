@@ -21,7 +21,7 @@
 			"type": "command",
 			"category": "motion",
 			"spec": "change z by %n",
-			'defaults": [10]
+			"defaults": [10]
 		},
 		"setZPosition": {
 			"type": "command",

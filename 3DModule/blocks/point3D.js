@@ -11,5 +11,5 @@
       // propagate to my parts
       this.parts.forEach(function (part) {
          part.point3D(degX, degY, degZ);
-      };
-}());
+      });
+};}());

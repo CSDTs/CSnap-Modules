@@ -16,4 +16,5 @@
 
 		this.update3dObject();
 	}
+};
 }());

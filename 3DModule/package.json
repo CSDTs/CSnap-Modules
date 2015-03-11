@@ -1,7 +1,7 @@
 {
     "name": "3DModule",
     "description": "This module transforms the canvas and costumes into a 3D space.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "dependencies": {
                 },
     "libraries": ["three.js"]

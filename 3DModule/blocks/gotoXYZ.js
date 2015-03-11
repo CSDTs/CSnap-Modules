@@ -35,4 +35,5 @@
       }
       this.setPosition(dest, justMe);
       this.positionTalkBubble();
+};
 }());
