@@ -148,3 +148,7 @@ on that link, then click the "add library" button. Just like adding in a module,
 the name of the library and upload its javascript file. Then, any modules listing that
 library in its package.json will automatically grab the library when the module is
 loaded.
+
+Current Release
+--------------
+The current release is 20150705.
