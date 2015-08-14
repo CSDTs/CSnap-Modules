@@ -151,4 +151,4 @@ loaded.
 
 Current Release
 --------------
-The current release is 20150731.
+The current release is 20150814.
