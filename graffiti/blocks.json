@@ -1,0 +1,43 @@
+{
+    "translate_percent": {
+                "type": "command",
+                "category": "motion",
+                "spec": "translate by %n of %drc",
+                "defaults": [100, null]
+    },
+	"changeCostumeColor": {
+				"type": "command",
+				"category": "looks",
+				"spec": "set costume color to %n",
+				"defaults": [0]
+	},
+	"setCostumeShade": {
+				"type": "command",
+				"category": "looks",
+				"spec": "set costume shade to %n",
+				"defaults": [100]
+	},
+	"changeCostumeShade": {
+				"type": "command",
+				"category": "looks",
+				"spec": "change costume shade by %n",
+				"defaults": [100]
+	},
+	"getBorderShade": {
+				"type": "reporter",
+				"category": "pen",
+				"spec": "border shade"
+	},
+	"setBorderShade": {
+				"type": "command",
+				"category": "pen",
+				"spec": "set border shade to %n",
+				"defaults": [100]
+	},
+	"changeBorderShade": {
+				"type": "command",
+				"category": "pen",
+				"spec": "change border shade by %n",
+				"defaults": [100]
+	}
+}

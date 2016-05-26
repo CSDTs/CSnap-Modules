@@ -1,7 +1,0 @@
-{
-    "name": "BaseModule",
-    "description": "A boring place holder module",
-    "version": "1.0.0",
-    "dependencies": {
-                },
-}

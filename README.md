@@ -11,26 +11,6 @@ javascript, or applying other modules. While each of the four separate
 vectors are optional, each module requires a package file to provide metadata
 and structure.
 
-Creating the package file
---------------
-
-The package file is a standard json file with the name "package.json". It
-contains one optional and four required fields.
-
-- name: A string field identifying a unique name for a module. (required)
-- description: A string field providing a simple one or two sentence
-description of the module's intent. (required)
-- version: A string field containing three period delimited integers.
-See below for more information. (required)
-- dependencies: A dictionary field containing 0 or more parent objects.
-Each key is the name of the parent module to look for, and the corresponding
-value is a comparison type and the desired version of the parent module. See below for more information (required)
-- libraries: An array field containing 0 or more javascript libraries for
-the module to use. (optional)
-
-Version numbers are our friends
---------------
-
 We like version numbers. Version numbers are our friends. They help keep
 things organized, help us keep track of backwards compatibility, and let us
 keep track of what modules can interact with what other modules. They do a
@@ -116,23 +96,6 @@ contains the actual block code. For example, "setCoordinateScale.js":
 The parameters of the inner function correspond to the parameters defined in
 the blocks.json spec. Since setCooardinateScale had one parameter in the input,
 it gets one parameter in the function.
-
-Modules, and the community site
---------------
-
-To add a module to the community site, go into the admin panel. As of 2/24/15, the
-URL is: https://community.csdt.rpi.edu/admin . Find the modules option, and click
-on it, and then "add module" in the new screen. Enter in the name of the module (this should
-be the same as the name in package.json!) and upload a zipped file containing the module. When you save it,
-you may notice the module name is changed slightly. Don't worry about it, this is
-called "slugifying" and is used to keep things a little simpler for development.
-
-The module won't actually be in use yet, however. Modules are paired with applications,
-and it's currently not attached to any. Go into an application in the admin panel, and
-notice the drop down bar labeled "module". Simply go into this drop down bar, choose
-the name of the module you want associated with the application, and save. Keep in mind
-that each application can only have one module, but each module can be used in many
-applications.
 
 Libraries
 --------------

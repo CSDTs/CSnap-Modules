@@ -1,0 +1,7 @@
+{
+    "touchingColorDirection": {
+                "type": "reporter",
+                "category": "sensing",
+                "spec": "touch color %clr in direction"
+    }
+}
