@@ -27,10 +27,13 @@
 			dist = Math.sqrt(Math.pow(this.xPosition()-newX, 2));
 			angle = this.heading*(Math.PI/180)+(Math.PI/2);
 		}
-		X = (-percent/Math.abs(percent))*dist*Math.cos(angle)+this.xPosition();
-		Y = (percent/Math.abs(percent))*dist*Math.sin(angle)+this.yPosition();
-		this.gotoXY(X,Y);
-		this.positionTalkBubble();
+		if(dist!=0)
+		{
+			X = (-percent/Math.abs(percent))*dist*Math.cos(angle)+this.xPosition();
+			Y = (percent/Math.abs(percent))*dist*Math.sin(angle)+this.yPosition();
+			this.gotoXY(X,Y);
+			this.positionTalkBubble();
+		}
     };
 }());
 

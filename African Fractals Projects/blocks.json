@@ -1,0 +1,52 @@
+{
+    "translate_percent": {
+                "type": "command",
+                "category": "motion",
+                "spec": "translate by %n of %drc",
+                "defaults": [100, null]
+    },
+	"changeCostumeColor": {
+				"type": "command",
+				"category": "looks",
+				"spec": "set costume color to %n",
+				"defaults": [0]
+	},
+	"changeCostumeShade": {
+				"type": "command",
+				"category": "looks",
+				"spec": "set costume shade to %n",
+				"defaults": [100]
+	},
+	"distanceToPointer": {
+				"type": "reporter",
+				"category": "sensing",
+				"spec": "distance to pointer"
+	},
+	"isOverPoint": {
+				"type": "reporter",
+				"category": "sensing",
+				"spec": "is mouse over point in Arrays X: %l and Y: %l within Y: %n",
+				"defaults": [null, null, 15]
+	},
+	"angleToPointer": {
+				"type": "reporter",
+				"category": "sensing",
+				"spec": "angle to pointer"
+	},
+	"isPointerInsideStage": {
+				"type": "reporter",
+				"category": "sensing",
+				"spec": "is the pointer inside stage?"
+	},
+	"calculateDimension": {
+				"type": "reporter",
+				"category": "operators",
+				"spec": "calculate dimension with base length %n from lengths %l and exclude segments %l",
+				"defaults": [1]
+	},
+	"fastTracking": {
+				"type": "command",
+				"category": "control",
+				"spec": "fast tracking: %b"
+	}
+}

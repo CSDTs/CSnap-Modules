@@ -1,41 +1,41 @@
 (function () {
     return function (percent, direction) {
-        var dest, delta=radians(this.heading);
+        var dest, delta=radians(this.heading), width=0, height=0;
+        var newX=0, newY=0, dist=0, angle=0, X=0, Y=0;
 
-        var width = this.costume.contents.width * this.scale;
-        var height = this.costume.contents.height * this.scale;
+		if(this.costume!=null)
+			{
+				width = this.costume.contents.width * this.scale;
+				height = this.costume.contents.height * this.scale;
+			}
+			else
+			{
+				width = 32 * this.scale;
+				height = 20 * this.scale;
+			}
 
-        var newX=0, newY=0, dist=0;
 
-        if(direction[0] === 'height') {
-            newY = this.position().y +
-                (height * percent/100);
-            dist = Math.sqrt(Math.pow(this.position().y-newY, 2));
+		if(direction[0] === 'height') {
+			newY = this.yPosition() +
+				(height * percent/100);
+			dist = Math.sqrt(Math.pow(this.yPosition()-newY, 2));
+			angle = this.heading*(Math.PI/180);
 
-            if (percent >= 0) {
-                dest = this.position().distanceAngle(dist, this.heading+90);
-            } else {
-                dest = this.position().distanceAngle(
-                    Math.abs(dist),
-                    (this.heading - 90)
-                );
-            }
-
-        } else {
-            newX = this.position().x + 
-                (width * percent/100);
-            dist = Math.sqrt(Math.pow(this.position().x-newX, 2));
-
-            if (percent >= 0) {
-                dest = this.position().distanceAngle(dist, this.heading);
-            } else {
-                dest = this.position().distanceAngle(
-                    Math.abs(dist),
-                    (this.heading - 180)
-                );
-            }
-        }
-        this.setPosition(dest);
-        this.positionTalkBubble();
+		} else {
+			newX = this.xPosition() + 
+				(width * percent/100);
+			dist = Math.sqrt(Math.pow(this.xPosition()-newX, 2));
+			angle = this.heading*(Math.PI/180)+(Math.PI/2);
+		}
+		if(dist!=0)
+		{
+			X = (-percent/Math.abs(percent))*dist*Math.cos(angle)+this.xPosition();
+			Y = (percent/Math.abs(percent))*dist*Math.sin(angle)+this.yPosition();
+			this.gotoXY(X,Y);
+			this.positionTalkBubble();
+		}
     };
 }());
+
+
+//# sourceURL=translate_percent.js
