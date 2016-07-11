@@ -1,0 +1,5 @@
+{
+    "name": "SoundsJS",
+    "description": "CSnap module that provides SoundJS for native blocks",
+    "version": "0.6.0"
+}

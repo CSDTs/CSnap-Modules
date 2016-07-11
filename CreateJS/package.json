@@ -1,0 +1,5 @@
+{
+    "name": "CreateJS",
+    "description": "CSnap module that provides CreateJS for native blocks",
+    "version": "0.6.0"
+}

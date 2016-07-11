@@ -11,6 +11,9 @@ javascript, or applying other modules. While each of the four separate
 vectors are optional, each module requires a package file to provide metadata
 and structure.
 
+We like proper naming. Every folder and it's corresponding zip file in repository 
+should be named with the same application name listed on the site.
+
 We like version numbers. Version numbers are our friends. They help keep
 things organized, help us keep track of backwards compatibility, and let us
 keep track of what modules can interact with what other modules. They do a
