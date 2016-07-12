@@ -32,16 +32,19 @@
 		 if(!costume.costumeColor) {
 			 costume.costumeColor = new Color(0,0,0);
 		 }
+		var temp = costume.contents.getContext('2d')
+			   .getImageData(0, 0, costume.contents.width,
+				  costume.contents.height);
 		 for(var I = 0, L = costume.originalPixels.data.length; I < L; I += 4){
-			if(currentPixels.data[I + 3] > 0){
+			if(temp.data[I + 3] > 0){
 			   // If it's not a transparent pixel
-			   currentPixels.data[I] = costume.originalPixels.data[I] / 255 * num;
-			   currentPixels.data[I + 1] = costume.originalPixels.data[I + 1] / 255 * num;
-			   currentPixels.data[I + 2] = costume.originalPixels.data[I + 2] / 255 * num;
+			   temp.data[I] = costume.originalPixels.data[I] / 255 * num;
+			   temp.data[I + 1] = costume.originalPixels.data[I + 1] / 255 * num;
+			   temp.data[I + 2] = costume.originalPixels.data[I + 2] / 255 * num;
 			}
 		 }
 		 costume.contents.getContext('2d')
-			.putImageData(currentPixels, 0, 0);
+			.putImageData(temp, 0, 0);
 		this.costumes.contents[this.getCostumeIdx()-1] = costume;
 	}
 	if(flipBackY)
@@ -58,4 +61,4 @@
 }());
 
 
-//# sourceURL=changeCostumeShade.js
+//# sourceURL=setCostumeShade.js
