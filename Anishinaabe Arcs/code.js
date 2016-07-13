@@ -15,7 +15,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
 
     if (costume && costume.is3D) { // if (costume == null), that means a Turtle
         if (costume.geometry != null) {
-            // we have loaded a 3D geometry already already
+            // we have loaded a 3D geometry already already already
             var color = new THREE.Color(this.color.r/255, 
                                         this.color.g/255, 
                                         this.color.b/255),
