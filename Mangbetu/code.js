@@ -199,6 +199,10 @@ SpriteMorph.prototype.toXML = function (serializer) {
     var stage = this.parentThatIsA(StageMorph),
         ide = stage ? stage.parentThatIsA(IDE_Morph) : null,
         idx = ide ? ide.sprites.asArray().indexOf(this) + 1 : 0;
+        tempX = this.flippedX;
+        if(tempX)this.flipXAxis();
+        tempY = this.flippedY;
+        if(tempY)this.flipYAxis();
     return serializer.format(
         '<sprite name="@" idx="@" x="@" y="@" z="@"' +
             ' heading="@" xRotation="@" yRotation="@" zRotation="@"' +
@@ -228,8 +232,8 @@ SpriteMorph.prototype.toXML = function (serializer) {
         this.scale,
         this.rotationStyle,
         this.isDraggable,
-        this.flippedX,
-        this.flippedY,
+        tempX,
+        tempY,
         this.isVisible ? '' : ' hidden="true"',
         this.getCostumeIdx(),
         this.color.r,
