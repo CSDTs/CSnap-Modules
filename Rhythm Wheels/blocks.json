@@ -43,5 +43,17 @@
                 "category": "motion",
                 "spec": "X: %n Y: %n Angle: %n",
                 "defaults": [0, 0, 100]
-    }
+    },
+	"setCostumeShade": {
+				"type": "command",
+				"category": "looks",
+				"spec": "set costume shade to %n",
+				"defaults": [100]
+	},
+	"changeCostumeShade": {
+				"type": "command",
+				"category": "looks",
+				"spec": "change costume shade by %n",
+				"defaults": [100]
+	}
 }

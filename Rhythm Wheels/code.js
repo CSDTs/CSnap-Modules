@@ -1796,4 +1796,117 @@ Process.prototype.doPlayNote = function (pitch, time, duration) {
   this.oscillator[this.oscillator.start ? 'start' : 'noteOn'](time);
   this.oscillator.stop(time-duration);
 };
+SpriteMorph.prototype.wearCostume = function (costume) {
+	if(this.flippedY)
+	{
+		this.flipYAxis();
+	}
+	if(this.flippedX)
+	{
+		this.flipXAxis();
+	}
+    // check if we need to remove the existing 3D shape
+    if (this.colorChange || (this.object && this.costume && costume != this.costume)) {
+        this.object.remove(this.mesh);
+        this.parent.changed(); // redraw stage
+    }
+
+    // check if we need to update the palatte
+    var isFrom2D = (this.costume == null) || (this.costume && !this.costume.is3D),
+        isTo2D = (costume == null) || (costume && !costume.is3D);
+    this.updatesPalette = (isFrom2D != isTo2D);
+
+    if (costume && costume.is3D) { // if (costume == null), that means a Turtle
+        if (costume.geometry != null) {
+            // we have loaded a 3D geometry already
+            var color = new THREE.Color(this.color.r/255, 
+                                        this.color.g/255, 
+                                        this.color.b/255),
+                material, mesh, sphere;
+
+            if (costume.map) {
+                if (costume.geometry instanceof THREE.PlaneGeometry) {
+                    material = new THREE.MeshPhongMaterial({map: costume.map, side: THREE.DoubleSide});
+                }
+                else {
+                    material = new THREE.MeshPhongMaterial({map: costume.map, color: color});
+                }
+            }
+            else {
+                material = new THREE.MeshLambertMaterial({color: color});
+            }
+            mesh = new THREE.Mesh(costume.geometry, material);
+            costume.geometry.computeBoundingSphere();
+            sphere = costume.geometry.boundingSphere; // THREE.Sphere
+            mesh.position.set(-sphere.center.x, -sphere.center.y, -sphere.center.z);
+
+            this.mesh = mesh;
+            this.hide();
+            this.object.add(this.mesh);
+            this.parent.changed(); // redraw stage
+        }
+        else {
+            // first time we load this geometry
+            var loader = new THREE.JSONLoader(), myself = this;
+            loader.load(costume.url, function(geometry) {
+                var color = new THREE.Color(myself.color.r/255, 
+                                            myself.color.g/255, 
+                                            myself.color.b/255);
+                var material = new THREE.MeshLambertMaterial({color: color}),
+                    mesh = new THREE.Mesh(geometry, material),
+                    sphere = geometry.boundingSphere; // THREE.Sphere
+                mesh.position.set(-sphere.center.x, -sphere.center.y, -sphere.center.z);
+                myself.mesh = mesh;
+
+                myself.object = new THREE.Object3D();
+                myself.object.add(myself.mesh);
+                myself.object.position.x = myself.xPosition();
+                myself.object.position.y = myself.yPosition();
+                myself.object.position.z = 0;
+
+                myself.hide(); // hide the 2D image
+                myself.parent.scene.add(myself.object);
+                myself.parent.changed(); // redraw stage
+
+                costume.geometry = geometry;
+            });
+        }
+        this.costume = costume;
+    }
+    else {
+        var x = this.xPosition ? this.xPosition() : null,
+        y = this.yPosition ? this.yPosition() : null,
+        isWarped = this.isWarped;
+		if (this.costume && this.costume.originalPixels && !FirstCostume) 
+		{
+			this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
+			this.costume.colored = false;
+		}
+        if (isWarped) {
+            this.endWarp();
+        }
+        this.changed();
+        this.costume = costume;
+        this.drawNew();
+        this.changed();
+        if (isWarped) {
+            this.startWarp();
+        }
+        if (x !== null) {
+            this.silentGotoXY(x, y, true); // just me
+        }
+        if (this.positionTalkBubble) { // the stage doesn't talk
+            this.positionTalkBubble();
+        }
+        this.version = Date.now();
+    }
+
+    if (this.updatesPalette) {
+        var ide = this.parentThatIsA(IDE_Morph);
+        if (ide) {
+            ide.selectSprite(this);
+        }
+    }
+	FirstCostume = false;
+};
 //# sourceURL=code.js
