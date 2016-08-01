@@ -15,7 +15,7 @@
         
         if(heading >= 360 ) //if you have made it to the start position
         {
-          this.playSoundTime(sound, startTime + time);
+          this.playSoundTime(sound, 0);
           startAngle -= 360;
         }
         
