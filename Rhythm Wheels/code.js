@@ -352,6 +352,12 @@ SpriteMorph.prototype.initBlocks = function () {
             category: 'sound',
             spec: 'volume'
         },
+        doRest: {
+            type: 'command',
+            category: 'sound',
+            spec: 'rest for %n beats',
+            defaults: [0.2]
+        },
         doPlayNote: {
             type: 'command',
             category: 'sound',
@@ -437,6 +443,24 @@ SpriteMorph.prototype.initBlocks = function () {
             spec: 'set border color to %n',
             defaults: [0]
         },
+		//add Border Shade functionality - Get, Set, and Change
+		getBorderShade: {
+			type: "reporter",
+			category: "pen",
+			spec: "border shade"
+		},
+		setBorderShade: {
+			type: "command",
+			category: "pen",
+			spec: "set border shade to %n",
+			defaults: [100]
+		},
+		changeBorderShade: {
+			type: "command",
+			category: "pen",
+			spec: "change border shade by %n",
+			defaults: [100]
+		},
         penBorderColor: {
             type: 'reporter',
             category: 'pen',
