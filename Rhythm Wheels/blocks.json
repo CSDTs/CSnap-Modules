@@ -39,7 +39,7 @@
                 "defaults": [0, 0, 100]
     },
     "moveAndPlay": {
-                "type": "command",
+                "type": "reporter",
                 "category": "motion",
                 "spec": "X: %n Y: %n Angle: %n",
                 "defaults": [0, 0, 100]

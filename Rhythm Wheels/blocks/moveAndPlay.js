@@ -18,7 +18,7 @@
           this.playSoundTime(sound, 0);
           startAngle -= 360;
         }
-        
+        return startAngle;
 	};
 }());
 
