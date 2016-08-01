@@ -1,3 +1,9 @@
+SpriteMorph.flippedY = false;
+SpriteMorph.flippedX = false;
+Costume.colored = false;
+var originalContent, ID;
+var FirstCostume = true;
+
 var startTime =0;
 window.audioContext = null, window.gainNode = null, window.analyser = null, window.frequencyDataArray = null;
 try {
