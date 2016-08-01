@@ -9,7 +9,7 @@
             var heading = startAngle+((window.audioContext.currentTime-startTime)*360)/(this.eighthNoteTime()*32);
         }
         
-		this.goto(X,Y);
+		this.gotoXY(X,Y);
         this.setHeading(heading)
         this.forward(30);
         
