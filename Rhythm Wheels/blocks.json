@@ -60,5 +60,11 @@
 				"type": "command",
 				"category": "sound",
 				"spec": "play costume sound"
+	},
+	"switchToCostumeNum": {
+				"type": "command",
+				"category": "looks",
+				"spec": "switch to costume number: %n",
+				"defaults": [1]
 	}
 }
