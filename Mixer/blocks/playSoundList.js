@@ -1,7 +1,7 @@
 (function () {
     return function (List, Loops) {
 	  var time = startTime;
-	  var eighthNoteTime = (60 / tempo) / 2;
+	  var eighthNoteTime = this.eighthNoteTime();
 
 	  // Play 2 bars of the following:
 	  for (var j = 0; j < Loops; j++) {
