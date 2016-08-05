@@ -1,6 +1,6 @@
 (function () {
     return function (sound, list) {
-		this.doAddToList(sound, list)
+		list.add(sound)
 	};
 }());
 
