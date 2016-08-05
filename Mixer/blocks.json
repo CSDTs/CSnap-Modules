@@ -61,5 +61,10 @@
                 "category": "looks",
                 "spec": "Label %s scale: %n",
                 "defaults": ["hello", 2]
+    },
+    "addSoundToList": {
+                "type": "command",
+                "category": "sound",
+                "spec": "add %snd to %l"
     }
 }
