@@ -555,10 +555,7 @@ IDE_Morph.prototype.createPalette = function () {
 		this.add(this.palette);
 		this.palette.scrollX(this.palette.padding);
 		this.palette.scrollY(this.palette.padding);
-	}else
-        {
-            this.palette.setWidth(0);
-        }
+	}
 };
 IDE_Morph.prototype.fixLayout = function (situation) {
     // situation is a string, i.e.
