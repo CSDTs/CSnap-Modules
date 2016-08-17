@@ -8,7 +8,7 @@
 		for(i = 0; i<frequencyDataArray.length/2; i++)
 		{
 			this.changeXPosition(step);
-			this.setYPosition(Math.sin(frequencyDataArray[i]-offset));
+			this.setYPosition(Math.sin(2*Math.PI*frequencyDataArray[i]-offset*step));
 		}
 		this.up();
 	};
