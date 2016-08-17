@@ -1,4 +1,16 @@
 {
+    "rotateAroundPoint": {
+                "type": "command",
+                "category": "motion",
+                "spec": "Center about X: %n Y: %n Distance: %n",
+                "defaults": [0, 0, 100]
+    },
+    "labelBox": {
+                "type": "command",
+                "category": "looks",
+                "spec": "Label %s scale: %n",
+                "defaults": ["hello", 2]
+    },
     "playSoundList": {
                 "type": "command",
                 "category": "sound",
@@ -44,27 +56,15 @@
                 "category": "sound",
                 "spec": "frequency data"
     },
-    "rotateAroundPoint": {
+    "addSoundToList": {
                 "type": "command",
-                "category": "motion",
-                "spec": "Center about X: %n Y: %n Distance: %n",
-                "defaults": [0, 0, 100]
+                "category": "sound",
+                "spec": "add %snd to %l"
     },
     "drawSPD": {
                 "type": "command",
                 "category": "pen",
                 "spec": "draw sound frequencies with offset %n",
                 "defaults": [100]
-    },
-    "labelBox": {
-                "type": "command",
-                "category": "looks",
-                "spec": "Label %s scale: %n",
-                "defaults": ["hello", 2]
-    },
-    "addSoundToList": {
-                "type": "command",
-                "category": "sound",
-                "spec": "add %snd to %l"
     }
 }
