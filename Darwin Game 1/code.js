@@ -3,6 +3,10 @@ SpriteMorph.flippedX = false;
 Costume.colored = false;
 var originalContent, ID;
 var FirstCostume = true;
+
+StageMorph.prototype.dimensions = new Point(1280, 720);
+Costume.prototype.maxExtent = new Point(1280, 720);
+
 SpriteMorph.prototype.wearCostume = function (costume) {
 	if(this.flippedY)
 	{
@@ -190,6 +194,6 @@ Costume.prototype.copy = function () {
     return cpy;
 };
 
-StageMorph.prototype.dimensions = new Point(1280, 720);
+
 
 //# sourceURL=code.js
