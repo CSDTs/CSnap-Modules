@@ -218,6 +218,10 @@ StageMorph.prototype.addCoordinatePlane = function (){
     this.changed();
 };
 
+this.ide.isAnimating = false;
+this.ide.setStageExtent(new Point(700, 525));
+this.ide.isAnimating = true;
+
 StageMorph.prototype.init = function (globals) {
     this.name = localize('Stage');
     this.threads = new ThreadManager();
