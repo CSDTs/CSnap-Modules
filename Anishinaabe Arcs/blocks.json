@@ -16,5 +16,19 @@
 				"category": "looks",
 				"spec": "set costume shade to %n",
 				"defaults": [100]
+	},
+	"_3DRotationX": {
+				"type": "reporter",
+				"category": "pen",
+				"spec": "3D x rotation"
+	},
+	"_3DRotationY": {
+				"type": "reporter",
+				"category": "pen",
+				"spec": "3D y rotation"
+	},
+	"_3DRotationZ": {
+				"type": "reporter",
+				"spec": "3D z rotation"
 	}
 }
