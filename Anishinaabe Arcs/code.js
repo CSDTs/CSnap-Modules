@@ -142,7 +142,7 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
 };
 
 StageMorph.prototype.addCoordinatePlane = function (){
-    var geometry, grid, xaxis, xlabel, yaxis, ylabel, zaxis, zlabel, material, size = 200, step = 20;
+    var geometry, grid, text, textShapes, xaxis, xlabel, yaxis, ylabel, zaxis, zlabel, material, size = 300, step = 20;
 
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({color: 'black'});
@@ -169,8 +169,8 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.add(xaxis);
     
-    var textShapes = THREE.FontUtils.generateShapes( 'X', {size:12});
-    var text = new THREE.ShapeGeometry( textShapes );
+    textShapes = THREE.FontUtils.generateShapes( 'X', {size:16});
+    text = new THREE.ShapeGeometry( textShapes );
     xlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'red' } ) ) ;
     xlabel.position = new THREE.Vector3(size, 0, 0);
     xlabel.rotation.x = -Math.PI/2;
@@ -187,8 +187,8 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.add(yaxis);
     
-    var textShapes = THREE.FontUtils.generateShapes( 'Y', {size:12});
-    var text = new THREE.ShapeGeometry( textShapes );
+    textShapes = THREE.FontUtils.generateShapes( 'Y', {size:16});
+    text = new THREE.ShapeGeometry( textShapes );
     ylabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'green' } ) ) ;
     ylabel.position = new THREE.Vector3(0, 0, -size);
     ylabel.rotation.x = -Math.PI/2;
@@ -205,8 +205,8 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.add(zaxis);
     
-    var textShapes = THREE.FontUtils.generateShapes( 'Z', {size:12});
-    var text = new THREE.ShapeGeometry( textShapes );
+    textShapes = THREE.FontUtils.generateShapes( 'Z', {size:16});
+    text = new THREE.ShapeGeometry( textShapes );
     zlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'blue' } ) ) ;
     zlabel.position = new THREE.Vector3(0, size, 0);
     zlabel.rotation.x = 0;
@@ -221,6 +221,63 @@ StageMorph.prototype.addCoordinatePlane = function (){
 this.ide.isAnimating = false;
 this.ide.setStageExtent(new Point(700, 525));
 this.ide.isAnimating = true;
+
+StageMorph.prototype.init3D = function () {
+    var canvas = this.get3dCanvas();
+
+    var vFOV = THREEJS_FIELD_OF_VIEW;
+    var dist = THREEJS_CAMERA_DEFAULT_Z_POSITION;
+    var height = 2 * Math.tan(radians(vFOV / 2)) * dist;
+    var width = (canvas.width / canvas.height) * height;
+
+    this.scene = new THREE.Scene();
+
+    // camera
+    this.camera = new THREE.PerspectiveCamera(vFOV,
+                                              canvas.width / canvas.height, 0.1, 10000);
+    this.camera.position.set(THREEJS_CAMERA_DEFAULT_X_POSITION, 
+                             THREEJS_CAMERA_DEFAULT_Y_POSITION,
+                             THREEJS_CAMERA_DEFAULT_Z_POSITION);
+    this.camera.lookAt({x:0, y:0, z:0});
+    pointLight = new THREE.PointLight( 0xffffff );
+    pointLight.position.set(1,1,2);
+    this.camera.add(pointLight);
+    this.scene.add(this.camera);
+
+    // lighting
+    //
+
+    // renderer
+    // try {
+    //     this.renderer = new THREE.WebGLRenderer({canvas: canvas});
+    // } catch (e) {
+        this.renderer = new THREE.CanvasRenderer({canvas: canvas});
+    // }
+    this.renderer.setSize(canvas.width, canvas.height);
+}
+
+SpriteMorph.prototype.renderArc = function (width, height) {
+    const THREEJS_ARC_SEGMENTS = 60,
+        THREEJS_TUBE_SEGMENTS = THREEJS_ARC_SEGMENTS;
+    var xRadius = width/2, yRadius = height, x, y, points = new Array(), 
+        path, 
+        THREEJS_TUBE_RADIUS = this.penSize(),
+        THREEJS_TUBE_RADIUS_SEGMENTS = this.penSize()+4,
+		geometry;
+
+    for (var theta = 0; theta <= Math.PI; theta += (Math.PI/THREEJS_ARC_SEGMENTS)) {
+        x = xRadius * Math.cos(theta);
+        y = yRadius * Math.sin(theta);
+        points.push(new THREE.Vector3(x, y, 0));
+    }
+    path = new THREE.SplineCurve3(points);
+    geometry = new THREE.TubeGeometry(path, 
+                                      THREEJS_TUBE_SEGMENTS,
+                                      THREEJS_TUBE_RADIUS,
+                                      THREEJS_TUBE_RADIUS_SEGMENTS,
+                                      false);   // closed or not
+    this.render3dShape(geometry, false);
+}
 
 StageMorph.prototype.init = function (globals) {
     this.name = localize('Stage');
