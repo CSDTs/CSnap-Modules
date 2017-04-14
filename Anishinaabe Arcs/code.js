@@ -121,6 +121,16 @@ SpriteMorph.prototype.turn3D = function (degX, degY, degZ) {
     }
 };
 
+// copy blocks over to stagemorph to allow camera rotation to work
+var f = zip.file("blocks.json");
+if(f != null) {
+  var f_text = f.asText();
+  var blockJSON = JSON.parse(f_text);
+  for(var block in blockJSON) {
+      StageMorph.prototype[block] = eval(zip.file("blocks/" + block + ".js").asText());
+  }
+}
+
 SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
     if (this.costume && this.costume.is3D) {
 
@@ -327,8 +337,530 @@ StageMorph.prototype.init = function (globals) {
     this.addCoordinatePlane();
 };
 
+// StageMorph block templates
+
+StageMorph.prototype.blockTemplates = function (category) {
+    var blocks = [], myself = this, varNames, button,
+        cat = category || 'motion', txt;
+
+    function block(selector) {
+        if (myself.hiddenPrimitives[selector]) {
+            return null;
+        }
+        var newBlock = SpriteMorph.prototype.blockForSelector(selector, true);
+        newBlock.isTemplate = true;
+        return newBlock;
+    }
+
+    function variableBlock(varName) {
+        var newBlock = SpriteMorph.prototype.variableBlock(varName);
+        newBlock.isDraggable = false;
+        newBlock.isTemplate = true;
+        return newBlock;
+    }
+
+    function watcherToggle(selector) {
+        if (myself.hiddenPrimitives[selector]) {
+            return null;
+        }
+        var info = SpriteMorph.prototype.blocks[selector];
+        return new ToggleMorph(
+            'checkbox',
+            this,
+            function () {
+                myself.toggleWatcher(
+                    selector,
+                    localize(info.spec),
+                    myself.blockColor[info.category]
+                );
+            },
+            null,
+            function () {
+                return myself.showingWatcher(selector);
+            },
+            null
+        );
+    }
+
+    function variableWatcherToggle(varName) {
+        return new ToggleMorph(
+            'checkbox',
+            this,
+            function () {
+                myself.toggleVariableWatcher(varName);
+            },
+            null,
+            function () {
+                return myself.showingVariableWatcher(varName);
+            },
+            null
+        );
+    }
+
+    if (cat === 'motion') {
+
+        txt = new TextMorph(localize(
+            'Stage selected:\nno motion primitives'
+        ));
+        txt.fontSize = 9;
+        txt.setColor(this.paletteTextColor);
+        blocks.push(txt);
+
+    } else if (cat === 'looks') {
+
+        blocks.push(block('doSwitchToCostume'));
+        blocks.push(block('doWearNextCostume'));
+        blocks.push(watcherToggle('getCostumeIdx'));
+        blocks.push(block('getCostumeIdx'));
+        blocks.push('-');
+        blocks.push(block('changeEffect'));
+        blocks.push(block('setEffect'));
+        blocks.push(block('clearEffects'));
+        blocks.push('-');
+        blocks.push(block('setCameraPosition'));
+        blocks.push(block('changeCameraXPosition'));
+        blocks.push(block('changeCameraYPosition'));
+        blocks.push(block('changeCameraZPosition'));
+        blocks.push(block('turnCameraAroundXAxis'));
+        blocks.push(block('turnCameraAroundYAxis'));
+        blocks.push(block('_3DXCameraRotation'));
+        blocks.push(block('_3DYCameraRotation'));
+
+    // for debugging: ///////////////
+
+        if (this.world().isDevMode) {
+            blocks.push('-');
+            txt = new TextMorph(localize(
+                'development mode \ndebugging primitives:'
+            ));
+            txt.fontSize = 9;
+            txt.setColor(this.paletteTextColor);
+            blocks.push(txt);
+            blocks.push('-');
+            blocks.push(block('reportCostumes'));
+            blocks.push('-');
+            blocks.push(block('log'));
+            blocks.push(block('alert'));
+        }
+
+    /////////////////////////////////
+
+    } else if (cat === 'sound') {
+
+        blocks.push(block('playSound'));
+        blocks.push(block('doPlaySoundUntilDone'));
+        blocks.push(block('doStopAllSounds'));
+        blocks.push('-');
+        blocks.push(block('doSetVolume'));
+        blocks.push(block('doChangeVolume'));
+        blocks.push(watcherToggle('reportVolume'));
+        blocks.push(block('reportVolume'));
+        blocks.push('-');
+        blocks.push(block('doRest'));
+        blocks.push('-');
+        blocks.push(block('doPlayNote'));
+        blocks.push('-');
+        blocks.push(block('doChangeTempo'));
+        blocks.push(block('doSetTempo'));
+        blocks.push(watcherToggle('getTempo'));
+        blocks.push(block('getTempo'));
+
+    // for debugging: ///////////////
+
+        if (this.world().isDevMode) {
+            blocks.push('-');
+            txt = new TextMorph(localize(
+                'development mode \ndebugging primitives:'
+            ));
+            txt.fontSize = 9;
+            txt.setColor(this.paletteTextColor);
+            blocks.push(txt);
+            blocks.push('-');
+            blocks.push(block('reportSounds'));
+        }
+
+    } else if (cat === 'pen') {
+
+        blocks.push(block('clear'));
+
+    } else if (cat === 'control') {
+
+        blocks.push(block('receiveGo'));
+        blocks.push(block('receiveKey'));
+        blocks.push(block('receiveClick'));
+        blocks.push(block('receiveMessage'));
+        blocks.push('-');
+        blocks.push(block('doBroadcast'));
+        blocks.push(block('doBroadcastAndWait'));
+        blocks.push(watcherToggle('getLastMessage'));
+        blocks.push(block('getLastMessage'));
+        blocks.push('-');
+        blocks.push(block('doWarp'));
+        blocks.push('-');
+        blocks.push(block('doWait'));
+        blocks.push(block('doWaitUntil'));
+        blocks.push('-');
+        blocks.push(block('doForever'));
+        blocks.push(block('doRepeat'));
+        blocks.push(block('doUntil'));
+        blocks.push('-');
+        blocks.push(block('doIf'));
+        blocks.push(block('doIfElse'));
+        blocks.push('-');
+        blocks.push(block('doReport'));
+        blocks.push('-');
+    /*
+    // old STOP variants, migrated to a newer version, now redundant
+        blocks.push(block('doStopBlock'));
+        blocks.push(block('doStop'));
+        blocks.push(block('doStopAll'));
+    */
+        blocks.push(block('doStopThis'));
+        blocks.push(block('doStopOthers'));
+        blocks.push('-');
+        blocks.push(block('doRun'));
+        blocks.push(block('fork'));
+        blocks.push(block('evaluate'));
+        blocks.push('-');
+    /*
+    // list variants commented out for now (redundant)
+        blocks.push(block('doRunWithInputList'));
+        blocks.push(block('forkWithInputList'));
+        blocks.push(block('evaluateWithInputList'));
+        blocks.push('-');
+    */
+        blocks.push(block('doCallCC'));
+        blocks.push(block('reportCallCC'));
+        blocks.push('-');
+        blocks.push(block('createClone'));
+        blocks.push('-');
+        blocks.push(block('doPauseAll'));
+        blocks.push('-');
+        blocks.push(block('openWebsite'));
+
+    } else if (cat === 'sensing') {
+
+        blocks.push(block('doAsk'));
+        blocks.push(watcherToggle('getLastAnswer'));
+        blocks.push(block('getLastAnswer'));
+        blocks.push('-');
+        blocks.push(watcherToggle('reportMouseX'));
+        blocks.push(block('reportMouseX'));
+        blocks.push(watcherToggle('reportMouseY'));
+        blocks.push(block('reportMouseY'));
+        blocks.push(block('reportMouseDown'));
+        blocks.push('-');
+        blocks.push(block('reportKeyPressed'));
+        blocks.push('-');
+        blocks.push(block('doResetTimer'));
+        blocks.push(watcherToggle('getTimer'));
+        blocks.push(block('getTimer'));
+        blocks.push('-');
+        blocks.push(block('reportAttributeOf'));
+        blocks.push('-');
+        blocks.push(block('reportURL'));
+        blocks.push('-');
+        blocks.push(block('reportIsFastTracking'));
+        blocks.push(block('doSetFastTracking'));
+        blocks.push('-');
+        blocks.push(block('reportDate'));
+
+    // for debugging: ///////////////
+
+        if (this.world().isDevMode) {
+
+            blocks.push('-');
+            txt = new TextMorph(localize(
+                'development mode \ndebugging primitives:'
+            ));
+            txt.fontSize = 9;
+            txt.setColor(this.paletteTextColor);
+            blocks.push(txt);
+            blocks.push('-');
+            blocks.push(block('colorFiltered'));
+            blocks.push(block('reportStackSize'));
+            blocks.push(block('reportFrameCount'));
+        }
+
+    /////////////////////////////////
+
+    } else if (cat === 'operators') {
+
+        blocks.push(block('reifyScript'));
+        blocks.push(block('reifyReporter'));
+        blocks.push(block('reifyPredicate'));
+        blocks.push('#');
+        blocks.push('-');
+        blocks.push(block('reportSum'));
+        blocks.push(block('reportDifference'));
+        blocks.push(block('reportProduct'));
+        blocks.push(block('reportQuotient'));
+        blocks.push('-');
+        blocks.push(block('reportModulus'));
+        blocks.push(block('reportRound'));
+        blocks.push(block('reportMonadic'));
+        blocks.push(block('reportRandom'));
+        blocks.push('-');
+        blocks.push(block('reportLessThan'));
+        blocks.push(block('reportEquals'));
+        blocks.push(block('reportGreaterThan'));
+        blocks.push('-');
+        blocks.push(block('reportAnd'));
+        blocks.push(block('reportOr'));
+        blocks.push(block('reportNot'));
+        blocks.push('-');
+        blocks.push(block('reportTrue'));
+        blocks.push(block('reportFalse'));
+        blocks.push('-');
+        blocks.push(block('reportJoinWords'));
+        blocks.push(block('reportTextSplit'));
+        blocks.push(block('reportLetter'));
+        blocks.push(block('reportStringSize'));
+        blocks.push('-');
+        blocks.push(block('reportUnicode'));
+        blocks.push(block('reportUnicodeAsLetter'));
+        blocks.push('-');
+        blocks.push(block('reportIsA'));
+        blocks.push(block('reportIsIdentical'));
+
+    // for debugging: ///////////////
+
+        if (this.world().isDevMode) {
+            blocks.push('-');
+            txt = new TextMorph(
+                'development mode \ndebugging primitives:'
+            );
+            txt.fontSize = 9;
+            txt.setColor(this.paletteTextColor);
+            blocks.push(txt);
+            blocks.push('-');
+            blocks.push(block('reportTypeOf'));
+            blocks.push(block('reportTextFunction'));
+        }
+
+    //////////////////////////////////
+
+    } else if (cat === 'variables') {
+
+        button = new PushButtonMorph(
+            null,
+            function () {
+                new VariableDialogMorph(
+                    null,
+                    function (pair) {
+                        if (pair && !myself.variables.silentFind(pair[0])) {
+                            myself.addVariable(pair[0], pair[1]);
+                            myself.toggleVariableWatcher(pair[0], pair[1]);
+                            myself.blocksCache[cat] = null;
+                            myself.paletteCache[cat] = null;
+                            myself.parentThatIsA(IDE_Morph).refreshPalette();
+                        }
+                    },
+                    myself
+                ).prompt(
+                    'Variable name',
+                    null,
+                    myself.world()
+                );
+            },
+            'Make a variable'
+        );
+        blocks.push(button);
+
+        if (this.variables.allNames().length > 0) {
+            button = new PushButtonMorph(
+                null,
+                function () {
+                    var menu = new MenuMorph(
+                        myself.deleteVariable,
+                        null,
+                        myself
+                    );
+                    myself.variables.allNames().forEach(function (name) {
+                        menu.addItem(name, name);
+                    });
+                    menu.popUpAtHand(myself.world());
+                },
+                'Delete a variable'
+            );
+            blocks.push(button);
+        }
+
+        blocks.push('-');
+
+        varNames = this.variables.allNames();
+        if (varNames.length > 0) {
+            varNames.forEach(function (name) {
+                blocks.push(variableWatcherToggle(name));
+                blocks.push(variableBlock(name));
+            });
+            blocks.push('-');
+        }
+
+        blocks.push(block('doSetVar'));
+        blocks.push(block('doChangeVar'));
+        blocks.push(block('doShowVar'));
+        blocks.push(block('doHideVar'));
+        blocks.push(block('doDeclareVariables'));
+
+        blocks.push('=');
+
+        blocks.push(block('reportNewList'));
+        blocks.push('-');
+        blocks.push(block('reportCONS'));
+        blocks.push(block('reportListItem'));
+        blocks.push(block('reportCDR'));
+        blocks.push('-');
+        blocks.push(block('reportListLength'));
+        blocks.push(block('reportListContainsItem'));
+        blocks.push('-');
+        blocks.push(block('doAddToList'));
+        blocks.push(block('doDeleteFromList'));
+        blocks.push(block('doInsertInList'));
+        blocks.push(block('doReplaceInList'));
+
+    // for debugging: ///////////////
+
+        if (this.world().isDevMode) {
+            blocks.push('-');
+            txt = new TextMorph(localize(
+                'development mode \ndebugging primitives:'
+            ));
+            txt.fontSize = 9;
+            txt.setColor(this.paletteTextColor);
+            blocks.push(txt);
+            blocks.push('-');
+            blocks.push(block('reportMap'));
+        }
+
+    /////////////////////////////////
+
+        blocks.push('=');
+
+        if (StageMorph.prototype.enableCodeMapping) {
+            blocks.push(block('doMapCodeOrHeader'));
+            blocks.push(block('doMapStringCode'));
+            blocks.push(block('doMapListCode'));
+            blocks.push('-');
+            blocks.push(block('reportMappedCode'));
+            blocks.push('=');
+        }
+
+        button = new PushButtonMorph(
+            null,
+            function () {
+                var ide = myself.parentThatIsA(IDE_Morph);
+                new BlockDialogMorph(
+                    null,
+                    function (definition) {
+                        if (definition.spec !== '') {
+                            if (definition.isGlobal) {
+                                myself.globalBlocks.push(definition);
+                            } else {
+                                myself.customBlocks.push(definition);
+                            }
+                            ide.flushPaletteCache();
+                            ide.refreshPalette();
+                            new BlockEditorMorph(definition, myself).popUp();
+                        }
+                    },
+                    myself
+                ).prompt(
+                    'Make a block',
+                    null,
+                    myself.world()
+                );
+            },
+            'Make a block'
+        );
+        blocks.push(button);
+    }
+    return blocks;
+};
+
+
+function setFromSpherical ( s ) {
+
+    var sinPhiRadius = Math.sin( s.phi ) * s.radius;
+
+    this.x = sinPhiRadius * Math.sin( s.theta );
+    this.y = Math.cos( s.phi ) * s.radius;
+    this.z = sinPhiRadius * Math.cos( s.theta );
+
+    return this;
+
+};
+
+function setFromVector3 ( vec3 ) {
+
+    this.radius = vec3.length();
+
+    if ( this.radius === 0 ) {
+
+        this.theta = 0;
+        this.phi = 0;
+
+    } else {
+
+
+    }
+
+    return this;
+
+}
+
+StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
+    // This function does not work properly
+    var vector = new THREE.Vector3( 0, 0, -1 );
+    vector.applyQuaternion( this.camera.quaternion );
+
+    var radius = Math.pow(Math.pow(this.camera.position.x,2)
+     + Math.pow(this.camera.position.y,2)
+     + Math.pow(this.camera.position.z,2), 0.5);
+    var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  vector.y ) ) ); // polar angle
+
+    phi += deg*Math.PI/180;
+    if(deg>1){
+        var test=1;
+    }
+
+    var sinPhiRadius = Math.sin( phi ) * radius;
+    this.camera.position.x = sinPhiRadius * Math.sin( theta );
+    this.camera.position.y = Math.cos( phi ) * radius;
+    this.camera.position.z = sinPhiRadius * Math.cos( theta );
+    
+    this.camera.lookAt({x:0, y:0, z:0});
+    this.changed();
+};
+
+StageMorph.prototype.turnCameraAroundYAxis = function(deg) {
+
+    // This function does not work properly
+    var vector = new THREE.Vector3( 0, 0, -1 );
+    vector.applyQuaternion( this.camera.quaternion );
+
+
+    var radius = Math.pow(Math.pow(this.camera.position.x,2)
+     + Math.pow(this.camera.position.y,2)
+     + Math.pow(this.camera.position.z,2), 0.5);
+    var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  vector.y ) ) ); // polar angle
+
+    theta += deg*Math.PI/180;
+
+    var sinPhiRadius = Math.sin( phi ) * radius;
+    this.camera.position.x = sinPhiRadius * Math.sin( theta );
+    this.camera.position.y = Math.cos( phi ) * radius;
+    this.camera.position.z = sinPhiRadius * Math.cos( theta );
+    
+    this.camera.lookAt({x:0, y:0, z:0});
+    this.changed();
+};
+
 function round10(val,exp) {
 	var pow = Math.pow(10,exp);
 	return Math.round(val/pow)*pow;
 }
+        
 //# sourceURL=code.js

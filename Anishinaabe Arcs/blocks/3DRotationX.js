@@ -5,4 +5,4 @@
 }());
 
 
- //# sourceURL=_3DRotationX.js
+ //# sourceURL=3DRotationX.js

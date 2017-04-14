@@ -17,18 +17,29 @@
 				"spec": "set costume shade to %n",
 				"defaults": [100]
 	},
-	"_3DRotationX": {
+	"3DRotationX": {
 				"type": "reporter",
-				"category": "pen",
+				"category": "motion",
 				"spec": "3D x rotation"
 	},
-	"_3DRotationY": {
+	"3DRotationY": {
 				"type": "reporter",
-				"category": "pen",
+				"category": "motion",
 				"spec": "3D y rotation"
 	},
-	"_3DRotationZ": {
+	"3DRotationZ": {
 				"type": "reporter",
+				"category": "motion",
 				"spec": "3D z rotation"
+	},
+	"_3DXCameraRotation": {
+				"type": "reporter",
+				"category": "looks",
+				"spec": "3D camera x rotation"
+	},
+	"_3DYCameraRotation": {
+				"type": "reporter",
+				"category": "looks",
+				"spec": "3D camera y rotation"
 	}
 }
