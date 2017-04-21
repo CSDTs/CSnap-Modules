@@ -778,37 +778,6 @@ StageMorph.prototype.blockTemplates = function (category) {
     return blocks;
 };
 
-
-function setFromSpherical ( s ) {
-
-    var sinPhiRadius = Math.sin( s.phi ) * s.radius;
-
-    this.x = sinPhiRadius * Math.sin( s.theta );
-    this.y = Math.cos( s.phi ) * s.radius;
-    this.z = sinPhiRadius * Math.cos( s.theta );
-
-    return this;
-
-};
-
-function setFromVector3 ( vec3 ) {
-
-    this.radius = vec3.length();
-
-    if ( this.radius === 0 ) {
-
-        this.theta = 0;
-        this.phi = 0;
-
-    } else {
-
-
-    }
-
-    return this;
-
-}
-
 StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
     // This function does not work properly
     var vector = new THREE.Vector3( 0, 0, -1 );
@@ -818,12 +787,9 @@ StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
      + Math.pow(this.camera.position.y,2)
      + Math.pow(this.camera.position.z,2), 0.5);
     var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
-    var phi = Math.acos( Math.max( - 1, Math.min( 1,  vector.y ) ) ); // polar angle
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.y ) ) ); // polar angle
 
     phi += deg*Math.PI/180;
-    if(deg>1){
-        var test=1;
-    }
 
     var sinPhiRadius = Math.sin( phi ) * radius;
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
@@ -845,7 +811,7 @@ StageMorph.prototype.turnCameraAroundYAxis = function(deg) {
      + Math.pow(this.camera.position.y,2)
      + Math.pow(this.camera.position.z,2), 0.5);
     var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
-    var phi = Math.acos( Math.max( - 1, Math.min( 1,  vector.y ) ) ); // polar angle
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.y ) ) ); // polar angle
 
     theta += deg*Math.PI/180;
 
