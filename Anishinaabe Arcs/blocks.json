@@ -41,5 +41,17 @@
 				"type": "reporter",
 				"category": "looks",
 				"spec": "3D camera y rotation"
+	},
+	"torus": {
+				"type": "command",
+				"category": "pen",
+				"spec": "torus width: %n length: %n",
+				"defaults": [100, 100]
+	},
+	"parabolaSegmentLength": {
+				"type": "reporter",
+				"category": "pen",
+				"spec": "length of arc width: %n length: %n",
+				"defaults": [100, 100]
 	}
 }

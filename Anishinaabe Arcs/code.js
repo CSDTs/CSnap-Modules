@@ -1,5 +1,11 @@
 SpriteMorph._3DRotationX = 0, SpriteMorph._3DRotationY = 0, SpriteMorph._3DRotationZ = 0;
 
+// StageMorph 3D rendering
+const THREEJS_FIELD_OF_VIEW = 45; // degree
+const THREEJS_CAMERA_DEFAULT_X_POSITION = 600;
+const THREEJS_CAMERA_DEFAULT_Y_POSITION = 50;
+const THREEJS_CAMERA_DEFAULT_Z_POSITION = 50;
+
 SpriteMorph.prototype.wearCostume = function (costume) {
 
     // check if we need to remove the existing 3D shape
@@ -158,10 +164,10 @@ StageMorph.prototype.addCoordinatePlane = function (){
     material = new THREE.LineBasicMaterial({color: 'black'});
 
     for ( var i = -size; i <= size; i+= step) {
-        geometry.vertices.push(new THREE.Vector3( -size, -0.04, i ));
-        geometry.vertices.push(new THREE.Vector3( size, -0.04, i ));
-        geometry.vertices.push(new THREE.Vector3( i, -0.04, -size ));
-        geometry.vertices.push(new THREE.Vector3( i, -0.04, size ));
+        geometry.vertices.push(new THREE.Vector3( -size, i,   -0.04));
+        geometry.vertices.push(new THREE.Vector3( size,i ,  -0.04));
+        geometry.vertices.push(new THREE.Vector3( i, -size, -0.04 ));
+        geometry.vertices.push(new THREE.Vector3( i, size,  -0.04));
     }
     
     grid = new THREE.Line(geometry, material, THREE.LinePieces);
@@ -172,8 +178,8 @@ StageMorph.prototype.addCoordinatePlane = function (){
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'red'});
     
-    geometry.vertices.push(new THREE.Vector3( 0, -0.04, 0 ));
-    geometry.vertices.push(new THREE.Vector3( size, -0.04, 0 ));
+    geometry.vertices.push(new THREE.Vector3( 0, 0,  -0.04));
+    geometry.vertices.push(new THREE.Vector3( size, 0,  -0.04));
     
     xaxis = new THREE.Line(geometry, material, THREE.LinePieces);
     
@@ -182,16 +188,17 @@ StageMorph.prototype.addCoordinatePlane = function (){
     textShapes = THREE.FontUtils.generateShapes( 'X', {size:16});
     text = new THREE.ShapeGeometry( textShapes );
     xlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'red' } ) ) ;
+    xlabel.material.side = THREE.DoubleSide;
     xlabel.position = new THREE.Vector3(size, 0, 0);
-    xlabel.rotation.x = -Math.PI/2;
+    xlabel.rotation.x = 0;
     
     object.add(xlabel);
     
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'green'});
     
-    geometry.vertices.push(new THREE.Vector3( 0, -0.04, 0 ));
-    geometry.vertices.push(new THREE.Vector3( 0, -0.04, -size ));
+    geometry.vertices.push(new THREE.Vector3( 0, 0,  -0.04));
+    geometry.vertices.push(new THREE.Vector3( 0, size,  -0.04));
     
     yaxis = new THREE.Line(geometry, material, THREE.LinePieces);
     
@@ -200,8 +207,9 @@ StageMorph.prototype.addCoordinatePlane = function (){
     textShapes = THREE.FontUtils.generateShapes( 'Y', {size:16});
     text = new THREE.ShapeGeometry( textShapes );
     ylabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'green' } ) ) ;
-    ylabel.position = new THREE.Vector3(0, 0, -size);
-    ylabel.rotation.x = -Math.PI/2;
+    ylabel.material.side = THREE.DoubleSide;
+    ylabel.position = new THREE.Vector3(0, size, 0);
+    ylabel.rotation.x = 0;
     
     object.add(ylabel);
     
@@ -209,7 +217,7 @@ StageMorph.prototype.addCoordinatePlane = function (){
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'blue'});
     
     geometry.vertices.push(new THREE.Vector3( 0, 0, 0 ));
-    geometry.vertices.push(new THREE.Vector3( 0, size, 0 ));
+    geometry.vertices.push(new THREE.Vector3( 0, 0, size));
     
     zaxis = new THREE.Line(geometry, material, THREE.LinePieces);
     
@@ -218,8 +226,9 @@ StageMorph.prototype.addCoordinatePlane = function (){
     textShapes = THREE.FontUtils.generateShapes( 'Z', {size:16});
     text = new THREE.ShapeGeometry( textShapes );
     zlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'blue' } ) ) ;
-    zlabel.position = new THREE.Vector3(0, size, 0);
-    zlabel.rotation.x = 0;
+    zlabel.material.side = THREE.DoubleSide;
+    zlabel.position = new THREE.Vector3(0, 0, size);
+    zlabel.rotation.x = Math.PI/2;
     
     object.add(zlabel);
     
@@ -269,16 +278,16 @@ StageMorph.prototype.init3D = function () {
 SpriteMorph.prototype.renderArc = function (width, height) {
     const THREEJS_ARC_SEGMENTS = 60,
         THREEJS_TUBE_SEGMENTS = THREEJS_ARC_SEGMENTS;
-    var xRadius = width/2, yRadius = height, x, y, points = new Array(), 
+    var xRadius = width/2, yRadius = height, y, z, points = new Array(), 
         path, 
         THREEJS_TUBE_RADIUS = this.penSize(),
         THREEJS_TUBE_RADIUS_SEGMENTS = this.penSize()+4,
 		geometry;
 
     for (var theta = 0; theta <= Math.PI; theta += (Math.PI/THREEJS_ARC_SEGMENTS)) {
-        x = xRadius * Math.cos(theta);
-        y = yRadius * Math.sin(theta);
-        points.push(new THREE.Vector3(x, y, 0));
+        y = xRadius * Math.cos(theta);
+        z = yRadius * Math.sin(theta);
+        points.push(new THREE.Vector3(0, y, z));
     }
     path = new THREE.SplineCurve3(points);
     geometry = new THREE.TubeGeometry(path, 
@@ -335,6 +344,8 @@ StageMorph.prototype.init = function (globals) {
     this.hiddenObjects = new List();
     this.init3D();
     this.addCoordinatePlane();
+    this.camera.up = new THREE.Vector3( 0, 0, 1);
+    this.camera.lookAt({x:0, y:0, z:0});
 };
 
 // StageMorph block templates
@@ -786,15 +797,15 @@ StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
     var radius = Math.pow(Math.pow(this.camera.position.x,2)
      + Math.pow(this.camera.position.y,2)
      + Math.pow(this.camera.position.z,2), 0.5);
-    var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
-    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.y ) ) ); // polar angle
+    var theta = Math.atan2( -vector.x, -vector.y ); // equator angle around y-up axis
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.z ) ) ); // polar angle
 
     phi += deg*Math.PI/180;
 
     var sinPhiRadius = Math.sin( phi ) * radius;
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
-    this.camera.position.y = Math.cos( phi ) * radius;
-    this.camera.position.z = sinPhiRadius * Math.cos( theta );
+    this.camera.position.y = sinPhiRadius * Math.cos( theta );
+    this.camera.position.z = Math.cos( phi ) * radius;
     
     this.camera.lookAt({x:0, y:0, z:0});
     this.changed();
@@ -810,15 +821,15 @@ StageMorph.prototype.turnCameraAroundYAxis = function(deg) {
     var radius = Math.pow(Math.pow(this.camera.position.x,2)
      + Math.pow(this.camera.position.y,2)
      + Math.pow(this.camera.position.z,2), 0.5);
-    var theta = Math.atan2( vector.x, vector.z ); // equator angle around y-up axis
-    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.y ) ) ); // polar angle
+    var theta = Math.atan2( -vector.x, -vector.y ); // equator angle around y-up axis
+    var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.z ) ) ); // polar angle
 
     theta += deg*Math.PI/180;
 
     var sinPhiRadius = Math.sin( phi ) * radius;
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
-    this.camera.position.y = Math.cos( phi ) * radius;
-    this.camera.position.z = sinPhiRadius * Math.cos( theta );
+    this.camera.position.y = sinPhiRadius * Math.cos( theta );
+    this.camera.position.z = Math.cos( phi ) * radius;
     
     this.camera.lookAt({x:0, y:0, z:0});
     this.changed();
@@ -828,5 +839,31 @@ function round10(val,exp) {
 	var pow = Math.pow(10,exp);
 	return Math.round(val/pow)*pow;
 }
+
+var Dragging = false;
+var DragX = 0, DragY = 0, stageHandle;
+
+function _3DDragMouseDown (event){
+    if (event.button != 2 && this.world.hand.morphAtPointer() instanceof StageMorph){
+        Dragging = true;
+        DragX = event.x;
+        DragY = event.y;
+        stageHandle = this.world.hand.morphAtPointer();
+    }
+}
+function _3DDragMouseMove (event){
+    if (Dragging){
+        stageHandle.turnCameraAroundYAxis((DragX-event.x)/-2)
+        stageHandle.turnCameraAroundXAxis((DragY-event.y)/2)
+        DragX = event.x;
+        DragY = event.y;
+    }
+}
+function _3DDragMouseUp (event){
+    Dragging = false;
+}
+window.addEventListener("mousedown", _3DDragMouseDown);
+window.addEventListener("mousemove", _3DDragMouseMove);
+window.addEventListener("mouseup", _3DDragMouseUp);
         
 //# sourceURL=code.js
