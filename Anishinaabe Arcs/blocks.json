@@ -63,5 +63,10 @@
 				"type": "command",
 				"category": "looks",
 				"spec": "hide coordinate plane"
+	},
+	"printVariable": {
+				"type": "command",
+				"category": "variables",
+				"spec": "print list %l"
 	}
 }
