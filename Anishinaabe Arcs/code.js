@@ -6,6 +6,8 @@ const THREEJS_CAMERA_DEFAULT_X_POSITION = 600;
 const THREEJS_CAMERA_DEFAULT_Y_POSITION = 50;
 const THREEJS_CAMERA_DEFAULT_Z_POSITION = 50;
 
+StageMorph.prototype.coordPlane = null;
+
 SpriteMorph.prototype.wearCostume = function (costume) {
 
     // check if we need to remove the existing 3D shape
@@ -231,9 +233,10 @@ StageMorph.prototype.addCoordinatePlane = function (){
     zlabel.rotation.x = Math.PI/2;
     
     object.add(zlabel);
+    object.name = "coordinate plane";
     
-    //this.shownObjects.add(object); // erase this object later by the 'clear' block
-    this.scene.add(object);
+    this.coordPlane = object;
+    this.scene.add(this.coordPlane);
     this.changed();
 };
 
@@ -436,6 +439,8 @@ StageMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('turnCameraAroundYAxis'));
         blocks.push(block('_3DXCameraRotation'));
         blocks.push(block('_3DYCameraRotation'));
+        blocks.push(block('showPlane'));
+        blocks.push(block('hidePlane'));
 
     // for debugging: ///////////////
 
@@ -864,6 +869,7 @@ function _3DDragMouseMove (event){
 function _3DDragMouseUp (event){
     Dragging = false;
 }
+
 window.addEventListener("mousedown", _3DDragMouseDown);
 window.addEventListener("mousemove", _3DDragMouseMove);
 window.addEventListener("mouseup", _3DDragMouseUp);
