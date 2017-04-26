@@ -800,7 +800,9 @@ StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
     var theta = Math.atan2( -vector.x, -vector.y ); // equator angle around y-up axis
     var phi = Math.acos( Math.max( - 1, Math.min( 1,  -vector.z ) ) ); // polar angle
 
-    phi += deg*Math.PI/180;
+    if(this.camera.up.z>0) phi += deg*Math.PI/180;
+    else phi -= deg*Math.PI/180;
+    if(phi*(phi + deg*Math.PI/180)<0) this.camera.up.z = -this.camera.up.z;
 
     var sinPhiRadius = Math.sin( phi ) * radius;
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
