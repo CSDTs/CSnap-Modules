@@ -16,6 +16,7 @@
 		this.costumes.contents[this.getCostumeIdx()-1] = costume;
 		this.costume = costume;
 		this.flippedX = !this.flippedX;
+		this.isNotFlipBack = !this.isNotFlipBack;
 		this.changed();
 		this.drawNew();
 		this.changed();
