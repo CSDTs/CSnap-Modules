@@ -359,8 +359,8 @@ SpriteMorph.prototype.toXML = function (serializer) {
         v.drawNew();
         v.gotoXY(+model.attributes.x || 0, +model.attributes.y || 0);
 		if(model.attributes.z) v.gotoXYZ(+model.attributes.x || 0, +model.attributes.y || 0, +model.attributes.z || 0);
-        if(model.attributes.flippedY && model.attributes.flippedY=="true") v.flippedY=true;
-        if(model.attributes.flippedX && model.attributes.flippedX=="true") v.flippedX=true;
+        if(model.attributes.hasOwnProperty('flippedY')) v.flippedY=(model.attributes.flippedY=="true");
+        if(model.attributes.hasOwnProperty('flippedX')) v.flippedX=(model.attributes.flippedX=="true");
         myself.loadObject(v, model);
         
         return v;
@@ -523,15 +523,11 @@ SnapSerializer.prototype.loadCostumes = function (object, model) {
                 object.wearCostume(costume);
             }
 			else {
-                costume.loaded = function () {
-                	var tempX = object.flippedX, tempY = object.flippedY;
-					object.flippedY=false;
-					object.flippedX=false;
+                    costume.loaded = function () {
+					object.isNotFlipBack = true;
                     object.wearCostume(costume);
                     this.loaded = true;
-                    if(tempX) object.flipXAxis();
-                    if(tempY) object.flipYAxis();
-					object.isNotFlipBack = true;
+                	object.isNotFlipBack = !( object.flippedX || object.flippedY );
 					object.FirstCostume = true;
                 };
             }
