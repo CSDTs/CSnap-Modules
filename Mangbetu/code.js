@@ -88,18 +88,19 @@ SpriteMorph.prototype.wearCostume = function (costume) {
         var x = this.xPosition ? this.xPosition() : null,
         y = this.yPosition ? this.yPosition() : null,
         isWarped = this.isWarped;
-		if (this.costume && this.costume.originalPixels && !this.FirstCostume) 
-		{
-			this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
-			this.costume.colored = false;
-		}
-        if (isWarped) {
-            this.endWarp();
-        }
         this.changed();
         this.costume = costume;
         this.drawNew();
         this.changed();
+		if (this.costume && this.costume.originalPixels && !this.FirstCostume) 
+		{
+			this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
+			this.costume.colored = false;
+            this.costume.costumeColor = new Color(255,255,255);
+		}
+        if (isWarped) {
+            this.endWarp();
+        }
         if (isWarped) {
             this.startWarp();
         }
@@ -111,6 +112,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
         }
         this.version = Date.now();
         this.costume = costume;
+        this.shade
     }
 
     if (this.updatesPalette) {
