@@ -2175,5 +2175,5 @@ window.click += Unscroll;
 window.parent.onload = setScrollPos;
 window.parent.onscroll = setScrollPos;
 window.onmousedown = Unscroll;
-
+window.parent.document.getElementById('openModalBtn').click();
 //# sourceURL=code.js
