@@ -840,6 +840,15 @@ StageMorph.prototype.turnCameraAroundYAxis = function(deg) {
     this.changed();
 };
 
+StageMorph.prototype.zoom = function(factor) {
+    this.camera.position.x *= factor;
+    this.camera.position.y *= factor;
+    this.camera.position.z *= factor;
+    
+    this.camera.lookAt({x:0, y:0, z:0});
+    this.changed();
+};
+
 function round10(val,exp) {
 	var pow = Math.pow(10,exp);
 	return Math.round(val/pow)*pow;
@@ -867,10 +876,17 @@ function _3DDragMouseMove (event){
 function _3DDragMouseUp (event){
     Dragging = false;
 }
+function _3DMouseScroll (event){
+    stage = this.world.hand.morphAtPointer();
+    if(stage instanceof StageMorph) {
+        stage.zoom(1 + event.deltaY/200);
+    }
+}
 
 window.addEventListener("mousedown", _3DDragMouseDown);
 window.addEventListener("mousemove", _3DDragMouseMove);
 window.addEventListener("mouseup", _3DDragMouseUp);
+window.addEventListener("wheel", _3DMouseScroll);
 
 IDE_Morph.prototype.updateCorralBar = function () {}
         
