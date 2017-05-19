@@ -2,9 +2,9 @@ SpriteMorph._3DRotationX = 0, SpriteMorph._3DRotationY = 0, SpriteMorph._3DRotat
 
 // StageMorph 3D rendering
 const THREEJS_FIELD_OF_VIEW = 45; // degree
-const THREEJS_CAMERA_DEFAULT_X_POSITION = 600;
-const THREEJS_CAMERA_DEFAULT_Y_POSITION = 50;
-const THREEJS_CAMERA_DEFAULT_Z_POSITION = 50;
+const THREEJS_CAMERA_DEFAULT_X_POSITION = 350;
+const THREEJS_CAMERA_DEFAULT_Y_POSITION = -350;
+const THREEJS_CAMERA_DEFAULT_Z_POSITION = 350;
 
 StageMorph.prototype.coordPlane = null;
 
@@ -160,21 +160,39 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
 };
 
 StageMorph.prototype.addCoordinatePlane = function (){
-    var geometry, grid, text, textShapes, xaxis, xlabel, yaxis, ylabel, zaxis, zlabel, material, size = 300, step = 20;
+    var geometry, grid, text, textShapes, label, xaxis, yaxis, zaxis, material, size = 300, step = 30;
 
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({color: 'black'});
+    object = new THREE.Object3D();
+    
+    function addLabel(x, y, z, label, lColor, lSize, rotation) {
+        textShapes = THREE.FontUtils.generateShapes( label, {size: lSize });
+        text = new THREE.ShapeGeometry( textShapes );
+        label = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: lColor } ) ) ;
+        label.material.side = THREE.DoubleSide;
+        label.position = new THREE.Vector3(x, y, z);
+        label.rotation.x = rotation;
+        object.add(label);
+    }
 
     for ( var i = -size; i <= size; i+= step) {
         geometry.vertices.push(new THREE.Vector3( -size, i,   -0.04));
         geometry.vertices.push(new THREE.Vector3( size,i ,  -0.04));
+        addLabel(0, i, -0.04, i, 'green', 8, 0);
         geometry.vertices.push(new THREE.Vector3( i, -size, -0.04 ));
         geometry.vertices.push(new THREE.Vector3( i, size,  -0.04));
+        addLabel(i, 0, -0.04, i, 'red', 8, 0);
+    }
+
+    for ( var i = 0; i <= size*(2/3); i+= step) {
+        geometry.vertices.push(new THREE.Vector3( -12, 0, i ));
+        geometry.vertices.push(new THREE.Vector3( 12, 0,  i));
+        addLabel(0, 0, i, i, 'blue', 8, Math.PI/2);
     }
     
     grid = new THREE.Line(geometry, material, THREE.LinePieces);
     
-    object = new THREE.Object3D();
     object.add(grid);
     
     geometry = new THREE.Geometry();
@@ -187,14 +205,7 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.add(xaxis);
     
-    textShapes = THREE.FontUtils.generateShapes( 'X', {size:16});
-    text = new THREE.ShapeGeometry( textShapes );
-    xlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'red' } ) ) ;
-    xlabel.material.side = THREE.DoubleSide;
-    xlabel.position = new THREE.Vector3(size, 0, 0);
-    xlabel.rotation.x = 0;
-    
-    object.add(xlabel);
+    addLabel(size, 0, -0.04, 'X', 'red', 16, 0);
     
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'green'});
@@ -206,33 +217,20 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.add(yaxis);
     
-    textShapes = THREE.FontUtils.generateShapes( 'Y', {size:16});
-    text = new THREE.ShapeGeometry( textShapes );
-    ylabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'green' } ) ) ;
-    ylabel.material.side = THREE.DoubleSide;
-    ylabel.position = new THREE.Vector3(0, size, 0);
-    ylabel.rotation.x = 0;
-    
-    object.add(ylabel);
+    addLabel( 0, size, -0.04, 'Y', 'green', 16, 0);
     
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'blue'});
     
     geometry.vertices.push(new THREE.Vector3( 0, 0, 0 ));
-    geometry.vertices.push(new THREE.Vector3( 0, 0, size));
+    geometry.vertices.push(new THREE.Vector3( 0, 0, size*(2/3)));
     
     zaxis = new THREE.Line(geometry, material, THREE.LinePieces);
     
     object.add(zaxis);
     
-    textShapes = THREE.FontUtils.generateShapes( 'Z', {size:16});
-    text = new THREE.ShapeGeometry( textShapes );
-    zlabel = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: 'blue' } ) ) ;
-    zlabel.material.side = THREE.DoubleSide;
-    zlabel.position = new THREE.Vector3(0, 0, size);
-    zlabel.rotation.x = Math.PI/2;
+    addLabel( 0, 0, size*(2/3), 'Z', 'blue', 16, Math.PI/2);
     
-    object.add(zlabel);
     object.name = "coordinate plane";
     
     this.coordPlane = object;
@@ -860,8 +858,8 @@ function _3DDragMouseDown (event){
 }
 function _3DDragMouseMove (event){
     if (Dragging){
-        stageHandle.turnCameraAroundYAxis((DragX-event.x)/-2)
-        stageHandle.turnCameraAroundXAxis((DragY-event.y)/2)
+        stageHandle.turnCameraAroundYAxis((DragX-event.x)/-2.5)
+        stageHandle.turnCameraAroundXAxis((DragY-event.y)/2.5)
         DragX = event.x;
         DragY = event.y;
     }
@@ -873,5 +871,7 @@ function _3DDragMouseUp (event){
 window.addEventListener("mousedown", _3DDragMouseDown);
 window.addEventListener("mousemove", _3DDragMouseMove);
 window.addEventListener("mouseup", _3DDragMouseUp);
+
+IDE_Morph.prototype.updateCorralBar = function () {}
         
 //# sourceURL=code.js
