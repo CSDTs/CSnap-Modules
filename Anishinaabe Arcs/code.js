@@ -857,30 +857,34 @@ function round10(val,exp) {
 var Dragging = false;
 var DragX = 0, DragY = 0, stageHandle;
 
-function _3DDragMouseDown (event){
-    if (event.button != 2 && this.world.hand.morphAtPointer() instanceof StageMorph){
+function _3DDragMouseDown (event) {
+    stage = world.children[0].stage;
+    if (event.button != 2 && inRect(event, stage.bounds)){
         Dragging = true;
         DragX = event.x;
         DragY = event.y;
-        stageHandle = this.world.hand.morphAtPointer();
     }
 }
-function _3DDragMouseMove (event){
+function _3DDragMouseMove (event) {
+    stage = world.children[0].stage;
     if (Dragging){
-        stageHandle.turnCameraAroundYAxis((DragX-event.x)/-2.5)
-        stageHandle.turnCameraAroundXAxis((DragY-event.y)/2.5)
+        stage.turnCameraAroundYAxis((DragX-event.x)/-2.5)
+        stage.turnCameraAroundXAxis((DragY-event.y)/2.5)
         DragX = event.x;
         DragY = event.y;
     }
 }
-function _3DDragMouseUp (event){
+function _3DDragMouseUp (event) {
     Dragging = false;
 }
-function _3DMouseScroll (event){
-    stage = this.world.hand.morphAtPointer();
-    if(stage instanceof StageMorph) {
+function _3DMouseScroll (event) {
+    stage = world.children[0].stage;
+    if(inRect(event, stage.bounds)) {
         stage.zoom(1 + event.deltaY/200);
     }
+}
+function inRect (point,rect){
+    return (point.x>rect.origin.x && point.x<rect.corner.x && point.y>rect.origin.y && point.y<rect.corner.y);
 }
 
 window.addEventListener("mousedown", _3DDragMouseDown);
