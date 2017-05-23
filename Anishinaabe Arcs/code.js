@@ -160,7 +160,7 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
 };
 
 StageMorph.prototype.addCoordinatePlane = function (){
-    var geometry, textGeometry, textShapes, grid, text, label, xaxis, yaxis, zaxis, material, object, size = 300, step = 30;
+    var geometry, textGeometry, textShapes, grid, text, label, xaxis, yaxis, zaxis, material, object, size = 250, step = 25;
 
     geometry = new THREE.Geometry();
     textGeometry = new THREE.Geometry();
@@ -868,8 +868,8 @@ function _3DDragMouseDown (event) {
 function _3DDragMouseMove (event) {
     stage = world.children[0].stage;
     if (Dragging){
-        stage.turnCameraAroundYAxis((DragX-event.x)/-2.5)
-        stage.turnCameraAroundXAxis((DragY-event.y)/2.5)
+        stage.turnCameraAroundYAxis((DragX-event.x)/-3.5)
+        stage.turnCameraAroundXAxis((DragY-event.y)/3.5)
         DragX = event.x;
         DragY = event.y;
     }
