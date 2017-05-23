@@ -2,7 +2,7 @@
     return function (width, length) {
     const THREEJS_ARC_SEGMENTS = 60,
         THREEJS_TUBE_SEGMENTS = THREEJS_ARC_SEGMENTS;
-    var xRadius = width/2, yRadius = length, y, z, points = new Array(), 
+    var xRadius = width/2, yRadius = length/2, y, z, points = new Array(), 
         path, 
         THREEJS_TUBE_RADIUS = this.penSize(),
         THREEJS_TUBE_RADIUS_SEGMENTS = 4,
