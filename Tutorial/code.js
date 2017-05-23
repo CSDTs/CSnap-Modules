@@ -2140,6 +2140,18 @@ function scrollToLocation(loc){
 }
 function AsignSettings(btn){
 	if(btn.getAttribute("value").includes('EnableMakeAVar')) makeAVar=true;
+	if(btn.getAttribute("value").includes('CheatFullScreen'))
+	{
+        try {
+            window.parent.document.getElementsByClassName('container')[1].setAttribute('style','width: 100%');
+            window.parent.document.getElementsByClassName('container')[2].setAttribute('style','width: 100%');
+            window.parent.document.getElementsByClassName('column-left')[0].setAttribute('style','width: 40%');
+            window.parent.document.getElementsByClassName('column-right')[0].setAttribute('style','width: 60%');
+            window.parent.document.getElementById('CMS_Menu').children[0].setAttribute('style', 'width:100%')
+        }
+        catch (e) {
+        }
+	}
 	if(btn.getAttribute("value").includes('DisableMakeAVar')) makeAVar=false;
 	if(btn.getAttribute("value").includes('ShowCostumesTab')) {
 		showCostumesTab=true;
@@ -2170,10 +2182,18 @@ function AsignSettings(btn){
 	{
 		loadNewVariables = true;
 	}
+	if(btn.getAttribute("value").includes('LoadNewVariables'))CheatFullScreen
+	{
+		loadNewVariables = true;
+	}
 }
 window.click += Unscroll;
 window.parent.onload = setScrollPos;
 window.parent.onscroll = setScrollPos;
 window.onmousedown = Unscroll;
-
+try {
+    window.parent.document.getElementById('openModalBtn').click();
+}
+catch (e) {
+}
 //# sourceURL=code.js
