@@ -160,35 +160,36 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
 };
 
 StageMorph.prototype.addCoordinatePlane = function (){
-    var geometry, grid, text, textShapes, label, xaxis, yaxis, zaxis, material, size = 300, step = 30;
+    var geometry, textGeometry, textShapes, grid, text, label, xaxis, yaxis, zaxis, material, object, size = 300, step = 30;
 
     geometry = new THREE.Geometry();
+    textGeometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({color: 'black'});
     object = new THREE.Object3D();
     
     function addLabel(x, y, z, label, lColor, lSize, rotation) {
-        textShapes = THREE.FontUtils.generateShapes( label, {size: lSize });
+        textShapes = THREE.FontUtils.generateShapes( label, {size:16});
         text = new THREE.ShapeGeometry( textShapes );
+        text.computeBoundingBox();
+        text.computeVertexNormals();
         label = new THREE.Mesh( text, new THREE.MeshBasicMaterial( { color: lColor } ) ) ;
         label.material.side = THREE.DoubleSide;
         label.position = new THREE.Vector3(x, y, z);
         label.rotation.x = rotation;
-        object.add(label);
+        label.updateMatrix();
+        object.add( label );
     }
 
     for ( var i = -size; i <= size; i+= step) {
         geometry.vertices.push(new THREE.Vector3( -size, i,   -0.04));
         geometry.vertices.push(new THREE.Vector3( size,i ,  -0.04));
-        addLabel(0, i, -0.04, i, 'green', 8, 0);
         geometry.vertices.push(new THREE.Vector3( i, -size, -0.04 ));
         geometry.vertices.push(new THREE.Vector3( i, size,  -0.04));
-        addLabel(i, 0, -0.04, i, 'red', 8, 0);
     }
 
     for ( var i = 0; i <= size*(2/3); i+= step) {
         geometry.vertices.push(new THREE.Vector3( -12, 0, i ));
         geometry.vertices.push(new THREE.Vector3( 12, 0,  i));
-        addLabel(0, 0, i, i, 'blue', 8, Math.PI/2);
     }
     
     grid = new THREE.Line(geometry, material, THREE.LinePieces);
@@ -233,8 +234,7 @@ StageMorph.prototype.addCoordinatePlane = function (){
     
     object.name = "coordinate plane";
     
-    this.coordPlane = object;
-    this.scene.add(this.coordPlane);
+    this.scene.add(object);
     this.changed();
 };
 
