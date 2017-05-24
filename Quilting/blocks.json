@@ -23,9 +23,9 @@
 				"spec": "change costume shade by %n",
 				"defaults": [100]
 	},
-	"printList": {
+	"exportAsCSV": {
 				"type": "command",
 				"category": "variables",
-				"spec": "print list %l"
+				"spec": "display %l and %l as a CSV"
 	}
 }
