@@ -23,9 +23,16 @@
 				"spec": "change costume shade by %n",
 				"defaults": [100]
 	},
+<<<<<<< HEAD
+	"exportAsCSV": {
+				"type": "command",
+				"category": "variables",
+				"spec": "display %l and %l as a CSV"
+=======
 	"printList": {
 				"type": "command",
 				"category": "variables",
 				"spec": "print list %l"
+>>>>>>> 47811e8cd659566f0f5d2e7742298d66c43c45ed
 	}
 }
