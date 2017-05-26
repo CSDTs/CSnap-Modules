@@ -2336,6 +2336,12 @@ StageMorph.prototype.init = function (globals) {
     this.shownObjects = new List();
     this.hiddenObjects = new List();
     this.init3D();
+    if(!hide3DBlocks){    
+        this.addCoordinatePlane();
+        this.camera.up = new THREE.Vector3( 0, 0, 1);
+        this.camera.lookAt({x:0, y:0, z:0});
+    }
+    
 };
 
 
@@ -2985,21 +2991,6 @@ function AsignSettings(btn){
 	}
 	if(btn.getAttribute("value").includes('3D'))
 	{
-        this.ide.isAnimating = false;
-        this.ide.setStageExtent(new Point(700, 525));
-        this.ide.isAnimating = true;
-        stage = world.children[0].stage;
-        for (var i = 0; i < stage.scene.children.length; i++)
-        {
-            if (stage.scene.children[i].name == "coordinate plane"){
-              var rest = stage.scene.children.slice(i + 1 || stage.scene.children.length);
-              stage.scene.children.pop();
-              stage.scene.children.push.apply(stage.scene.children, rest);
-            }
-        }
-        stage.addCoordinatePlane();
-        stage.camera.up = new THREE.Vector3( 0, 0, 1);
-        stage.camera.lookAt({x:0, y:0, z:0});
 
         //events that should only be called when in 3D
         window.addEventListener("mousedown", _3DDragMouseDown);
