@@ -2999,7 +2999,7 @@ function AsignSettings(btn){
         window.addEventListener("wheel", _3DMouseScroll);
 
         IDE_Morph.prototype.updateCorralBar = function () {}
-        stage.changed();
+        ide.stage.changed();
         hide3DBlocks = false;
 	}
     else {
