@@ -1113,57 +1113,91 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
 		
 		
-        blocks.push(block('forward'));
-        blocks.push(block('turn'));
-        blocks.push(block('turnLeft'));
-        blocks.push('-');
-        blocks.push(block('setHeading'));
-        blocks.push(block('doFaceTowards'));
-        blocks.push('-');
-        blocks.push(block('gotoXY'));
-        blocks.push(block('doGotoObject'));
-        blocks.push(block('doGlide'));
-        blocks.push('-');
-        blocks.push(block('changeXPosition'));
-        blocks.push(block('setXPosition'));
-        blocks.push(block('changeYPosition'));
-        blocks.push(block('setYPosition'));
-        blocks.push('-');
-        blocks.push(block('bounceOffEdge'));
-        blocks.push('-');
-        blocks.push(watcherToggle('xPosition'));
-        blocks.push(block('xPosition'));
-        blocks.push(watcherToggle('yPosition'));
-        blocks.push(block('yPosition'));
-        blocks.push(watcherToggle('direction'));
-        blocks.push(block('direction'));
+
+        if (!hide3DBlocks) {
+            blocks.push(block('turn3D'));
+            blocks.push(block('point3D'));
+            blocks.push('-');
+            blocks.push(block('gotoXYZ'));
+            blocks.push(block('changeXPosition'));
+            blocks.push(block('setXPosition'));
+            blocks.push(block('changeYPosition'));
+            blocks.push(block('setYPosition'));
+            blocks.push(block('changeZPosition'));
+            blocks.push(block('setZPosition'));
+            blocks.push('-');
+            blocks.push(watcherToggle('xPosition'));
+            blocks.push(block('xPosition'));
+            blocks.push(watcherToggle('yPosition'));
+            blocks.push(block('yPosition'));
+            blocks.push(watcherToggle('zPosition'));
+            blocks.push(block('zPosition'));
+        }
+        else {
+            blocks.push(block('forward'));
+            blocks.push(block('turn'));
+            blocks.push(block('turnLeft'));
+            blocks.push('-');
+            blocks.push(block('setHeading'));
+            blocks.push(block('doFaceTowards'));
+            blocks.push('-');
+            blocks.push(block('gotoXY'));
+            blocks.push(block('doGotoObject'));
+            blocks.push(block('doGlide'));
+            blocks.push('-');
+            blocks.push(block('changeXPosition'));
+            blocks.push(block('setXPosition'));
+            blocks.push(block('changeYPosition'));
+            blocks.push(block('setYPosition'));
+            blocks.push('-');
+            blocks.push(block('bounceOffEdge'));
+            blocks.push('-');
+            blocks.push(watcherToggle('xPosition'));
+            blocks.push(block('xPosition'));
+            blocks.push(watcherToggle('yPosition'));
+            blocks.push(block('yPosition'));
+            blocks.push(watcherToggle('direction'));
+            blocks.push(block('direction'));
+        }
 
     //} else if (cat === 'looks') {
-
-        blocks.push(block('doSwitchToCostume'));
-        blocks.push(block('doWearNextCostume'));
-        blocks.push(watcherToggle('getCostumeIdx'));
-        blocks.push(block('getCostumeIdx'));
-        blocks.push('-');
-        blocks.push(block('doSayFor'));
-        blocks.push(block('bubble'));
-        blocks.push(block('doThinkFor'));
-        blocks.push(block('doThink'));
-        blocks.push('-');
-        blocks.push(block('changeEffect'));
-        blocks.push(block('setEffect'));
-        blocks.push(block('clearEffects'));
-        blocks.push('-');
-        blocks.push(block('changeScale'));
-        blocks.push(block('setScale'));
-        blocks.push(watcherToggle('getScale'));
-        blocks.push(block('getScale'));
-        blocks.push('-');
-        blocks.push(block('show'));
-        blocks.push(block('hide'));
-        blocks.push('-');
-        blocks.push(block('comeToFront'));
-        blocks.push(block('goBack'));
+        if (!hide3DBlocks) {
+            blocks.push(block('doSwitchToCostume'));
+            blocks.push(block('doWearNextCostume'));
+            blocks.push(watcherToggle('getCostumeIdx'));
+            blocks.push(block('getCostumeIdx'));
+            blocks.push('-');
+            blocks.push(block('setScale3D'));
+            blocks.push('-');
+            blocks.push(block('show3D'));
+            blocks.push(block('hide3D'));
+        }
+        else {
+            blocks.push(block('doSwitchToCostume'));
+            blocks.push(block('doWearNextCostume'));
+            blocks.push(watcherToggle('getCostumeIdx'));
+            blocks.push(block('getCostumeIdx'));
+            blocks.push('-');
+            blocks.push(block('doSayFor'));
+            blocks.push(block('bubble'));
+            blocks.push(block('doThinkFor'));
+            blocks.push(block('doThink'));
+            blocks.push('-');
+            blocks.push(block('changeEffect'));
+            blocks.push(block('setEffect'));
+            blocks.push(block('clearEffects'));
+            blocks.push('-');
+            blocks.push(block('changeScale'));
+            blocks.push(block('setScale'));
+            blocks.push(watcherToggle('getScale'));
+            blocks.push(block('getScale'));
+            blocks.push('-');
+            blocks.push(block('show'));
+            blocks.push(block('hide'));
+            blocks.push('-');
+            blocks.push(block('comeToFront'));
+            blocks.push(block('goBack'));
+        }
 
     // for debugging: ///////////////
 /*
@@ -1250,6 +1284,21 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doStamp'));
         blocks.push(block('smoothBorders'));
+        if (!hide3DBlocks) {
+            blocks.push(block('clear'));
+            blocks.push('-');
+            blocks.push(block('show3dPen'));
+            blocks.push(block('hide3dPen'));
+            blocks.push('-');
+            blocks.push(block('renderSphere'));
+            blocks.push(block('renderBox'));
+            blocks.push(block('renderArc'));
+            blocks.push(block('renderCylinder'));
+            blocks.push(block('renderTorusKnot'));
+            blocks.push(block('renderText'));
+        }
+        else {
+        }
 
     /*
     // old STOP variants, migrated to a newer version, now redundant
@@ -2992,6 +3041,8 @@ function AsignSettings(btn){
 	if(btn.getAttribute("value").includes('3D'))
 	{
 
+        hide3DBlocks = false;
+        
         //events that should only be called when in 3D
         window.addEventListener("mousedown", _3DDragMouseDown);
         window.addEventListener("mousemove", _3DDragMouseMove);
@@ -3000,7 +3051,7 @@ function AsignSettings(btn){
 
         IDE_Morph.prototype.updateCorralBar = function () {}
         ide.stage.changed();
-        hide3DBlocks = false;
+        
 	}
     else {
         hide3DBlocks = true;
