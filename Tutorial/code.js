@@ -3780,7 +3780,7 @@ function AsignSettings(btn){
         window.addEventListener("wheel", _3DMouseScroll);
 
         IDE_Morph.prototype.updateCorralBar = function () {}
-        ide.stage.changed();
+        world.children[0].stage.changed();
         
 	}
     else {
