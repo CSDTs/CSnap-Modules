@@ -1442,13 +1442,14 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 			button = new PushButtonMorph(
 				null,
 				function () {
+                    var ide = myself.parentThatIsA(IDE_Morph);
 					new VariableDialogMorph(
 						null,
 						function (pair) {
 							if (pair && !myself.variables.silentFind(pair[0])) {
 							myself.addVariable(pair[0], pair[1]);
 							myself.toggleVariableWatcher(pair[0], pair[1]);
-                            ide.flushBlocksCache();
+                            myself.parentThatIsA(IDE_Morph).flushBlocksCache();
 							myself.parentThatIsA(IDE_Morph).refreshPalette();
 							}
 						},
@@ -1480,7 +1481,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
                         menu.addItem(name, name);
                     });
                     menu.popUpAtHand(myself.world());
-                    ide.flushBlocksCache();
+                    world.children[0].flushBlocksCache();
                 },
                 'Delete a variable'
             );
