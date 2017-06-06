@@ -1442,6 +1442,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 			button = new PushButtonMorph(
 				null,
 				function () {
+                    var ide = myself.parentThatIsA(IDE_Morph);
 					new VariableDialogMorph(
 						null,
 						function (pair) {
@@ -1480,7 +1481,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
                         menu.addItem(name, name);
                     });
                     menu.popUpAtHand(myself.world());
-                    ide.flushBlocksCache();
+                    world.children[0].flushBlocksCache();
                 },
                 'Delete a variable'
             );
