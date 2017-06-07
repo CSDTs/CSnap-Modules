@@ -3700,6 +3700,18 @@ for(i = 0; i<btns.length; i++)
 		AsignSettings(btns[i]);
 	}
 }
+
+
+$('<style type="text/css">'+
+    ' .panel-heading .accordion-toggle:after {'+
+    ' font-family: \'Glyphicons Halflings\';'+
+    ' content: "\\e114";'+
+    ' float: right;'+
+    ' color: grey; }'+
+    ' .panel-heading .accordion-toggle.collapsed:after {'+
+    ' content: "\\e080"; }'+
+    '</style>').appendTo($('head', window.parent.document));
+
 function setScrollPos(){
 	var doc = window.parent.document.documentElement;
 	top = (window.parent.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
