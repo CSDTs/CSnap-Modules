@@ -645,7 +645,7 @@ IDE_Morph.prototype.fixLayout = function (situation) {
     this.changed();
 };
 
-//override create sprite bar... 
+//overwrite create sprite bar... 
 IDE_Morph.prototype.createSpriteBar = function () {
     // assumes that the categories pane has already been created
     var rotationStyleButtons = [],
@@ -873,7 +873,7 @@ IDE_Morph.prototype.createSpriteBar = function () {
         this.tabBar.setBottom(this.bottom());
     };
 };
-// over ride corral bar
+// overwride corral bar
 IDE_Morph.prototype.createCorralBar = function () {
     // assumes the stage has already been created
     var padding = 5,
@@ -3734,8 +3734,14 @@ function scrollToLocation(loc){
 	window.parent.onscroll = setScrollPos;
 }
 function AsignSettings(btn){
-	if(btn.getAttribute("value").includes('EnableMakeAVar')) makeAVar=true;
-	if(btn.getAttribute("value").includes('CheatFullScreen'))
+    var value = btn.getAttribute("value");
+	if(value.includes('EnableMakeAVar')) {
+        makeAVar=true;
+    }
+	if(value.includes('DisableMakeAVar')) {
+        makeAVar=false;
+    }
+	if(value.includes('CheatFullScreen'))
 	{
         try {
             window.parent.document.getElementsByClassName('container')[1].setAttribute('style','width: 100%');
@@ -3747,41 +3753,78 @@ function AsignSettings(btn){
         catch (e) {
         }
 	}
-	if(btn.getAttribute("value").includes('DisableMakeAVar')) makeAVar=false;
-	if(btn.getAttribute("value").includes('ShowCostumesTab')) {
+	if(value.includes('ShowCostumesTab')) {
 		showCostumesTab=true;
 		world.children[0].createSpriteBar();
 	}
-	if(btn.getAttribute("value").includes('HideCostumesTab')) {
+	if(value.includes('HideCostumesTab')) {
 		showCostumesTab=false;
 		world.children[0].createSpriteBar();
 	}
-	if(btn.getAttribute("value").includes('HideLeft')){
+	if(value.includes('HideLeft')){
 		hideLeft=true;
 		world.children[0].createPalette();
 	}
-	if(btn.getAttribute("value").includes('ShowLeft'))
+	if(value.includes('ShowLeft'))
 	{
 		hideLeft=false;
 		world.children[0].createPalette();
 	}
-	if(btn.getAttribute("value").includes('HideFrame'))
+	if(value.includes('HideFrame'))
 	{
-		window.parent.$('#CSnapFrame').hide()
+		window.parent.$('#CSnapFrame').hide();
 	}
-	if(btn.getAttribute("value").includes('ShowFrame'))
+	if(value.includes('ShowFrame'))
 	{
-		window.parent.$('#CSnapFrame').show()
+		window.parent.$('#CSnapFrame').show();
 	}
-	if(btn.getAttribute("value").includes('LoadNewVariables'))
-	{
-		loadNewVariables = true;
-	}
-	if(btn.getAttribute("value").includes('LoadNewVariables'))
+	if(value.includes('LoadNewVariables'))
 	{
 		loadNewVariables = true;
 	}
-	if(btn.getAttribute("value").includes('3D'))
+	if(value.includes('LoadNewVariables'))
+	{
+		loadNewVariables = true;
+	}
+	if(value.includes('Next:'))
+	{
+		var next = window.parent.$('#CSnapNextButton')
+        var id = value.substring(value.indexOf('Next:')+5);
+        if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
+		var baseLink = window.parent.$('#'+id);
+        
+        next.attr('class',  baseLink.attr('class'));
+        next.attr('value',  baseLink.attr('value'));
+        next.attr('name',  baseLink.attr('name'));
+        next.attr('data-toggle',  baseLink.attr('data-toggle'));
+        next.attr('href',  baseLink.attr('href'));
+        next.attr('data-target',  baseLink.attr('data-target'));
+        next.show();
+	}
+	else
+	{
+		window.parent.$('#CSnapNextButton').hide();
+	}
+	if(value.includes('Prev:'))
+	{
+		var prev = window.parent.$('#CSnapPrevButton');
+        var id = value.substring(value.indexOf('Prev:')+5);
+        if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
+		var baseLink = window.parent.$('#'+id);
+        
+        prev.attr('class',  baseLink.attr('class'));
+        prev.attr('value',  baseLink.attr('value'));
+        prev.attr('name',  baseLink.attr('name'));
+        prev.attr('data-toggle',  baseLink.attr('data-toggle'));
+        prev.attr('href',  baseLink.attr('href'));
+        prev.attr('data-target',  baseLink.attr('data-target'));
+        prev.show();
+	}
+	else
+	{
+		window.parent.$('#CSnapPrevButton').hide();
+	}
+	if(value.includes('3D'))
 	{
 
         hide3DBlocks = false;
