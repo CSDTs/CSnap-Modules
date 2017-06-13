@@ -11,22 +11,18 @@
                 "category": "looks",
                 "spec": "reflect across X axis",
                 "defaults": []
-<<<<<<< HEAD
     	},
     	"flipYAxis": {
-=======
-    },
-    "flipYAxis": {
->>>>>>> b1a711463cc24365c916fddbce42d931747130f6
+
+    	},
+    	"flipYAxis": {
+
                 "type": "command",
                 "category": "looks",
                 "spec": "reflect across Y axis",
                 "defaults": []
-<<<<<<< HEAD
     	},
-=======
-    },
->>>>>>> b1a711463cc24365c916fddbce42d931747130f6
+
 	"changeCostumeColor": {
 				"type": "command",
 				"category": "looks",
@@ -49,13 +45,10 @@
 				"type": "command",
 				"category": "variables",
 				"spec": "display %l and %l as a CSV"
-<<<<<<< HEAD
 	},
 	"printList": {
 				"type": "command",
 				"category": "variables",
 				"spec": "print list %l"
-=======
->>>>>>> b1a711463cc24365c916fddbce42d931747130f6
 	}
 }
