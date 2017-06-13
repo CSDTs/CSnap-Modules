@@ -5,6 +5,18 @@
                 		"spec": "translate by %n of %drc",
                 		"defaults": [100, null]
 	},
+	 "flipXAxis": {
+                "type": "command",
+                "category": "looks",
+                "spec": "reflect across X axis",
+                "defaults": []
+    },
+    "flipYAxis": {
+                "type": "command",
+                "category": "looks",
+                "spec": "reflect across Y axis",
+                "defaults": []
+    },
 	"changeCostumeColor": {
 				"type": "command",
 				"category": "looks",
@@ -23,16 +35,9 @@
 				"spec": "change costume shade by %n",
 				"defaults": [100]
 	},
-<<<<<<< HEAD
 	"exportAsCSV": {
 				"type": "command",
 				"category": "variables",
 				"spec": "display %l and %l as a CSV"
-=======
-	"printList": {
-				"type": "command",
-				"category": "variables",
-				"spec": "print list %l"
->>>>>>> 47811e8cd659566f0f5d2e7742298d66c43c45ed
 	}
 }
