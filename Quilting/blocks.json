@@ -1,38 +1,12 @@
 {
-	"translate_percent": {
-                		"type": "command",
-                		"category": "motion",
-                		"spec": "translate by %n of %drc",
-                		"defaults": [100, null]
-	},
-	"changeCostumeColor": {
-				"type": "command",
-				"category": "looks",
-				"spec": "set costume color to %n",
-				"defaults": [0]
-	},
-	"setCostumeShade": {
-				"type": "command",
-				"category": "looks",
-				"spec": "set costume shade to %n",
-				"defaults": [100]
-	},
-	"changeCostumeShade": {
-				"type": "command",
-				"category": "looks",
-				"spec": "change costume shade by %n",
-				"defaults": [100]
-	},
-<<<<<<< HEAD
 	"exportAsCSV": {
 				"type": "command",
 				"category": "variables",
 				"spec": "display %l and %l as a CSV"
-=======
+	},
 	"printList": {
 				"type": "command",
 				"category": "variables",
 				"spec": "print list %l"
->>>>>>> 47811e8cd659566f0f5d2e7742298d66c43c45ed
 	}
 }
