@@ -2,7 +2,7 @@
     "translate_by": {
                 "type": "command",
                 "category": "motion",
-                "spec": "translate by %n of %s",
+                "spec": "translate by %n of %drc",
                 "defaults": [100, "width"]
     },
 	"changeCostumeColor": {
