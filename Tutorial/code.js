@@ -9,9 +9,10 @@ var originalContent;
 var ID;
 var data = '1,1,2,3,5,8,13,21,34,55,89,144';
 var coordinateScale = 1;
-hide3DBlocks = true;
+var hide3DBlocks = true;
 SpriteMorph.flippedY = false;
 SpriteMorph.flippedX = false;
+SpriteMorph.isNotFlipBack = true;
 Costume.colored = false;
 var originalContent, ID;
 var FirstCostume = true;
@@ -3667,7 +3668,7 @@ function inRect (point,rect){
 var btns = window.parent.document.getElementsByClassName("CSnapLoadBtn");
 for(i = 0; i<btns.length; i++)
 {
-    btns[i].onclick = function(event){
+    btns[i].after = function(event){
 		if(event.srcElement.getAttribute("name"))
 		{
 			FirstCostume = true;
