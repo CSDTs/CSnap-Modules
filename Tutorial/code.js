@@ -3668,7 +3668,7 @@ function inRect (point,rect){
 var btns = window.parent.document.getElementsByClassName("CSnapLoadBtn");
 for(i = 0; i<btns.length; i++)
 {
-    btns[i].after = function(event){
+    btns[i].onclick = function(event){
 		if(event.srcElement.getAttribute("name"))
 		{
 			FirstCostume = true;
