@@ -194,7 +194,7 @@ IDE_Morph.prototype.createControlBar = function () {
         this.controlBar.add(muteSoundsButton);
         this.controlBar.muteSoundsButton = button; // for refreshing
     }
-	
+
     // stopButton
     button = new PushButtonMorph(
         this,
@@ -326,7 +326,7 @@ IDE_Morph.prototype.createControlBar = function () {
 
  	 // goalImagesButton
     var goals = this.precacheGoals();
-   
+
     if(goals) {
        button = new PushButtonMorph(
            this,
@@ -350,7 +350,7 @@ IDE_Morph.prototype.createControlBar = function () {
            this.controlBar.goalImagesButton = goalImagesButton; // for menu positioning
        }
     }
-	
+
     // cloudButton
     button = new PushButtonMorph(
         this,
@@ -403,15 +403,15 @@ IDE_Morph.prototype.createControlBar = function () {
         if(goals) {
            goalImagesButton.setCenter(myself.controlBar.center());
            goalImagesButton.setLeft(this.left());
-         
+
            settingsButton.setCenter(myself.controlBar.center());
            settingsButton.setLeft(goalImagesButton.left() - padding - 40);
         }
-      
+
         else {
            settingsButton.setCenter(myself.controlBar.center());
            settingsButton.setLeft(this.left() - 40);
-        }         
+        }
 
         cloudButton.setCenter(myself.controlBar.center());
         cloudButton.setRight(settingsButton.left() - padding);
@@ -671,7 +671,7 @@ IDE_Morph.prototype.fixLayout = function (situation) {
     this.changed();
 };
 
-//overwrite create sprite bar... 
+//overwrite create sprite bar...
 IDE_Morph.prototype.createSpriteBar = function () {
     // assumes that the categories pane has already been created
     var rotationStyleButtons = [],
@@ -751,7 +751,7 @@ IDE_Morph.prototype.createSpriteBar = function () {
     addRotationStyleButton(0);
     this.rotationStyleButtons = rotationStyleButtons;
 
-	
+
     thumbnail = new Morph();
     thumbnail.setExtent(thumbSize);
     if(hideThumbnail) {
@@ -988,10 +988,10 @@ IDE_Morph.prototype.createCorralBar = function () {
     paintbutton.setLeft(
         this.corralBar.left() + padding + newbutton.width() + padding
     );
-	
+
 	if(!hideCorral) {
-        this.corralBar.add(paintbutton); 
-    } 
+        this.corralBar.add(paintbutton);
+    }
     xlabel = new StringMorph(
             "X: 0",
             24,
@@ -1002,13 +1002,13 @@ IDE_Morph.prototype.createCorralBar = function () {
             MorphicPreferences.isFlat ? null : new Point(2, 1),
             this.frameColor.darker(this.buttonContrast)
         );
-  
+
     xlabel.color = this.buttonLabelColor;
     xlabel.drawNew();
     xlabel.setLeft(
         this.corralBar.left() + padding + (newbutton.width() + padding)*2
     );
-  
+
     this.corralBar.add(xlabel)
 
     ylabel = new StringMorph(
@@ -1026,20 +1026,20 @@ IDE_Morph.prototype.createCorralBar = function () {
     ylabel.setLeft(
         this.corralBar.left() + padding + (newbutton.width() + padding)*2 + 100
     );
-  
+
     this.corralBar.add(ylabel)
-    
+
     this.corralBar.step = function() {
       this.parent.updateCorralBar();
     }
-  
-  
+
+
 };
 
 
 
 IDE_Morph.prototype.updateCorralBar = function () {
-   
+
    var MouseX = this.stage.reportMouseX();
    var MouseY = this.stage.reportMouseY();
     Morph.prototype.trackChanges = false;
@@ -1047,16 +1047,16 @@ IDE_Morph.prototype.updateCorralBar = function () {
       MouseX > StageMorph.prototype.dimensions.x / 2 ||
       MouseY > StageMorph.prototype.dimensions.y / 2 ||
       MouseX < StageMorph.prototype.dimensions.x / -2 ||
-      MouseY < StageMorph.prototype.dimensions.y / -2) 
+      MouseY < StageMorph.prototype.dimensions.y / -2)
    {
      this.corralBar.children[0].text = "";
-     this.corralBar.children[1].text = "";     
+     this.corralBar.children[1].text = "";
    } else {
      this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / coordinateScale);
      this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / coordinateScale);
    }
    Morph.prototype.trackChanges = true;
-	 
+
    //update only if the coordinates have changed to save CPU
    if(this.corralBarOldX != this.corralBar.children[0].text || this.corralBarOldY != this.corralBar.children[1].text)
    {
@@ -1064,10 +1064,10 @@ IDE_Morph.prototype.updateCorralBar = function () {
      this.corralBarOldY = this.corralBar.children[1].text;
      this.corralBar.children[0].drawNew();
      this.corralBar.children[1].drawNew();
-	   
+
      this.corralBar.changed();
    }
-    
+
 };
 
 //override block positioning
@@ -1160,7 +1160,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doReport'));
         blocks.push('-');
-		
+
     }  if (cat === 'motion' || !categorize) {
         if (!hide3DBlocks) {
             blocks.push(block('turn3D'));
@@ -1510,7 +1510,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             blocks.push(block('reportMappedCode'));
             blocks.push('=');
         }
-		
+
 		if (makeAVar)
 		{
 			button.userMenu = helpMenu;
@@ -1519,14 +1519,24 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 			blocks.push(button);
 		}
     }
-    this.categories.forEach(function (cate){
-		if(typeof SpriteMorph.prototype._blockTemplates[cate] !== 'undefined') {
-			for(var i=0; i < SpriteMorph.prototype._blockTemplates[cate].length; i += 1) {
-				var bb = SpriteMorph.prototype._blockTemplates[cate][i]
-				blocks.push(block(bb));
-			}
-		}
-    });
+    if(!categorize) {
+      this.categories.forEach(function (cate){
+  		if(typeof SpriteMorph.prototype._blockTemplates[cate] !== 'undefined') {
+  			for(var i=0; i < SpriteMorph.prototype._blockTemplates[cate].length; i += 1) {
+  				var bb = SpriteMorph.prototype._blockTemplates[cate][i]
+  				blocks.push(block(bb));
+  			}
+  		}
+      });
+  }
+  else {
+    if(typeof SpriteMorph.prototype._blockTemplates[cat] !== 'undefined') {
+        for(var i=0; i < SpriteMorph.prototype._blockTemplates[cat].length; i += 1) {
+            var bb = SpriteMorph.prototype._blockTemplates[cat][i]
+            blocks.push(block(bb));
+        }
+    }
+  }
     return blocks;
 };
 
@@ -2273,7 +2283,7 @@ SpriteMorph.prototype.freshPalette = function (category) {
 		palette.padding = unit / 2;
 		palette.color = this.paletteColor;
 		palette.growth = new Point(0, MorphicPreferences.scrollBarSize);
-        
+
         if(hide3DBlocks){
             StageMorph.prototype.hiddenPrimitives['3DRotationX'] = true;
             StageMorph.prototype.hiddenPrimitives['3DRotationY'] = true;
@@ -2417,32 +2427,42 @@ SpriteMorph.prototype.freshPalette = function (category) {
 
 		// global custom blocks:
 
-		if (stage) {
-			y += unit * 1.6;
-
-			stage.globalBlocks.forEach(function (definition) {
-				var block;
-				block = definition.templateInstance();
-				y += unit * 0.3;
-				block.setPosition(new Point(x, y));
-				palette.addContents(block);
-				x = 0;
-				y += block.height();
-			});
-		}
+    stage.globalBlocks.forEach(function (definition) {
+        var block;
+        if (!categorize || definition.category === category ||
+                (category === 'variables'
+                    && contains(
+                        ['lists', 'other'],
+                        definition.category
+                    ))) {
+            block = definition.templateInstance();
+            y += unit * 0.3;
+            block.setPosition(new Point(x, y));
+            palette.addContents(block);
+            x = 0;
+            y += block.height();
+        }
+    });
 
 		// local custom blocks:
 
 		y += unit * 1.6;
-		this.customBlocks.forEach(function (definition) {
-			var block;
-			block = definition.templateInstance();
-			y += unit * 0.3;
-			block.setPosition(new Point(x, y));
-			palette.addContents(block);
-			x = 0;
-			y += block.height();
-		});
+    this.customBlocks.forEach(function (definition) {
+        var block;
+        if (!categorize || definition.category === category ||
+                (category === 'variables'
+                    && contains(
+                        ['lists', 'other'],
+                        definition.category
+                    ))) {
+            block = definition.templateInstance();
+            y += unit * 0.3;
+            block.setPosition(new Point(x, y));
+            palette.addContents(block);
+            x = 0;
+            y += block.height();
+        }
+    });
 
 		Morph.prototype.trackChanges = oldFlag;
 		return palette;
@@ -2634,8 +2654,8 @@ SpriteMorph.prototype.wearCostume = function (costume) {
     if (costume && costume.is3D) { // if (costume == null), that means a Turtle
         if (costume.geometry != null) {
             // we have loaded a 3D geometry already already already
-            var color = new THREE.Color(this.color.r/255, 
-                                        this.color.g/255, 
+            var color = new THREE.Color(this.color.r/255,
+                                        this.color.g/255,
                                         this.color.b/255),
                 material, mesh, sphere;
 
@@ -2665,8 +2685,8 @@ SpriteMorph.prototype.wearCostume = function (costume) {
             // first time we load this geometry
             var loader = new THREE.JSONLoader(), myself = this;
             loader.load(costume.url, function(geometry) {
-                var color = new THREE.Color(myself.color.r/255, 
-                                            myself.color.g/255, 
+                var color = new THREE.Color(myself.color.r/255,
+                                            myself.color.g/255,
                                             myself.color.b/255);
                 var material = new THREE.MeshLambertMaterial({color: color}),
                     mesh = new THREE.Mesh(geometry, material),
@@ -2693,7 +2713,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
         var x = this.xPosition ? this.xPosition() : null,
         y = this.yPosition ? this.yPosition() : null,
         isWarped = this.isWarped;
-		if (this.costume && this.costume.originalPixels && !FirstCostume) 
+		if (this.costume && this.costume.originalPixels && !FirstCostume)
 		{
 			this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
 			this.costume.colored = false;
@@ -2784,7 +2804,7 @@ Costume.prototype.setColorWithParent = function(col, myParent) {
 	}
 };
 IDE_Morph.prototype.updateCorralBar = function () {
-   
+
    var MouseX = this.stage.reportMouseX();
    var MouseY = this.stage.reportMouseY();
    Morph.prototype.trackChanges = false;
@@ -2792,10 +2812,10 @@ IDE_Morph.prototype.updateCorralBar = function () {
       MouseX > StageMorph.prototype.dimensions.x / 2 ||
       MouseY > StageMorph.prototype.dimensions.y / 2 ||
       MouseX < StageMorph.prototype.dimensions.x / -2 ||
-      MouseY < StageMorph.prototype.dimensions.y / -2) 
+      MouseY < StageMorph.prototype.dimensions.y / -2)
    {
      this.corralBar.children[0].text = "";
-     this.corralBar.children[1].text = "";     
+     this.corralBar.children[1].text = "";
    } else {
      this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / (coordinateScale * 1.369));
      this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / (coordinateScale * 0.733));
@@ -2805,7 +2825,7 @@ IDE_Morph.prototype.updateCorralBar = function () {
    this.corralBar.children[1].drawNew();
    Morph.prototype.trackChanges = true;
    this.corralBar.changed();
-  
+
 };
 Costume.prototype.copy = function () {
     var canvas = newCanvas(this.extent()),
@@ -2826,7 +2846,7 @@ Costume.prototype.copy = function () {
 
 SpriteMorph.prototype.turn3D = function (degX, degY, degZ) {
     if (this.costume && this.costume.is3D) {
-        
+
         var fullQuaternion = new THREE.Quaternion(), quaternionX = new THREE.Quaternion(), quaternionY = new THREE.Quaternion(), quaternionZ = new THREE.Quaternion();
         quaternionX.setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), radians(degX) );
         quaternionY.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), radians(degY) );
@@ -2835,7 +2855,7 @@ SpriteMorph.prototype.turn3D = function (degX, degY, degZ) {
         this._3DRotationX += degX;
         this._3DRotationY += degY;
         this._3DRotationZ += degZ;
-		
+
         fullQuaternion.multiplyQuaternions(quaternionZ,quaternionY.multiplyQuaternions(quaternionY,quaternionX.multiplyQuaternions(quaternionX,this.object.quaternion)));
 
         this.object.quaternion.copy(fullQuaternion);
@@ -2880,7 +2900,7 @@ StageMorph.prototype.addCoordinatePlane = function (){
     textGeometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({color: 'black'});
     object = new THREE.Object3D();
-    
+
     function addLabel(x, y, z, label, lColor, lSize, rotation) {
         textShapes = THREE.FontUtils.generateShapes( label, {size:16});
         text = new THREE.ShapeGeometry( textShapes );
@@ -2905,49 +2925,49 @@ StageMorph.prototype.addCoordinatePlane = function (){
         geometry.vertices.push(new THREE.Vector3( -12, 0, i ));
         geometry.vertices.push(new THREE.Vector3( 12, 0,  i));
     }
-    
+
     grid = new THREE.Line(geometry, material, THREE.LinePieces);
-    
+
     object.add(grid);
-    
+
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'red'});
-    
+
     geometry.vertices.push(new THREE.Vector3( 0, 0,  -0.04));
     geometry.vertices.push(new THREE.Vector3( size, 0,  -0.04));
-    
+
     xaxis = new THREE.Line(geometry, material, THREE.LinePieces);
-    
+
     object.add(xaxis);
-    
+
     addLabel(size, 0, -0.04, 'X', 'red', 16, 0);
-    
+
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'green'});
-    
+
     geometry.vertices.push(new THREE.Vector3( 0, 0,  -0.04));
     geometry.vertices.push(new THREE.Vector3( 0, size,  -0.04));
-    
+
     yaxis = new THREE.Line(geometry, material, THREE.LinePieces);
-    
+
     object.add(yaxis);
-    
+
     addLabel( 0, size, -0.04, 'Y', 'green', 16, 0);
-    
+
     geometry = new THREE.Geometry();
     material = new THREE.LineBasicMaterial({linewidth: 5, linecap: 'round', color: 'blue'});
-    
+
     geometry.vertices.push(new THREE.Vector3( 0, 0, 0 ));
     geometry.vertices.push(new THREE.Vector3( 0, 0, size*(2/3)));
-    
+
     zaxis = new THREE.Line(geometry, material, THREE.LinePieces);
-    
+
     object.add(zaxis);
-    
+
     addLabel( 0, 0, size*(2/3), 'Z', 'blue', 16, Math.PI/2);
-    
+
     object.name = "coordinate plane";
-    
+
     this.scene.add(object);
     this.changed();
 };
@@ -2965,7 +2985,7 @@ StageMorph.prototype.init3D = function () {
     // camera
     this.camera = new THREE.PerspectiveCamera(vFOV,
                                               canvas.width / canvas.height, 0.1, 10000);
-    this.camera.position.set(THREEJS_CAMERA_DEFAULT_X_POSITION, 
+    this.camera.position.set(THREEJS_CAMERA_DEFAULT_X_POSITION,
                              THREEJS_CAMERA_DEFAULT_Y_POSITION,
                              THREEJS_CAMERA_DEFAULT_Z_POSITION);
     this.camera.lookAt({x:0, y:0, z:0});
@@ -2989,8 +3009,8 @@ StageMorph.prototype.init3D = function () {
 SpriteMorph.prototype.renderArc = function (width, height) {
     const THREEJS_ARC_SEGMENTS = 60,
         THREEJS_TUBE_SEGMENTS = THREEJS_ARC_SEGMENTS;
-    var xRadius = width/2, yRadius = height, y, z, points = new Array(), 
-        path, 
+    var xRadius = width/2, yRadius = height, y, z, points = new Array(),
+        path,
         THREEJS_TUBE_RADIUS = this.penSize(),
         THREEJS_TUBE_RADIUS_SEGMENTS = this.penSize()+4,
 		geometry;
@@ -3001,7 +3021,7 @@ SpriteMorph.prototype.renderArc = function (width, height) {
         points.push(new THREE.Vector3(0, y, z));
     }
     path = new THREE.SplineCurve3(points);
-    geometry = new THREE.TubeGeometry(path, 
+    geometry = new THREE.TubeGeometry(path,
                                       THREEJS_TUBE_SEGMENTS,
                                       THREEJS_TUBE_RADIUS,
                                       THREEJS_TUBE_RADIUS_SEGMENTS,
@@ -3054,12 +3074,12 @@ StageMorph.prototype.init = function (globals) {
     this.shownObjects = new List();
     this.hiddenObjects = new List();
     this.init3D();
-    if(!hide3DBlocks){    
+    if(!hide3DBlocks){
         this.addCoordinatePlane();
         this.camera.up = new THREE.Vector3( 0, 0, 1);
         this.camera.lookAt({x:0, y:0, z:0});
     }
-    
+
 };
 
 
@@ -3526,7 +3546,7 @@ StageMorph.prototype.turnCameraAroundXAxis = function(deg) {
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
     this.camera.position.y = sinPhiRadius * Math.cos( theta );
     this.camera.position.z = Math.cos( phi ) * radius;
-    
+
     this.camera.lookAt({x:0, y:0, z:0});
     this.changed();
 };
@@ -3550,7 +3570,7 @@ StageMorph.prototype.turnCameraAroundYAxis = function(deg) {
     this.camera.position.x = sinPhiRadius * Math.sin( theta );
     this.camera.position.y = sinPhiRadius * Math.cos( theta );
     this.camera.position.z = Math.cos( phi ) * radius;
-    
+
     this.camera.lookAt({x:0, y:0, z:0});
     this.changed();
 };
@@ -3559,7 +3579,7 @@ StageMorph.prototype.zoom = function(factor) {
     this.camera.position.x *= factor;
     this.camera.position.y *= factor;
     this.camera.position.z *= factor;
-    
+
     this.camera.lookAt({x:0, y:0, z:0});
     this.changed();
 };
@@ -3614,10 +3634,10 @@ for(i = 0; i<btns.length; i++)
 			else
 				world.children[0].loadNewSet(event.srcElement.getAttribute("name"));
 		}
-		
+
 		//scroll
 		scrollToLocation(event.srcElement.href);
-		
+
 		var fixBackgrounds = window.parent.document.getElementsByClassName("CSnapLoadBtn");
 		for(j = 0; j<fixBackgrounds.length; j++)
 		{
@@ -3625,14 +3645,14 @@ for(i = 0; i<btns.length; i++)
 				fixBackgrounds[j].style.backgroundColor = "#fff";
 		}
 		event.srcElement.style.backgroundColor = "#ebebeb";
-        
-        
+
+
 		if(event.srcElement.getAttribute("value")){
 			AsignSettings(event.srcElement);
 		}
 		return false;
 	};
-	
+
 	if(btns[i].getAttribute("value")&&btns[i].getAttribute("value").includes('First'))
 	{
 		AsignSettings(btns[i]);
@@ -3662,7 +3682,7 @@ function scrollToLocation(loc){
 	window.parent.onscroll = null;
 	var doc = window.parent.document.documentElement;
 	top = (window.parent.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-	
+
 	if(!(loc == undefined))
 	{
 		window.parent.location.href = loc;
@@ -3710,30 +3730,32 @@ function AsignSettings(btn){
 	}
 	if(value.includes('HideCategories')){
 		categorize=false;
-		world.children[0].createPalette();
-        ide.flushBlocksCache('motion');
-        ide.flushBlocksCache('looks');
-        ide.flushBlocksCache('sound');
-        ide.flushBlocksCache('pen');
-        ide.flushBlocksCache('control');
-        ide.flushBlocksCache('sensing');
-        ide.flushBlocksCache('operators');
-        ide.flushBlocksCache('variables');
-        ide.refreshPalette();
+    ide = world.children[0];
+		ide.createPalette();
+    ide.flushBlocksCache('motion');
+    ide.flushBlocksCache('looks');
+    ide.flushBlocksCache('sound');
+    ide.flushBlocksCache('pen');
+    ide.flushBlocksCache('control');
+    ide.flushBlocksCache('sensing');
+    ide.flushBlocksCache('operators');
+    ide.flushBlocksCache('variables');
+    ide.refreshPalette();
 	}
 	if(value.includes('ShowCategories'))
 	{
 		categorize=true;
-		world.children[0].createPalette();
-        ide.flushBlocksCache('motion');
-        ide.flushBlocksCache('looks');
-        ide.flushBlocksCache('sound');
-        ide.flushBlocksCache('pen');
-        ide.flushBlocksCache('control');
-        ide.flushBlocksCache('sensing');
-        ide.flushBlocksCache('operators');
-        ide.flushBlocksCache('variables');
-        ide.refreshPalette();
+    ide = world.children[0];
+		ide.createPalette();
+    ide.flushBlocksCache('motion');
+    ide.flushBlocksCache('looks');
+    ide.flushBlocksCache('sound');
+    ide.flushBlocksCache('pen');
+    ide.flushBlocksCache('control');
+    ide.flushBlocksCache('sensing');
+    ide.flushBlocksCache('operators');
+    ide.flushBlocksCache('variables');
+    ide.refreshPalette();
 	}
 	if(value.includes('HideControlButtons')){
 		hideControlButtons=true;
@@ -3784,7 +3806,7 @@ function AsignSettings(btn){
         var id = value.substring(value.indexOf('Next:')+5);
         if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
 		var baseLink = window.parent.$('#'+id);
-        
+
         next.attr('class',  baseLink.attr('class'));
         next.attr('value',  baseLink.attr('value'));
         next.attr('name',  baseLink.attr('name'));
@@ -3803,7 +3825,7 @@ function AsignSettings(btn){
         var id = value.substring(value.indexOf('Prev:')+5);
         if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
 		var baseLink = window.parent.$('#'+id);
-        
+
         prev.attr('class',  baseLink.attr('class'));
         prev.attr('value',  baseLink.attr('value'));
         prev.attr('name',  baseLink.attr('name'));
@@ -3820,7 +3842,7 @@ function AsignSettings(btn){
 	{
 
         hide3DBlocks = false;
-        
+
         //events that should only be called when in 3D
         window.addEventListener("mousedown", _3DDragMouseDown);
         window.addEventListener("mousemove", _3DDragMouseMove);
@@ -3829,7 +3851,7 @@ function AsignSettings(btn){
 
         IDE_Morph.prototype.updateCorralBar = function () {}
         world.children[0].stage.changed();
-        
+
 	}
     else {
         hide3DBlocks = true;
