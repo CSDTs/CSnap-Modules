@@ -1,4 +1,12 @@
-var data = '1,1,2,3,5,8,13,21,34,55,89,144'
+var data = [],
+	socket = {};
+
+socket = new WebSocket("ws://127.0.0.1:8080");
+
+socket.onmessage = function recieveMessage(event) {
+	data.push(event.data);
+}
+
 //override text drop
 IDE_Morph.prototype.droppedText = function (aString, name) {
     var lbl = name ? name.split('.')[0] : '';
