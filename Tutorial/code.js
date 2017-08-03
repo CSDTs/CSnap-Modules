@@ -1152,6 +1152,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doWait'));
         blocks.push(block('doWaitUntil'));
         blocks.push('-');
+        if (categorize) blocks.push(block('doRepeat'));
         blocks.push(block('doForever'));
         blocks.push(block('doUntil'));
         blocks.push('-');
@@ -1267,7 +1268,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
     } if (cat === 'pen' || !categorize) {
 
         blocks.push(block('clear'));
-        blocks.push(block('doRepeat'));
+        if (!categorize) blocks.push(block('doRepeat'));
         blocks.push('-');
         blocks.push(block('down'));
         blocks.push(block('up'));
@@ -3731,7 +3732,7 @@ function AsignSettings(btn){
 	if(value.includes('HideCategories')){
 		categorize=false;
     ide = world.children[0];
-		ide.createPalette();
+		ide.buildPanes();
     ide.flushBlocksCache('motion');
     ide.flushBlocksCache('looks');
     ide.flushBlocksCache('sound');
@@ -3741,6 +3742,7 @@ function AsignSettings(btn){
     ide.flushBlocksCache('operators');
     ide.flushBlocksCache('variables');
     ide.refreshPalette();
+    ide.buildPanes();
 	}
 	if(value.includes('ShowCategories'))
 	{
@@ -3756,33 +3758,34 @@ function AsignSettings(btn){
     ide.flushBlocksCache('operators');
     ide.flushBlocksCache('variables');
     ide.refreshPalette();
+    ide.buildPanes();
 	}
 	if(value.includes('HideControlButtons')){
 		hideControlButtons=true;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('ShowControlButtons'))
 	{
 		hideControlButtons=false;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('HideThumbnail')){
 		hideThumbnail=true;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('ShowThumbnail'))
 	{
 		hideThumbnail=false;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('HideCorral')){
 		hideCorral=true;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('ShowCorralt'))
 	{
 		hideCorral=false;
-		world.children[0].createPalette();
+		world.children[0].buildPanes();
 	}
 	if(value.includes('HideFrame'))
 	{
