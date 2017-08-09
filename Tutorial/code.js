@@ -3806,17 +3806,15 @@ function AsignSettings(btn){
 	if(value.includes('Next:'))
 	{
 		var next = window.parent.$('#CSnapNextButton')
-        var id = value.substring(value.indexOf('Next:')+5);
-        if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
-		var baseLink = window.parent.$('#'+id);
+    var id = value.substring(value.indexOf('Next:')+5);
+    if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
 
-        next.attr('class',  baseLink.attr('class'));
-        next.attr('value',  baseLink.attr('value'));
-        next.attr('name',  baseLink.attr('name'));
-        next.attr('data-toggle',  baseLink.attr('data-toggle'));
-        next.attr('href',  baseLink.attr('href'));
-        next.attr('data-target',  baseLink.attr('data-target'));
-        next.show();
+    next.attr('class',  btn.className);
+    next.attr('value',  value);
+    next.show();
+    if(btn.id=='CSnapNextButton') {
+      window.parent.document.getElementById(id).click()
+    }
 	}
 	else
 	{
@@ -3825,17 +3823,15 @@ function AsignSettings(btn){
 	if(value.includes('Prev:'))
 	{
 		var prev = window.parent.$('#CSnapPrevButton');
-        var id = value.substring(value.indexOf('Prev:')+5);
-        if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
-		var baseLink = window.parent.$('#'+id);
+    var id = value.substring(value.indexOf('Prev:')+5);
+    if(id.includes('_')) id = id.substring(0,id.indexOf('_'));
 
-        prev.attr('class',  baseLink.attr('class'));
-        prev.attr('value',  baseLink.attr('value'));
-        prev.attr('name',  baseLink.attr('name'));
-        prev.attr('data-toggle',  baseLink.attr('data-toggle'));
-        prev.attr('href',  baseLink.attr('href'));
-        prev.attr('data-target',  baseLink.attr('data-target'));
-        prev.show();
+    prev.attr('class',  btn.className);
+    prev.attr('value',  value);
+    prev.show();
+    if(btn.id=='CSnapPrevButton') {
+      window.parent.document.getElementById(id).click()
+    }
 	}
 	else
 	{
