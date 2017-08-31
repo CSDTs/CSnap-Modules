@@ -3742,7 +3742,7 @@ function AsignSettings(btn){
     ide.flushBlocksCache('operators');
     ide.flushBlocksCache('variables');
     ide.refreshPalette();
-    ide.buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('ShowCategories'))
 	{
@@ -3758,34 +3758,34 @@ function AsignSettings(btn){
     ide.flushBlocksCache('operators');
     ide.flushBlocksCache('variables');
     ide.refreshPalette();
-    ide.buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('HideControlButtons')){
 		hideControlButtons=true;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('ShowControlButtons'))
 	{
 		hideControlButtons=false;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('HideThumbnail')){
 		hideThumbnail=true;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('ShowThumbnail'))
 	{
 		hideThumbnail=false;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('HideCorral')){
 		hideCorral=true;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('ShowCorralt'))
 	{
 		hideCorral=false;
-		world.children[0].buildPanes();
+    rebuildPanes();
 	}
 	if(value.includes('HideFrame'))
 	{
@@ -3869,5 +3869,26 @@ try {
     window.parent.document.getElementById('openModalBtn').click();
 }
 catch (e) {
+}
+function rebuildPanes(){
+
+    var ide = world.children[0];
+    var stage = ide.stage;
+    ide.buildPanes();
+    if (ide.stage) {
+        ide.stage.destroy();
+    }
+    StageMorph.prototype.frameRate = 0;
+    ide.stage = stage;
+    ide.stage.setExtent(ide.stage.dimensions); // dimensions are fixed
+    if (ide.currentSprite instanceof SpriteMorph) {
+        ide.currentSprite.setPosition(
+            ide.stage.center().subtract(
+                ide.currentSprite.extent().divideBy(2)
+            )
+        );
+        ide.stage.add(ide.currentSprite);
+    }
+    ide.add(ide.stage);
 }
 //# sourceURL=code.js
