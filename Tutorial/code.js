@@ -1036,40 +1036,6 @@ IDE_Morph.prototype.createCorralBar = function () {
 
 };
 
-
-
-IDE_Morph.prototype.updateCorralBar = function () {
-
-   var MouseX = this.stage.reportMouseX();
-   var MouseY = this.stage.reportMouseY();
-    Morph.prototype.trackChanges = false;
-   if(this.isSmallStage ||
-      MouseX > StageMorph.prototype.dimensions.x / 2 ||
-      MouseY > StageMorph.prototype.dimensions.y / 2 ||
-      MouseX < StageMorph.prototype.dimensions.x / -2 ||
-      MouseY < StageMorph.prototype.dimensions.y / -2)
-   {
-     this.corralBar.children[0].text = "";
-     this.corralBar.children[1].text = "";
-   } else {
-     this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / coordinateScale);
-     this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / coordinateScale);
-   }
-   Morph.prototype.trackChanges = true;
-
-   //update only if the coordinates have changed to save CPU
-   if(this.corralBarOldX != this.corralBar.children[0].text || this.corralBarOldY != this.corralBar.children[1].text)
-   {
-     this.corralBarOldX = this.corralBar.children[0].text;
-     this.corralBarOldY = this.corralBar.children[1].text;
-     this.corralBar.children[0].drawNew();
-     this.corralBar.children[1].drawNew();
-
-     this.corralBar.changed();
-   }
-
-};
-
 //override block positioning
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
@@ -2804,11 +2770,12 @@ Costume.prototype.setColorWithParent = function(col, myParent) {
 		myParent.flipXAxis();
 	}
 };
+
 IDE_Morph.prototype.updateCorralBar = function () {
 
    var MouseX = this.stage.reportMouseX();
    var MouseY = this.stage.reportMouseY();
-   Morph.prototype.trackChanges = false;
+    Morph.prototype.trackChanges = false;
    if(this.isSmallStage ||
       MouseX > StageMorph.prototype.dimensions.x / 2 ||
       MouseY > StageMorph.prototype.dimensions.y / 2 ||
@@ -2818,16 +2785,24 @@ IDE_Morph.prototype.updateCorralBar = function () {
      this.corralBar.children[0].text = "";
      this.corralBar.children[1].text = "";
    } else {
-     this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / (coordinateScale * 1.369));
-     this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / (coordinateScale * 0.733));
+     this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / coordinateScale);
+     this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / coordinateScale);
+   }
+   Morph.prototype.trackChanges = true;
+
+   //update only if the coordinates have changed to save CPU
+   if(this.corralBarOldX != this.corralBar.children[0].text || this.corralBarOldY != this.corralBar.children[1].text)
+   {
+     this.corralBarOldX = this.corralBar.children[0].text;
+     this.corralBarOldY = this.corralBar.children[1].text;
+     this.corralBar.children[0].drawNew();
+     this.corralBar.children[1].drawNew();
+
+     this.corralBar.changed();
    }
 
-   this.corralBar.children[0].drawNew();
-   this.corralBar.children[1].drawNew();
-   Morph.prototype.trackChanges = true;
-   this.corralBar.changed();
-
 };
+
 Costume.prototype.copy = function () {
     var canvas = newCanvas(this.extent()),
         cpy,
