@@ -33,7 +33,7 @@
             "type": "reporter",
             "category": "operators",
             "spec": "break up %s by %s"
-   },  
+   },
    "getData": {
             "type": "reporter",
             "category": "variables",
@@ -45,7 +45,7 @@
             "spec": "set coordinate scale %n",
             "defaults": [18]
    },
-    
+
    "getCoordinateScale": {
             "type": "reporter",
             "category": "looks",
@@ -102,5 +102,10 @@
 				"type": "command",
 				"category": "variables",
 				"spec": "print list %l"
-	}      
+	},
+	"visibleColor": {
+				"type": "predicate",
+				"category": "sensing",
+				"spec": "visible %clr ?"
+  }
 }
