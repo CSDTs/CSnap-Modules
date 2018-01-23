@@ -3,16 +3,19 @@
       //get handle on current process
       var processes = this.parentThatIsA(StageMorph).threads.processes;
       for (var i = 0; i < processes.length; i++){
-        if(processes.context.expressions == 'waitUntilOnly') {
-          if (processes.length == 1) {
-              this.popContext();
-              this.pushContext('doYield');
-              return null;
+        try{
+          if(processes[i].context.expression.selector == 'waitUntilOnly') {
+            if (processes.length == 1) {
+                processes[i].popContext();
+                processes[i].pushContext('doYield');
+                return null;
+            }
+            processes[i].context.inputs = [];
+            processes[i].pushContext('doYield');
+            processes[i].pushContext();
           }
-          this.context.inputs = [];
-          this.pushContext('doYield');
-          this.pushContext();
         }
+        catch(e){}
       }
     };
 }());
