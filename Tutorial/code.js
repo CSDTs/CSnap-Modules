@@ -3866,4 +3866,68 @@ function rebuildPanes(){
     }
     ide.add(ide.stage);
 }
+
+
+
+SpriteMorph.prototype.allHatBlocksFor = function (message) {
+    if(this instanceof SpriteMorph){
+        this.colorChange = false;
+    }
+    return this.scripts.children.filter(function (morph) {
+        var event;
+        if (morph.selector) {
+            if (morph.selector === 'receiveMessage') {
+                event = morph.inputs()[0].evaluate();
+                return event === message || (event instanceof Array);
+            }
+            if (morph.selector === 'receiveGo') {
+                return message === '__shout__go__';
+            }
+            if (morph.selector === 'receiveOnClone') {
+                return message === '__clone__init__';
+            }
+            if (morph.selector === 'receiveClick') {
+                return message === '__click__';
+            }
+            if (morph.selector === 'goOnAny') {
+                return true;
+            }
+        }
+        return false;
+    });
+};
+
+BlockMorph.prototype.mouseClickLeft = function () {
+    var top = this.topBlock(),
+        receiver = top.receiver(),
+        stage,
+        procs = [],
+        hats = [];
+    if (top instanceof PrototypeHatBlockMorph) {
+        return top.mouseClickLeft();
+    }
+    if (receiver) {
+        stage = receiver.parentThatIsA(StageMorph);
+        if (stage) {
+            stage.threads.toggleProcess(top);
+            stage.children.concat(this).forEach(function (morph) {
+				if (morph instanceof SpriteMorph || morph instanceof StageMorph) {
+					hats = hats.concat(morph.allHatBlocksFor('goOnAny'));
+				}
+			});
+            hats.forEach(function (block) {
+                procs.push(stage.threads.startProcess(
+                    block,
+                    stage.isThreadSafe
+                ))
+            });
+        }
+    }
+  };
+
+
+
+
+
+
 //# sourceURL=code.js
