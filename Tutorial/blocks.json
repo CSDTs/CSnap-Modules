@@ -107,5 +107,10 @@
 				"type": "predicate",
 				"category": "sensing",
 				"spec": "visible %clr ?"
+  },
+	"waitUntilOnly": {
+				"type": "command",
+				"category": "control",
+				"spec": "wait until only thread"
   }
 }
