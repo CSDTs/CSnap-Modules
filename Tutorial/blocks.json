@@ -112,5 +112,10 @@
 				"type": "command",
 				"category": "control",
 				"spec": "wait until only thread"
+  },
+	"goOnAny": {
+				"type": "hat",
+				"category": "control",
+				"spec": "Go On Any Script"
   }
 }
