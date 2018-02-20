@@ -2251,7 +2251,7 @@ SpriteMorph.prototype.freshPalette = function(category) {
       StageMorph.prototype.hiddenPrimitives['visibleColor'] = true;
       StageMorph.prototype.hiddenPrimitives['goOnAny'] = true;
     }
-    
+
     // menu:
 
     palette.userMenu = function() {
@@ -2445,10 +2445,10 @@ IDE_Morph.prototype.rawOpenProjectString = function(str) {
   this.stopFastTracking();
 };
 
-IDE_Morph.prototype.loadNewSet = function(str) {
+IDE_Morph.prototype.loadNewSet = function(str, optionalOverwriteSprite) {
   var request = new XMLHttpRequest();
   request.onload = function() {
-    world.children[0].partial_load_xml(this.responseText);
+    world.children[0].partial_load_xml(this.responseText, optionalOverwriteSprite);
   };
   request.open("get", str, true);
   request.send();
@@ -2471,15 +2471,21 @@ IDE_Morph.prototype.partial_load_xml = function(answer, optionalOverwriteSprite)
     }
   }
   if (optionalOverwriteSprite) {
-    var oldSprites = $(myXML).getElementsByTagName('sprite');
-    var newSprites = $(otherXML).getElementsByTagName('sprite');
+    var oldSprites = myXML.getElementsByTagName('sprite');
+    var newSprites = otherXML.getElementsByTagName('sprite');
     for (var i = 0; i < optionalOverwriteSprite.length; i++) {
+      var oldFound = null;
       for (var j = 0; j < oldSprites.length; j++) {
-        if (oldSprites[j].name == optionalOverwriteSprite[i]) {
-          for (var k = 0; k < newSprites.length; k++) {
-            if (newSprites[k].name == optionalOverwriteSprite[i]) {
-              oldSprites[j] == newSprites[k];
-            }
+        if (oldSprites[j].getAttribute('name') == optionalOverwriteSprite[i]) {
+          oldFound = j;
+          break;
+        }
+      }
+      if(oldFound!=null) {
+        for (var k = 0; k < newSprites.length; k++) {
+          if (newSprites[k].getAttribute('name') == optionalOverwriteSprite[i]) {
+            oldSprites[oldFound].replaceWith(newSprites[k]);
+            break;
           }
         }
       }
@@ -3669,8 +3675,8 @@ for (i = 0; i < btns.length; i++) {
       else {
         var listOfOverwrites = '';
         if (value.includes('Overwrite:')) {
-          listOfOverwrites = value.substr(str.indexOf('Overwrite:')+10);
-          listOfOverwrites = listOfOverwrites.substr(0, sub.indexOf(';'));
+          listOfOverwrites = value.substr(value.indexOf('Overwrite:')+10);
+          listOfOverwrites = listOfOverwrites.substr(0, listOfOverwrites.indexOf(';'));
         }
         world.children[0].loadNewSet(src.getAttribute("name"), listOfOverwrites.split(','));
       }
@@ -3688,7 +3694,7 @@ for (i = 0; i < btns.length; i++) {
 
 
     if (value) {
-      AsignSettings(srct);
+      AsignSettings(src);
     }
     return false;
   };
