@@ -14,36 +14,38 @@
             }
 
             //opens a new window and writes data in CSV format.
-    		function writeToWindow(points) {
+            function writeToWindow(points) {
 
-    			var wnd = window.open("data:text,csv/");
-                var radii = [];
-                var angles = [];
+        			var str = '';
+        			var ide = this.world.children[0];
+              var radii = [];
+              var angles = [];
 
-                var keys = [];
+              var keys = [];
 
-                for(var key of points.keys()) {
-                    keys.push(key);
-                }
+              for(var key of points.keys()) {
+                  keys.push(key);
+              }
 
-                keys.sort(function(a,b){return a - b});
+              keys.sort(function(a,b){return a - b});
 
-                for(var j = 0; j < keys.length; j++) {
-                    var values = points.get(keys[j]);
-                    for(var k = 0; k < values.length; k++) {
-                        radii.push(keys[j]);
-                        angles.push(values[k]);
-                    }
-                }
+              for(var j = 0; j < keys.length; j++) {
+                  var values = points.get(keys[j]);
+                  for(var k = 0; k < values.length; k++) {
+                      radii.push(keys[j]);
+                      angles.push(values[k]);
+                  }
+              }
 
-                for (var i = 0; i < radii.length; i++) {
+              for (var i = 0; i < radii.length; i++) {
 
-                    wnd.document.write(radii[i] + "," + angles[i]);
-                    if (i !== radii.length - 1) {
-                        wnd.document.write("<br>");
-                    }                    
-                }
-    		}
+                  str += radii[i] + "," + angles[i];
+                  if (i !== radii.length - 1) {
+                      str += '\n';
+                  }
+              }
+              ide.saveFileAs(str, 'data:text/csv', ide.projectName + ' csvData');
+        		}
 
             function orderRadially(radii, angles) {
                 var ordered_points = new Map();
