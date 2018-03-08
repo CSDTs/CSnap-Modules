@@ -3837,6 +3837,28 @@ function AsignSettings(btn) {
   if (value.includes('LoadNewVariables')) {
     loadNewVariables = true;
   }
+  if (value.includes('ClearStage')) {
+    world.children[0].stage.clear();
+  }
+  if (value.includes('RunOnAny')) {
+    var stage,
+        procs = [],
+        hats = [];
+      stage = world.children[0].stage;
+      if (stage) {
+      stage.children.concat(this).forEach(function(morph) {
+        if (morph instanceof SpriteMorph || morph instanceof StageMorph) {
+          hats = hats.concat(morph.allHatBlocksFor('goOnAny'));
+        }
+      });
+      hats.forEach(function(block) {
+        procs.push(stage.threads.startProcess(
+          block,
+          stage.isThreadSafe
+        ))
+      });
+    }
+  }
   if (value.includes('Next:')) {
     var next = window.parent.$('#CSnapNextButton')
     var id = value.substring(value.indexOf('Next:') + 5);
