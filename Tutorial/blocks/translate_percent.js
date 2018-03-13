@@ -41,7 +41,7 @@
                 angle = this.heading*(Math.PI/180);
 
             } else {
-                newX = this.xPosition() + 
+                newX = this.xPosition() +
                     (width * percent/100);
                 dist = Math.sqrt(Math.pow(this.xPosition()-newX, 2));
                 angle = this.heading*(Math.PI/180)+(Math.PI/2);
