@@ -3,6 +3,9 @@ var loadNewVariables = false;
 var showCostumesTab = false;
 var categorize = false;
 var hideLeft = false;
+var glideTranslateX = null;
+var glideTranslateY = null;
+var glide = false;
 var hideControlButtons = true;
 var hideThumbnail = true;
 var hideCorral = true;
@@ -2481,7 +2484,7 @@ IDE_Morph.prototype.partial_load_xml = function(answer, optionalOverwriteSprite)
           break;
         }
       }
-      if(oldFound!=null) {
+      if (oldFound != null) {
         for (var k = 0; k < newSprites.length; k++) {
           if (newSprites[k].getAttribute('name') == optionalOverwriteSprite[i]) {
             oldSprites[oldFound].replaceWith(newSprites[k]);
@@ -3675,7 +3678,7 @@ for (i = 0; i < btns.length; i++) {
       else {
         var listOfOverwrites = '';
         if (value.includes('Overwrite:')) {
-          listOfOverwrites = value.substr(value.indexOf('Overwrite:')+10);
+          listOfOverwrites = value.substr(value.indexOf('Overwrite:') + 10);
           listOfOverwrites = listOfOverwrites.substr(0, listOfOverwrites.indexOf(';'));
         }
         world.children[0].loadNewSet(src.getAttribute("name"), listOfOverwrites.split(','));
@@ -3825,6 +3828,12 @@ function AsignSettings(btn) {
     hideCorral = false;
     rebuildPanes();
   }
+  if (value.includes('DoGlide')) {
+    glide = true;
+  }
+  if (value.includes('StopGlide')) {
+    glide = false;
+  }
   if (value.includes('HideFrame')) {
     window.parent.$('#CSnapFrame').hide();
   }
@@ -3842,10 +3851,10 @@ function AsignSettings(btn) {
   }
   if (value.includes('RunOnAny')) {
     var stage,
-        procs = [],
-        hats = [];
-      stage = world.children[0].stage;
-      if (stage) {
+      procs = [],
+      hats = [];
+    stage = world.children[0].stage;
+    if (stage) {
       stage.children.concat(this).forEach(function(morph) {
         if (morph instanceof SpriteMorph || morph instanceof StageMorph) {
           hats = hats.concat(morph.allHatBlocksFor('goOnAny'));
@@ -3997,9 +4006,100 @@ BlockMorph.prototype.mouseClickLeft = function() {
   }
 };
 
+Process.prototype.gotoXY = function(x, y) {
+  if (glide) {
+    this.doGlide(0.5, x, y);
+  } else {
+    this.blockReceiver().gotoXY(x, y);
+  }
+}
 
+Process.prototype.translate_percent = function(percent, direction) {
+  let sprite = this.blockReceiver()
+  if (!hide3DBlocks) {
+    var vector;
 
+    // set the initial direction
+    if (direction[0] === 'height') {
+      vector = new THREE.Vector3(0, 0, 1);
+    } else if (direction[0] === 'width') {
+      vector = new THREE.Vector3(0, 1, 0);
+    } else {
+      vector = new THREE.Vector3(1, 0, 0);
+    }
 
+    vector.applyQuaternion(sprite.object.quaternion);
+    vector.multiplyScalar(percent);
 
+    sprite.gotoXYZ(vector.x + sprite.object.position.x, vector.y + sprite.object.position.y, vector.z + sprite.object.position.z);
+    sprite.positionTalkBubble();
+    return null;
+  }
+  if (glide) {
+    var secs = 0.5;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.startValue = new Point(
+        sprite.xPosition(),
+        sprite.yPosition()
+      );
+      var dest, delta = radians(sprite.heading),
+        width = 0,
+        height = 0;
+      var newX = 0,
+        newY = 0,
+        dist = 0,
+        angle = 0,
+        X = 0,
+        Y = 0;
+
+      if (sprite.costume != null) {
+        width = sprite.costume.contents.width * sprite.scale;
+        height = sprite.costume.contents.height * sprite.scale;
+      } else {
+        width = 32 * sprite.scale;
+        height = 20 * sprite.scale;
+      }
+      if (direction[0] === 'height') {
+        newY = sprite.yPosition() +
+          (height * percent / 100);
+        dist = Math.sqrt(Math.pow(sprite.yPosition() - newY, 2));
+        angle = sprite.heading * (Math.PI / 180);
+      } else {
+        newX = sprite.xPosition() +
+          (width * percent / 100);
+        dist = Math.sqrt(Math.pow(sprite.xPosition() - newX, 2));
+        angle = sprite.heading * (Math.PI / 180) + (Math.PI / 2);
+      }
+      if (dist != 0) {
+        X = (-percent / Math.abs(percent)) * dist * Math.cos(angle) + sprite.xPosition();
+        Y = (percent / Math.abs(percent)) * dist * Math.sin(angle) + sprite.yPosition();
+        this.context.endValue = new Point(
+          X,
+          Y
+        );
+      } else {
+        this.context.endValue = this.context.startValue;
+      }
+
+    }
+    if ((Date.now() - this.context.startTime) >= (secs * 1000)) {
+      sprite.gotoXY(this.context.endValue.x,this.context.endValue.y,);
+      return null;
+    }
+    sprite.glide(
+      secs * 1000,
+      this.context.endValue.x,
+      this.context.endValue.y,
+      Date.now() - this.context.startTime,
+      this.context.startValue
+    );
+
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.translate_percent(percent, direction)
+  }
+}
 
 //# sourceURL=code.js
