@@ -4014,6 +4014,99 @@ Process.prototype.gotoXY = function(x, y) {
   }
 }
 
+Process.prototype.setScale = function(number) {
+  let sprite = this.blockReceiver()
+  if (glide) {
+    var milliSecs = 500;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.startValue = sprite.scale*100;
+    }
+    if ((Date.now() - this.context.startTime) >= milliSecs) {
+      sprite.setScale(number);
+      return null;
+    }
+    let elapsed = Date.now() - this.context.startTime;
+    let fraction = Math.max(Math.min(elapsed / milliSecs, 1), 0);
+    sprite.setScale(this.context.startValue + fraction * (number - this.context.startValue));
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.setScale(number);
+  }
+}
+
+Process.prototype.setHeading = function(degrees) {
+  let sprite = this.blockReceiver()
+  if (glide) {
+    var milliSecs = 500;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.startValue = sprite.heading;
+    }
+    if ((Date.now() - this.context.startTime) >= milliSecs) {
+      sprite.setHeading(degrees);
+      return null;
+    }
+    let elapsed = Date.now() - this.context.startTime;
+    let fraction = Math.max(Math.min(elapsed / milliSecs, 1), 0);
+    sprite.setHeading(this.context.startValue + fraction * (degrees - this.context.startValue));
+
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.setHeading(degrees);
+  }
+}
+
+Process.prototype.turn = function(degrees) {
+  let sprite = this.blockReceiver()
+  if (glide) {
+    var milliSecs = 500;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.startValue = sprite.heading;
+    }
+    var endValue = this.context.startValue + (+degrees || 0);
+    if ((Date.now() - this.context.startTime) >= milliSecs) {
+      sprite.setHeading(endValue);
+      return null;
+    }
+    let elapsed = Date.now() - this.context.startTime;
+    let fraction = Math.max(Math.min(elapsed / milliSecs, 1), 0);
+    sprite.setHeading(this.context.startValue + fraction * (endValue - this.context.startValue));
+
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.turn(degrees);
+  }
+}
+
+Process.prototype.turnLeft = function(degrees) {
+  let sprite = this.blockReceiver()
+  if (glide) {
+    var milliSecs = 500;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.startValue = sprite.heading;
+    }
+    var endValue = this.context.startValue - (+degrees || 0);
+    if ((Date.now() - this.context.startTime) >= milliSecs) {
+      sprite.setHeading(endValue);
+      return null;
+    }
+    let elapsed = Date.now() - this.context.startTime;
+    let fraction = Math.max(Math.min(elapsed / milliSecs, 1), 0);
+    sprite.setHeading(this.context.startValue + fraction * (endValue - this.context.startValue));
+
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.turnLeft(degrees);
+  }
+}
+
 Process.prototype.translate_percent = function(percent, direction) {
   let sprite = this.blockReceiver()
   if (!hide3DBlocks) {
