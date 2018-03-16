@@ -1,5 +1,5 @@
 (function () {
    return function () {
-      return coordinateScale
+      return window.coordinateScale;
    };
 }());
