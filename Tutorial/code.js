@@ -1,29 +1,22 @@
-var makeAVar = false;
-var loadNewVariables = false;
-var showCostumesTab = false;
-var categorize = false;
-var hideLeft = false;
-var glideTranslateX = null;
-var glideTranslateY = null;
-var glide = false;
-var hideControlButtons = true;
-var hideThumbnail = true;
-var hideCorral = true;
-var top = 0;
-var iframeHeight = 0;
-var name = '';
-var originalContent;
-var ID;
-var data = '1,1,2,3,5,8,13,21,34,55,89,144';
-var coordinateScale = 1;
-var hide3DBlocks = true;
-var hideGamifyBlocks = true;
+window.makeAVar = false;
+window.loadNewVariables = false;
+window.showCostumesTab = false;
+window.categorize = false;
+window.hideLeft = false;
+window.glide = false;
+window.hideControlButtons = true;
+window.hideThumbnail = true;
+window.hideCorral = true;
+window.top = 0;
+window.data = '1,1,2,3,5,8,13,21,34,55,89,144';
+window.coordinateScale = 1;
+window.hide3DBlocks = true;
+window.hideGamifyBlocks = true;
 SpriteMorph.flippedY = false;
 SpriteMorph.flippedX = false;
 SpriteMorph.isNotFlipBack = true;
 Costume.colored = false;
-var originalContent, ID;
-var FirstCostume = true;
+window.FirstCostume = true;
 SpriteMorph._3DRotationX = 0, SpriteMorph._3DRotationY = 0, SpriteMorph._3DRotationZ = 0;
 
 // StageMorph 3D rendering
@@ -52,7 +45,7 @@ IDE_Morph.prototype.droppedText = function(aString, name) {
     return this.openMediaString(aString);
   }
   if (aString.indexOf('<data>') === 0) {
-    data = aString.substring(6);
+    window.data = aString.substring(6);
   }
 };
 //override the control bar creation
@@ -113,14 +106,14 @@ IDE_Morph.prototype.createControlBar = function() {
   button.labelShadowColor = colors[1];
   button.labelColor = this.buttonLabelColor;
   button.contrast = this.buttonContrast;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     button.drawNew();
     button.hint = 'stage size\nsmall & normal';
     button.fixLayout();
     button.refresh();
   }
   stageSizeButton = button;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     this.controlBar.add(stageSizeButton);
     this.controlBar.stageSizeButton = button; // for refreshing
   }
@@ -148,14 +141,14 @@ IDE_Morph.prototype.createControlBar = function() {
   button.labelShadowColor = colors[1];
   button.labelColor = this.buttonLabelColor;
   button.contrast = this.buttonContrast;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     button.drawNew();
     button.hint = 'app & edit\nmodes';
     button.fixLayout();
     button.refresh();
   }
   appModeButton = button;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     if (!config.presentation) {
       this.controlBar.add(appModeButton);
     }
@@ -185,14 +178,14 @@ IDE_Morph.prototype.createControlBar = function() {
   button.labelShadowColor = colors[1];
   button.labelColor = this.buttonLabelColor;
   button.contrast = this.buttonContrast;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     button.drawNew();
     button.hint = 'sounds\nmuted & unmuted';
     button.fixLayout();
     button.refresh();
   }
   muteSoundsButton = button;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     this.controlBar.add(muteSoundsButton);
     this.controlBar.muteSoundsButton = button; // for refreshing
   }
@@ -314,13 +307,13 @@ IDE_Morph.prototype.createControlBar = function() {
   button.labelShadowColor = colors[1];
   button.labelColor = this.buttonLabelColor;
   button.contrast = this.buttonContrast;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     button.drawNew();
     button.hint = 'edit settings';
     button.fixLayout();
   }
   settingsButton = button;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     this.controlBar.add(settingsButton);
     this.controlBar.settingsButton = settingsButton; // for menu positioning
   }
@@ -343,7 +336,7 @@ IDE_Morph.prototype.createControlBar = function() {
     button.labelShadowColor = colors[1];
     button.labelColor = this.buttonLabelColor;
     button.contrast = this.buttonContrast;
-    if (!hideControlButtons) {
+    if (!window.hideControlButtons) {
       button.drawNew();
       button.fixLayout();
       goalImagesButton = button;
@@ -368,13 +361,13 @@ IDE_Morph.prototype.createControlBar = function() {
   button.labelShadowColor = colors[1];
   button.labelColor = this.buttonLabelColor;
   button.contrast = this.buttonContrast;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     button.drawNew();
     button.hint = 'cloud operations';
     button.fixLayout();
   }
   cloudButton = button;
-  if (!hideControlButtons) {
+  if (!window.hideControlButtons) {
     this.controlBar.add(cloudButton);
     this.controlBar.cloudButton = cloudButton; // for menu positioning
   }
@@ -392,7 +385,7 @@ IDE_Morph.prototype.createControlBar = function() {
 
     x = myself.right() - (StageMorph.prototype.dimensions.x *
       (myself.isSmallStage ? myself.stageRatio : 1));
-    if (!hideControlButtons) {
+    if (!window.hideControlButtons) {
       [stageSizeButton, appModeButton, muteSoundsButton].forEach(
         function(button) {
           x += padding;
@@ -469,7 +462,7 @@ IDE_Morph.prototype.createCategories = function() {
   this.categories.silentSetWidth(this.logo.width()); // width is fixed
 
   function addCategoryButton(category) {
-    if (categorize) {
+    if (window.categorize) {
       var labelWidth = 75,
         colors = [
           myself.frameColor,
@@ -512,7 +505,7 @@ IDE_Morph.prototype.createCategories = function() {
   }
 
   function fixCategoriesLayout() {
-    if (categorize) {
+    if (window.categorize) {
       var buttonWidth = myself.categories.children[0].width(),
         buttonHeight = myself.categories.children[0].height(),
         border = 3,
@@ -561,7 +554,7 @@ IDE_Morph.prototype.createPalette = function() {
   if (this.palette) {
     this.palette.destroy();
   }
-  if (!hideLeft) {
+  if (!window.hideLeft) {
     this.palette = this.currentSprite.palette(this.currentCategory);
     this.palette.isDraggable = false;
     this.palette.acceptsDrops = true;
@@ -603,13 +596,13 @@ IDE_Morph.prototype.fixLayout = function(situation) {
     this.controlBar.fixLayout();
 
     // categories
-    if (!hideLeft) {
+    if (!window.hideLeft) {
       this.categories.setLeft(this.logo.left());
       this.categories.setTop(this.logo.bottom());
     }
   }
 
-  if (!hideLeft) {
+  if (!window.hideLeft) {
     this.palette.setLeft(this.logo.left());
     this.palette.setTop(this.categories.bottom());
     this.palette.setHeight(this.bottom() - this.palette.top());
@@ -727,7 +720,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
     button.fixLayout();
     button.refresh();
     rotationStyleButtons.push(button);
-    if (hideThumbnail) {
+    if (window.hideThumbnail) {
       button.setPosition(myself.spriteBar.position().add(2));
       button.setTop(button.top() +
         ((rotationStyleButtons.length - 1) * (button.height() + 2))
@@ -748,7 +741,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
 
   thumbnail = new Morph();
   thumbnail.setExtent(thumbSize);
-  if (hideThumbnail) {
+  if (window.hideThumbnail) {
     thumbnail.image = this.currentSprite.thumbnail(thumbSize);
     thumbnail.setPosition(
       rotationStyleButtons[0].topRight().add(new Point(5, 3))
@@ -759,7 +752,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
   }
 
   thumbnail.step = function() {
-    if (hideThumbnail) {
+    if (window.hideThumbnail) {
       if (thumbnail.version !== myself.currentSprite.version) {
         thumbnail.image = myself.currentSprite.thumbnail(thumbSize);
         thumbnail.changed();
@@ -772,7 +765,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
   nameField.setWidth(100); // fixed dimensions
   nameField.contrast = 90;
   nameField.setPosition(thumbnail.topRight().add(new Point(10, 3)));
-  if (hideThumbnail) {
+  if (window.hideThumbnail) {
     this.spriteBar.add(nameField);
     nameField.drawNew();
     nameField.accept = function() {
@@ -868,7 +861,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
   tab.labelShadowOffset = new Point(-1, -1);
   tab.labelShadowColor = tabColors[1];
   tab.labelColor = this.buttonLabelColor;
-  if (showCostumesTab) {
+  if (window.showCostumesTab) {
     tab.drawNew();
     tab.fixLayout();
     tabBar.add(tab);
@@ -891,7 +884,7 @@ IDE_Morph.prototype.createSpriteBar = function() {
   tab.labelShadowOffset = new Point(-1, -1);
   tab.labelShadowColor = tabColors[1];
   tab.labelColor = this.buttonLabelColor;
-  if (categorize) {
+  if (window.categorize) {
     tab.drawNew();
     tab.fixLayout();
     tabBar.add(tab);
@@ -948,16 +941,16 @@ IDE_Morph.prototype.createCorralBar = function() {
   newbutton.labelShadowColor = colors[1];
   newbutton.labelColor = this.buttonLabelColor;
   newbutton.contrast = this.buttonContrast;
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     newbutton.drawNew();
   }
   newbutton.hint = "add a new Turtle sprite";
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     newbutton.fixLayout();
   }
   newbutton.setCenter(this.corralBar.center());
   newbutton.setLeft(this.corralBar.left() + padding);
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     this.corralBar.add(newbutton);
   }
 
@@ -976,11 +969,11 @@ IDE_Morph.prototype.createCorralBar = function() {
   paintbutton.labelShadowColor = colors[1];
   paintbutton.labelColor = this.buttonLabelColor;
   paintbutton.contrast = this.buttonContrast;
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     paintbutton.drawNew();
   }
   paintbutton.hint = "paint a new sprite";
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     paintbutton.fixLayout();
   }
   paintbutton.setCenter(this.corralBar.center());
@@ -988,7 +981,7 @@ IDE_Morph.prototype.createCorralBar = function() {
     this.corralBar.left() + padding + newbutton.width() + padding
   );
 
-  if (!hideCorral) {
+  if (!window.hideCorral) {
     this.corralBar.add(paintbutton);
   }
   xlabel = new StringMorph(
@@ -1103,7 +1096,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     return menu;
   }
 
-  if (cat === 'control' || !categorize) {
+  if (cat === 'control' || !window.categorize) {
 
     blocks.push(block('receiveGo'));
     blocks.push(block('receiveKey'));
@@ -1120,7 +1113,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push(block('doWait'));
     blocks.push(block('doWaitUntil'));
     blocks.push('-');
-    if (categorize) blocks.push(block('doRepeat'));
+    if (window.categorize) blocks.push(block('doRepeat'));
     blocks.push(block('doForever'));
     blocks.push(block('doUntil'));
     blocks.push('-');
@@ -1131,8 +1124,8 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push('-');
 
   }
-  if (cat === 'motion' || !categorize) {
-    if (!hide3DBlocks) {
+  if (cat === 'motion' || !window.categorize) {
+    if (!window.hide3DBlocks) {
       blocks.push(block('turn3D'));
       blocks.push(block('point3D'));
       blocks.push('-');
@@ -1177,8 +1170,8 @@ SpriteMorph.prototype.blockTemplates = function(category) {
       blocks.push(block('direction'));
     }
   }
-  if (cat === 'looks' || !categorize) {
-    if (!hide3DBlocks) {
+  if (cat === 'looks' || !window.categorize) {
+    if (!window.hide3DBlocks) {
       blocks.push(block('doSwitchToCostume'));
       blocks.push(block('doWearNextCostume'));
       blocks.push(watcherToggle('getCostumeIdx'));
@@ -1215,7 +1208,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
       blocks.push(block('goBack'));
     }
   }
-  if (cat === 'sound' || !categorize) {
+  if (cat === 'sound' || !window.categorize) {
 
     blocks.push(block('playSound'));
     blocks.push(block('doPlaySoundUntilDone'));
@@ -1235,10 +1228,10 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push(watcherToggle('getTempo'));
     blocks.push(block('getTempo'));
   }
-  if (cat === 'pen' || !categorize) {
+  if (cat === 'pen' || !window.categorize) {
 
     blocks.push(block('clear'));
-    if (!categorize) blocks.push(block('doRepeat'));
+    if (!window.categorize) blocks.push(block('doRepeat'));
     blocks.push('-');
     blocks.push(block('down'));
     blocks.push(block('up'));
@@ -1267,7 +1260,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push('-');
     blocks.push(block('doStamp'));
     blocks.push(block('smoothBorders'));
-    if (!hide3DBlocks) {
+    if (!window.hide3DBlocks) {
       blocks.push('-');
       blocks.push(block('show3dPen'));
       blocks.push(block('hide3dPen'));
@@ -1312,7 +1305,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push(block('openWebsite'));
 
   }
-  if (cat === 'sensing' || !categorize) {
+  if (cat === 'sensing' || !window.categorize) {
 
     blocks.push(block('reportTouchingObject'));
     blocks.push(block('reportTouchingColor'));
@@ -1345,7 +1338,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push('-');
     blocks.push(block('reportDate'));
   }
-  if (cat === 'operators' || !categorize) {
+  if (cat === 'operators' || !window.categorize) {
 
     //blocks.push(block('reifyScript'));
     //blocks.push(block('reifyReporter'));
@@ -1385,8 +1378,8 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push(block('reportIsIdentical'));
 
   }
-  if (cat === 'variables' || !categorize) {
-    if (makeAVar) {
+  if (cat === 'variables' || !window.categorize) {
+    if (window.makeAVar) {
       button = new PushButtonMorph(
         null,
         function() {
@@ -1416,7 +1409,7 @@ SpriteMorph.prototype.blockTemplates = function(category) {
       blocks.push(button);
     }
 
-    if (makeAVar && this.variables.allNames().length > 0) {
+    if (window.makeAVar && this.variables.allNames().length > 0) {
       button = new PushButtonMorph(
         null,
         function() {
@@ -1482,14 +1475,14 @@ SpriteMorph.prototype.blockTemplates = function(category) {
       blocks.push('=');
     }
 
-    if (makeAVar) {
+    if (window.makeAVar) {
       button.userMenu = helpMenu;
       button.selector = 'addCustomBlock';
       button.showHelp = BlockMorph.prototype.showHelp;
       blocks.push(button);
     }
   }
-  if (!categorize) {
+  if (!window.categorize) {
     this.categories.forEach(function(cate) {
       if (typeof SpriteMorph.prototype._blockTemplates[cate] !== 'undefined') {
         for (var i = 0; i < SpriteMorph.prototype._blockTemplates[cate].length; i += 1) {
@@ -1784,7 +1777,7 @@ SyntaxElementMorph.prototype.labelPart = function(spec) {
         part.setContents(['ghost']);
         break;
       case '%drc':
-        if (hide3DBlocks) {
+        if (window.hide3DBlocks) {
           part = new InputSlotMorph(
             'width',
             false, {
@@ -2217,7 +2210,7 @@ BlockMorph.prototype.hidePrimitive = function() {
   ide.refreshPalette();
 };
 SpriteMorph.prototype.freshPalette = function(category) {
-  if (!hideLeft) {
+  if (!window.hideLeft) {
     var palette = new ScrollFrameMorph(null, null, this.sliderColor),
       unit = SyntaxElementMorph.prototype.fontSize,
       x = 0,
@@ -2236,7 +2229,7 @@ SpriteMorph.prototype.freshPalette = function(category) {
     palette.color = this.paletteColor;
     palette.growth = new Point(0, MorphicPreferences.scrollBarSize);
 
-    if (hide3DBlocks) {
+    if (window.hide3DBlocks) {
       StageMorph.prototype.hiddenPrimitives['3DRotationX'] = true;
       StageMorph.prototype.hiddenPrimitives['3DRotationY'] = true;
       StageMorph.prototype.hiddenPrimitives['3DRotationZ'] = true;
@@ -2249,7 +2242,7 @@ SpriteMorph.prototype.freshPalette = function(category) {
       StageMorph.prototype.hiddenPrimitives['printVariable'] = true;
     }
 
-    if (hideGamifyBlocks) {
+    if (window.hideGamifyBlocks) {
       StageMorph.prototype.hiddenPrimitives['waitUntilOnly'] = true;
       StageMorph.prototype.hiddenPrimitives['visibleColor'] = true;
       StageMorph.prototype.hiddenPrimitives['goOnAny'] = true;
@@ -2390,7 +2383,7 @@ SpriteMorph.prototype.freshPalette = function(category) {
 
     stage.globalBlocks.forEach(function(definition) {
       var block;
-      if (!categorize || definition.category === category ||
+      if (!window.categorize || definition.category === category ||
         (category === 'variables' &&
           contains(
             ['lists', 'other'],
@@ -2410,7 +2403,7 @@ SpriteMorph.prototype.freshPalette = function(category) {
     y += unit * 1.6;
     this.customBlocks.forEach(function(definition) {
       var block;
-      if (!categorize || definition.category === category ||
+      if (!window.categorize || definition.category === category ||
         (category === 'variables' &&
           contains(
             ['lists', 'other'],
@@ -2511,7 +2504,7 @@ IDE_Morph.prototype.partial_load_xml = function(answer, optionalOverwriteSprite)
       blocks.appendChild(newBlockDefinitions[i]);
     }
   }
-  if (loadNewVariables) {
+  if (window.loadNewVariables) {
     var oldVariables = $(myXML).find('variables').find('variable');
     var newVariables = $(otherXML).find('variables').find('variable');
     var variables = myXML.getElementsByTagName('variables')[myXML.getElementsByTagName('variables').length - 1];
@@ -2526,7 +2519,7 @@ IDE_Morph.prototype.partial_load_xml = function(answer, optionalOverwriteSprite)
         variables.appendChild(newVariables[i]);
       }
     }
-    loadNewVariables = false;
+    window.loadNewVariables = false;
   }
   var str = world.children[0].xmlToString(myXML);
   world.children[0].load_project_xml(str);
@@ -2592,7 +2585,7 @@ CustomCommandBlockMorph.prototype.hideBlockDefinition = function() {
   });
 };
 IDE_Morph.prototype.refreshPalette = function(shouldIgnorePosition) {
-  if (!hideLeft && this.palette.contents) {
+  if (!window.hideLeft && this.palette.contents) {
     var oldTop = this.palette.contents.top();
     this.createPalette();
     this.fixLayout('refreshPalette');
@@ -2696,7 +2689,7 @@ SpriteMorph.prototype.wearCostume = function(costume) {
     var x = this.xPosition ? this.xPosition() : null,
       y = this.yPosition ? this.yPosition() : null,
       isWarped = this.isWarped;
-    if (this.costume && this.costume.originalPixels && !FirstCostume) {
+    if (this.costume && this.costume.originalPixels && !window.FirstCostume) {
       this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
       this.costume.colored = false;
     }
@@ -2725,7 +2718,7 @@ SpriteMorph.prototype.wearCostume = function(costume) {
       ide.selectSprite(this);
     }
   }
-  FirstCostume = false;
+  window.FirstCostume = false;
 };
 Costume.prototype.setColorWithParent = function(col, myParent) {
   var flipBackX = false,
@@ -2795,8 +2788,8 @@ IDE_Morph.prototype.updateCorralBar = function() {
     this.corralBar.children[0].text = "";
     this.corralBar.children[1].text = "";
   } else {
-    this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / coordinateScale);
-    this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / coordinateScale);
+    this.corralBar.children[0].text = "X: " + Math.round(this.stage.reportMouseX() / window.coordinateScale);
+    this.corralBar.children[1].text = "Y: " + Math.round(this.stage.reportMouseY() / window.coordinateScale);
   }
   Morph.prototype.trackChanges = true;
 
@@ -3092,7 +3085,7 @@ StageMorph.prototype.init = function(globals) {
   this.shownObjects = new List();
   this.hiddenObjects = new List();
   this.init3D();
-  if (!hide3DBlocks) {
+  if (!window.hide3DBlocks) {
     this.addCoordinatePlane();
     this.camera.up = new THREE.Vector3(0, 0, 1);
     this.camera.lookAt({
@@ -3672,7 +3665,7 @@ for (i = 0; i < btns.length; i++) {
       value = src.getAttribute('value');
 
     if (src.getAttribute("name")) {
-      FirstCostume = true;
+      window.FirstCostume = true;
       if (value.includes('ReplaceScript'))
         world.children[0].loadComplete(src.getAttribute("name"));
       else {
@@ -3720,7 +3713,7 @@ $('<style type="text/css">' +
 
 function setScrollPos() {
   var doc = window.parent.document.documentElement;
-  top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  window.top= (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 }
 
 function Unscroll() {
@@ -3731,7 +3724,7 @@ function scrollToLocation(loc) {
   window.parent.onload = null;
   window.parent.onscroll = null;
   var doc = window.parent.document.documentElement;
-  top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  window.top= (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
   if (!(loc == undefined)) {
     window.parent.location.href = loc;
@@ -3743,11 +3736,12 @@ function scrollToLocation(loc) {
 
 function AsignSettings(btn) {
   var value = btn.getAttribute("value");
+  var ide = world.children[0];
   if (value.includes('EnableMakeAVar')) {
-    makeAVar = true;
+    window.makeAVar = true;
   }
   if (value.includes('DisableMakeAVar')) {
-    makeAVar = false;
+    window.makeAVar = false;
   }
   if (value.includes('CheatFullScreen')) {
     try {
@@ -3759,24 +3753,23 @@ function AsignSettings(btn) {
     } catch (e) {}
   }
   if (value.includes('ShowCostumesTab')) {
-    showCostumesTab = true;
-    world.children[0].createSpriteBar();
+    window.showCostumesTab = true;
+    ide.createSpriteBar();
   }
   if (value.includes('HideCostumesTab')) {
-    showCostumesTab = false;
-    world.children[0].createSpriteBar();
+    window.showCostumesTab = false;
+    ide.createSpriteBar();
   }
   if (value.includes('HideLeft')) {
-    hideLeft = true;
-    world.children[0].createPalette();
+    window.hideLeft = true;
+    ide.createPalette();
   }
   if (value.includes('ShowLeft')) {
-    hideLeft = false;
-    world.children[0].createPalette();
+    window.hideLeft = false;
+    ide.createPalette();
   }
   if (value.includes('HideCategories')) {
-    categorize = false;
-    ide = world.children[0];
+    window.categorize = false;
     ide.buildPanes();
     ide.flushBlocksCache('motion');
     ide.flushBlocksCache('looks');
@@ -3790,8 +3783,7 @@ function AsignSettings(btn) {
     rebuildPanes();
   }
   if (value.includes('ShowCategories')) {
-    categorize = true;
-    ide = world.children[0];
+    window.categorize = true;
     ide.createPalette();
     ide.flushBlocksCache('motion');
     ide.flushBlocksCache('looks');
@@ -3805,34 +3797,34 @@ function AsignSettings(btn) {
     rebuildPanes();
   }
   if (value.includes('HideControlButtons')) {
-    hideControlButtons = true;
+    window.hideControlButtons = true;
     rebuildPanes();
   }
   if (value.includes('ShowControlButtons')) {
-    hideControlButtons = false;
+    window.hideControlButtons = false;
     rebuildPanes();
   }
   if (value.includes('HideThumbnail')) {
-    hideThumbnail = true;
+    window.hideThumbnail = true;
     rebuildPanes();
   }
   if (value.includes('ShowThumbnail')) {
-    hideThumbnail = false;
+    window.hideThumbnail = false;
     rebuildPanes();
   }
   if (value.includes('HideCorral')) {
-    hideCorral = true;
+    window.hideCorral = true;
     rebuildPanes();
   }
   if (value.includes('ShowCorralt')) {
-    hideCorral = false;
+    window.hideCorral = false;
     rebuildPanes();
   }
   if (value.includes('DoGlide')) {
-    glide = true;
+    window.glide = true;
   }
   if (value.includes('StopGlide')) {
-    glide = false;
+    window.glide = false;
   }
   if (value.includes('HideFrame')) {
     window.parent.$('#CSnapFrame').hide();
@@ -3841,19 +3833,19 @@ function AsignSettings(btn) {
     window.parent.$('#CSnapFrame').show();
   }
   if (value.includes('LoadNewVariables')) {
-    loadNewVariables = true;
+    window.loadNewVariables = true;
   }
   if (value.includes('LoadNewVariables')) {
-    loadNewVariables = true;
+    window.loadNewVariables = true;
   }
   if (value.includes('ClearStage')) {
-    world.children[0].stage.clear();
+    ide.stage.clear();
   }
   if (value.includes('RunOnAny')) {
     var stage,
       procs = [],
       hats = [];
-    stage = world.children[0].stage;
+    stage = ide.stage;
     if (stage) {
       stage.children.concat(this).forEach(function(morph) {
         if (morph instanceof SpriteMorph || morph instanceof StageMorph) {
@@ -3898,7 +3890,7 @@ function AsignSettings(btn) {
   }
   if (value.includes('3D')) {
 
-    hide3DBlocks = false;
+    window.hide3DBlocks = false;
 
     //events that should only be called when in 3D
     window.addEventListener("mousedown", _3DDragMouseDown);
@@ -3907,11 +3899,10 @@ function AsignSettings(btn) {
     window.addEventListener("wheel", _3DMouseScroll);
 
     IDE_Morph.prototype.updateCorralBar = function() {}
-    world.children[0].stage.changed();
+    ide.stage.changed();
 
   } else {
-    hide3DBlocks = true;
-    ide = world.children[0];
+    window.hide3DBlocks = true;
     ide.flushBlocksCache('motion');
     ide.flushBlocksCache('looks');
     ide.flushBlocksCache('variables');
@@ -4007,7 +3998,7 @@ BlockMorph.prototype.mouseClickLeft = function() {
 };
 
 Process.prototype.gotoXY = function(x, y) {
-  if (glide) {
+  if (window.glide) {
     this.doGlide(0.5, x, y);
   } else {
     this.blockReceiver().gotoXY(x, y);
@@ -4016,7 +4007,7 @@ Process.prototype.gotoXY = function(x, y) {
 
 Process.prototype.setScale = function(number) {
   let sprite = this.blockReceiver()
-  if (glide) {
+  if (window.glide) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4024,6 +4015,9 @@ Process.prototype.setScale = function(number) {
     }
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       sprite.setScale(number);
+      return null;
+    }
+    if (number == sprite.scale*100) {
       return null;
     }
     let elapsed = Date.now() - this.context.startTime;
@@ -4038,14 +4032,22 @@ Process.prototype.setScale = function(number) {
 
 Process.prototype.setHeading = function(degrees) {
   let sprite = this.blockReceiver()
-  if (glide) {
+  if (window.glide) {
     var milliSecs = 500;
+    degrees = degrees  % 360;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
-      this.context.startValue = sprite.heading;
+      this.context.startValue = sprite.heading % 360;
+      if (Math.abs(degrees - sprite.heading) > Math.abs(degrees - (360 - sprite.heading))){
+        this.context.startValue = 360 - sprite.heading;
+      }
+
     }
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       sprite.setHeading(degrees);
+      return null;
+    }
+    if (degrees == sprite.heading) {
       return null;
     }
     let elapsed = Date.now() - this.context.startTime;
@@ -4061,7 +4063,7 @@ Process.prototype.setHeading = function(degrees) {
 
 Process.prototype.turn = function(degrees) {
   let sprite = this.blockReceiver()
-  if (glide) {
+  if (window.glide) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4070,6 +4072,9 @@ Process.prototype.turn = function(degrees) {
     var endValue = this.context.startValue + (+degrees || 0);
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       sprite.setHeading(endValue);
+      return null;
+    }
+    if (endValue == sprite.heading) {
       return null;
     }
     let elapsed = Date.now() - this.context.startTime;
@@ -4085,7 +4090,7 @@ Process.prototype.turn = function(degrees) {
 
 Process.prototype.turnLeft = function(degrees) {
   let sprite = this.blockReceiver()
-  if (glide) {
+  if (window.glide) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4109,7 +4114,7 @@ Process.prototype.turnLeft = function(degrees) {
 
 Process.prototype.translate_percent = function(percent, direction) {
   let sprite = this.blockReceiver()
-  if (!hide3DBlocks) {
+  if (!window.hide3DBlocks) {
     var vector;
 
     // set the initial direction
@@ -4128,7 +4133,7 @@ Process.prototype.translate_percent = function(percent, direction) {
     sprite.positionTalkBubble();
     return null;
   }
-  if (glide) {
+  if (window.glide) {
     var secs = 0.5;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
