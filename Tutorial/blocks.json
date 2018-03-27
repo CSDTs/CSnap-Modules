@@ -5,16 +5,10 @@
                 "spec": "translate by %n of %drc",
                 "defaults": [100, null]
     },
-    "flipXAxis": {
-                "type": "command",
-                "category": "looks",
-                "spec": "reflect across X axis",
-                "defaults": []
-    },
     "flipYAxis": {
                 "type": "command",
                 "category": "looks",
-                "spec": "reflect across Y axis",
+                "spec": "flip",
                 "defaults": []
     },
 	"changeCostumeColor": {

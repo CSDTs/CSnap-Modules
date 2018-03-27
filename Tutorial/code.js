@@ -3713,7 +3713,7 @@ $('<style type="text/css">' +
 
 function setScrollPos() {
   var doc = window.parent.document.documentElement;
-  window.top= (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  window.top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 }
 
 function Unscroll() {
@@ -3724,7 +3724,7 @@ function scrollToLocation(loc) {
   window.parent.onload = null;
   window.parent.onscroll = null;
   var doc = window.parent.document.documentElement;
-  window.top= (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  window.top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
   if (!(loc == undefined)) {
     window.parent.location.href = loc;
@@ -3998,10 +3998,14 @@ BlockMorph.prototype.mouseClickLeft = function() {
 };
 
 Process.prototype.gotoXY = function(x, y) {
+  let sprite = this.blockReceiver()
   if (window.glide) {
+    if (sprite.yPosition() == y && sprite.xPosition() == x) {
+      return null;
+    }
     this.doGlide(0.5, x, y);
   } else {
-    this.blockReceiver().gotoXY(x, y);
+    sprite.gotoXY(x, y);
   }
 }
 
@@ -4011,13 +4015,13 @@ Process.prototype.setScale = function(number) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
-      this.context.startValue = sprite.scale*100;
+      this.context.startValue = sprite.scale * 100;
     }
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       sprite.setScale(number);
       return null;
     }
-    if (number == sprite.scale*100) {
+    if (number == sprite.scale * 100) {
       return null;
     }
     let elapsed = Date.now() - this.context.startTime;
@@ -4032,16 +4036,21 @@ Process.prototype.setScale = function(number) {
 
 Process.prototype.setHeading = function(degrees) {
   let sprite = this.blockReceiver()
+  if (degrees == 0) {
+    return null;
+  }
   if (window.glide) {
     var milliSecs = 500;
-    degrees = degrees  % 360;
+    degrees = degrees % 360;
     if (!this.context.startTime) {
-      this.context.startTime = Date.now();
       this.context.startValue = sprite.heading % 360;
-      if (Math.abs(degrees - sprite.heading) > Math.abs(degrees - (360 - sprite.heading))){
+      if (Math.abs(degrees - sprite.heading) > Math.abs(degrees - (360 - sprite.heading))) {
         this.context.startValue = 360 - sprite.heading;
       }
-
+      if (degrees == sprite.heading) {
+        return null;
+      }
+      this.context.startTime = Date.now();
     }
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       sprite.setHeading(degrees);
@@ -4062,6 +4071,9 @@ Process.prototype.setHeading = function(degrees) {
 }
 
 Process.prototype.turn = function(degrees) {
+  if (degrees == 0) {
+    return null;
+  }
   let sprite = this.blockReceiver()
   if (window.glide) {
     var milliSecs = 500;
@@ -4089,6 +4101,9 @@ Process.prototype.turn = function(degrees) {
 }
 
 Process.prototype.turnLeft = function(degrees) {
+  if (degrees == 0) {
+    return null;
+  }
   let sprite = this.blockReceiver()
   if (window.glide) {
     var milliSecs = 500;
@@ -4113,7 +4128,10 @@ Process.prototype.turnLeft = function(degrees) {
 }
 
 Process.prototype.translate_percent = function(percent, direction) {
-  let sprite = this.blockReceiver()
+  let sprite = this.blockReceiver();
+  if (percent == 0) {
+    return null;
+  }
   if (!window.hide3DBlocks) {
     var vector;
 
@@ -4182,7 +4200,7 @@ Process.prototype.translate_percent = function(percent, direction) {
 
     }
     if ((Date.now() - this.context.startTime) >= (secs * 1000)) {
-      sprite.gotoXY(this.context.endValue.x,this.context.endValue.y,);
+      sprite.gotoXY(this.context.endValue.x, this.context.endValue.y, );
       return null;
     }
     sprite.glide(
@@ -4197,6 +4215,63 @@ Process.prototype.translate_percent = function(percent, direction) {
     this.pushContext();
   } else {
     sprite.translate_percent(percent, direction)
+  }
+}
+
+Process.prototype.flipYAxis = function() {
+  let sprite = this.blockReceiver()
+  if (window.glide) {
+    var milliSecs = 500;
+    var end = false;
+    if (!this.context.startTime) {
+      this.context.startTime = Date.now();
+      this.context.initialValue = jQuery.extend(true, {}, sprite.costumes.contents[sprite.getCostumeIdx() - 1]);
+    }
+    var costume = sprite.costumes.contents[sprite.getCostumeIdx() - 1],
+      canvas = newCanvas(this.context.initialValue.extent()),
+      ctx = canvas.getContext('2d');
+    let elapsed = Date.now() - this.context.startTime;
+    let fraction = Math.max(Math.min(elapsed / milliSecs, 1), 0);
+    if ((Date.now() - this.context.startTime) >= milliSecs) {
+      ctx.translate(this.context.initialValue.width(), 0);
+      ctx.scale(-1, 1);
+      end = true;
+    } else {
+      ctx.translate(this.context.initialValue.width() * 1 * (fraction), 0);
+      ctx.scale(1 - (2 * fraction), 1);
+    }
+    ctx.drawImage(this.context.initialValue.contents, 0, 0);
+    costume.contents = canvas;
+    costume.rotationCenter = new Point(
+      this.context.initialValue.width() - this.context.initialValue.rotationCenter.x,
+      this.context.initialValue.rotationCenter.y
+    );
+
+    if (end) {
+      canvas = newCanvas(costume.extent()),
+        ctx = canvas.getContext('2d');
+      ctx.putImageData(costume.originalPixels, 0, 0);
+      ctx.translate(costume.originalPixels.width, 0);
+      ctx.translate(costume.width(), 0);
+      ctx.scale(-1, 1);
+      costume.originalPixels = ctx.getImageData(0, 0, costume.originalPixels.width, costume.originalPixels.height);
+    }
+    sprite.costumes.contents[sprite.getCostumeIdx() - 1] = costume;
+    sprite.costume = costume;
+    sprite.positionTalkBubble();
+    sprite.drawNew();
+    sprite.changed();
+    if (end) {
+      sprite.flippedY = !sprite.flippedY;
+      sprite.isNotFlipBack = !sprite.isNotFlipBack;
+      sprite.drawNew();
+      sprite.changed();
+      return null;
+    }
+    this.pushContext('doYield');
+    this.pushContext();
+  } else {
+    sprite.flipYAxis();
   }
 }
 
