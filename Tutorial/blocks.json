@@ -1,15 +1,15 @@
 {
     "translate_percent": {
-                "type": "command",
-                "category": "motion",
-                "spec": "translate by %n of %drc",
-                "defaults": [100, null]
+        "type": "command",
+        "category": "motion",
+        "spec": "translate by %n of %drc",
+        "defaults": [100, null]
     },
     "flipYAxis": {
-                "type": "command",
-                "category": "looks",
-                "spec": "flip",
-                "defaults": []
+        "type": "command",
+        "category": "looks",
+        "spec": "reflect across y axis",
+        "defaults": []
     },
 	"changeCostumeColor": {
 				"type": "command",
@@ -17,6 +17,11 @@
 				"spec": "set costume color to %n",
 				"defaults": [0]
 	},
+  "changeCostumeColorClr": {
+        "tsype": "command",
+        "category": "looks",
+        "spec": "set costume color to %clr"
+  },
 	"changeCostumeShade": {
 				"type": "command",
 				"category": "looks",
@@ -24,26 +29,26 @@
 				"defaults": [100]
 	},
    "parseString": {
-            "type": "reporter",
-            "category": "operators",
-            "spec": "break up %s by %s"
+        "type": "reporter",
+        "category": "operators",
+        "spec": "break up %s by %s"
    },
    "getData": {
-            "type": "reporter",
-            "category": "variables",
-            "spec": "imported data"
+        "type": "reporter",
+        "category": "variables",
+        "spec": "imported data"
    },
    "setCoordinateScale": {
-            "type": "command",
-            "category": "looks",
-            "spec": "set coordinate scale %n",
-            "defaults": [18]
+        "type": "command",
+        "category": "looks",
+        "spec": "set coordinate scale %n",
+        "defaults": [18]
    },
 
    "getCoordinateScale": {
-            "type": "reporter",
-            "category": "looks",
-            "spec": "coordinate scale"
+        "type": "reporter",
+        "category": "looks",
+        "spec": "coordinate scale"
    },
 	"3DRotationX": {
 				"type": "reporter",

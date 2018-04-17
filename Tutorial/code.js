@@ -12,6 +12,7 @@ window.data = '1,1,2,3,5,8,13,21,34,55,89,144';
 window.coordinateScale = 1;
 window.hide3DBlocks = true;
 window.hideGamifyBlocks = true;
+window.hideColorBlock = true;
 SpriteMorph.flippedY = false;
 SpriteMorph.flippedX = false;
 SpriteMorph.isNotFlipBack = true;
@@ -2248,6 +2249,10 @@ SpriteMorph.prototype.freshPalette = function(category) {
       StageMorph.prototype.hiddenPrimitives['goOnAny'] = true;
     }
 
+    if (window.hideColorBlock) {
+      StageMorph.prototype.hiddenPrimitives['changeCostumeColorClr'] = true;
+    }
+
     // menu:
 
     palette.userMenu = function() {
@@ -4036,9 +4041,6 @@ Process.prototype.setScale = function(number) {
 
 Process.prototype.setHeading = function(degrees) {
   let sprite = this.blockReceiver()
-  if (degrees == 0) {
-    return null;
-  }
   if (window.glide) {
     var milliSecs = 500;
     degrees = degrees % 360;
@@ -4226,7 +4228,16 @@ Process.prototype.flipYAxis = function() {
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
       this.context.initialValue = jQuery.extend(true, {}, sprite.costumes.contents[sprite.getCostumeIdx() - 1]);
+      this.context.initialX = sprite.xPosition();
+      this.context.initialY = sprite.yPosition();
+  		this.context.initAngle = sprite.heading;
+      if (Math.cos(90-this.context.initAngle)>0) {
+  		    this.context.endAngle = 180-this.context.initAngle;
+      } else {
+  		    this.context.endAngle = 90-(this.context.initAngle-90);
+      }
     }
+    var endX = -this.context.initialX;
     var costume = sprite.costumes.contents[sprite.getCostumeIdx() - 1],
       canvas = newCanvas(this.context.initialValue.extent()),
       ctx = canvas.getContext('2d');
@@ -4235,10 +4246,14 @@ Process.prototype.flipYAxis = function() {
     if ((Date.now() - this.context.startTime) >= milliSecs) {
       ctx.translate(this.context.initialValue.width(), 0);
       ctx.scale(-1, 1);
+      sprite.gotoXY(endX, sprite.yPosition);
+      sprite.setHeading(this.context.endAngle);
       end = true;
     } else {
       ctx.translate(this.context.initialValue.width() * 1 * (fraction), 0);
       ctx.scale(1 - (2 * fraction), 1);
+      sprite.gotoXY(this.context.initialX+(end-this.context.initialX)*2*fraction, this.context.initialY);
+      sprite.setHeading((this.context.endAngle-this.context.initAngle)*fraction+this.context.initAngle);
     }
     ctx.drawImage(this.context.initialValue.contents, 0, 0);
     costume.contents = canvas;
