@@ -1124,6 +1124,37 @@ SpriteMorph.prototype.blockTemplates = function(category) {
     blocks.push(block('doReport'));
     blocks.push('-');
 
+    /*
+    // old STOP variants, migrated to a newer version, now redundant
+        blocks.push(block('doStopBlock'));
+        blocks.push(block('doStop'));
+        blocks.push(block('doStopAll'));
+    */
+    blocks.push(block('doStopThis'));
+    blocks.push(block('doStopOthers'));
+    blocks.push('-');
+    blocks.push(block('doRun'));
+    blocks.push(block('fork'));
+    blocks.push(block('evaluate'));
+    blocks.push('-');
+    /*
+    // list variants commented out for now (redundant)
+        blocks.push(block('doRunWithInputList'));
+        blocks.push(block('forkWithInputList'));
+        blocks.push(block('evaluateWithInputList'));
+        blocks.push('-');
+    */
+    blocks.push(block('doCallCC'));
+    blocks.push(block('reportCallCC'));
+    blocks.push('-');
+    blocks.push(block('receiveOnClone'));
+    blocks.push(block('createClone'));
+    blocks.push(block('removeClone'));
+    blocks.push('-');
+    blocks.push(block('doPauseAll'));
+    blocks.push('-');
+    blocks.push(block('openWebsite'));
+
   }
   if (cat === 'motion' || !window.categorize) {
     if (!window.hide3DBlocks) {
@@ -1273,37 +1304,6 @@ SpriteMorph.prototype.blockTemplates = function(category) {
       blocks.push(block('renderTorusKnot'));
       blocks.push(block('renderText'));
     } else {}
-
-    /*
-    // old STOP variants, migrated to a newer version, now redundant
-        blocks.push(block('doStopBlock'));
-        blocks.push(block('doStop'));
-        blocks.push(block('doStopAll'));
-    */
-    blocks.push(block('doStopThis'));
-    blocks.push(block('doStopOthers'));
-    blocks.push('-');
-    blocks.push(block('doRun'));
-    blocks.push(block('fork'));
-    blocks.push(block('evaluate'));
-    blocks.push('-');
-    /*
-    // list variants commented out for now (redundant)
-        blocks.push(block('doRunWithInputList'));
-        blocks.push(block('forkWithInputList'));
-        blocks.push(block('evaluateWithInputList'));
-        blocks.push('-');
-    */
-    blocks.push(block('doCallCC'));
-    blocks.push(block('reportCallCC'));
-    blocks.push('-');
-    blocks.push(block('receiveOnClone'));
-    blocks.push(block('createClone'));
-    blocks.push(block('removeClone'));
-    blocks.push('-');
-    blocks.push(block('doPauseAll'));
-    blocks.push('-');
-    blocks.push(block('openWebsite'));
 
   }
   if (cat === 'sensing' || !window.categorize) {
