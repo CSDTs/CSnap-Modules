@@ -15,8 +15,6 @@
           
         // Start file download.
         download("arcs_list.txt", list.asText());
-
-        // window.open('data:text/'+ 'plain,' + list.asText());
     };
 }());
 
