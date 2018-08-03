@@ -3716,18 +3716,7 @@ $('<style type="text/css">' +
   ' content: "\\e080"; }' +
   '</style>').appendTo($('head', window.parent.document));
 
-function setScrollPos() {
-  var doc = window.parent.document.documentElement;
-  window.top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-}
-
-function Unscroll() {
-  $(window.parent).scrollTop(top);
-}
-
 function scrollToLocation(loc) {
-  window.parent.onload = null;
-  window.parent.onscroll = null;
   var doc = window.parent.document.documentElement;
   window.top = (window.parent.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 
@@ -3735,8 +3724,6 @@ function scrollToLocation(loc) {
     window.parent.location.href = loc;
   }
   $(window.parent).scrollTop(top);
-  window.parent.onload = setScrollPos;
-  window.parent.onscroll = setScrollPos;
 }
 
 function AsignSettings(btn) {
@@ -3914,10 +3901,6 @@ function AsignSettings(btn) {
     ide.refreshPalette();
   }
 }
-window.click += Unscroll;
-window.parent.onload = setScrollPos;
-window.parent.onscroll = setScrollPos;
-window.onmousedown = Unscroll;
 try {
   window.parent.document.getElementById('openModalBtn').click();
 } catch (e) {}
