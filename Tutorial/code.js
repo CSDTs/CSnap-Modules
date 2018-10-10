@@ -3987,7 +3987,7 @@ BlockMorph.prototype.mouseClickLeft = function() {
 
 Process.prototype.gotoXY = function(x, y) {
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     if (sprite.yPosition() == y && sprite.xPosition() == x) {
       return null;
     }
@@ -3999,7 +3999,7 @@ Process.prototype.gotoXY = function(x, y) {
 
 Process.prototype.setScale = function(number) {
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4024,7 +4024,7 @@ Process.prototype.setScale = function(number) {
 
 Process.prototype.setHeading = function(degrees) {
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var milliSecs = 500;
     degrees = degrees % 360;
     if (!this.context.startTime) {
@@ -4060,7 +4060,7 @@ Process.prototype.turn = function(degrees) {
     return null;
   }
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4090,7 +4090,7 @@ Process.prototype.turnLeft = function(degrees) {
     return null;
   }
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var milliSecs = 500;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4136,7 +4136,7 @@ Process.prototype.translate_percent = function(percent, direction) {
     sprite.positionTalkBubble();
     return null;
   }
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var secs = 0.5;
     if (!this.context.startTime) {
       this.context.startTime = Date.now();
@@ -4205,7 +4205,7 @@ Process.prototype.translate_percent = function(percent, direction) {
 
 Process.prototype.flipYAxis = function() {
   let sprite = this.blockReceiver()
-  if (window.glide) {
+  if (window.glide && !this.homeContext.receiver.isWarped) {
     var milliSecs = 500;
     var end = false;
     if (!this.context.startTime) {
