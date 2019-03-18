@@ -169,7 +169,7 @@ IDE_Morph.prototype.projectMenu = function () {
         },
         'Select categories of additional blocks to add to this project.'
     );
-	
+
 	menu.addLine();
 	menu.addItem(
         'Load Demos...',
@@ -224,9 +224,9 @@ IDE_Morph.prototype.projectMenu = function () {
 
 				function loadCostume(name) {
 					var url = dir + '/' + name;
-					// canvas = newCanvas(new Point(THREED_DEFAULT_OBJECT_WIDTH, 
+					// canvas = newCanvas(new Point(THREED_DEFAULT_OBJECT_WIDTH,
 					// 							 THREED_DEFAULT_OBJECT_HEIGHT));
-					myself.dropped3dObject(null, name, url);	
+					myself.dropped3dObject(null, name, url);
 				}
 
 				names.forEach(function (line) {
@@ -406,10 +406,10 @@ Point3D.prototype.rotateBy = function (angleX, angleY, angleZ, centerPoint) {
 			}
 			return C;
 		}
-	
-	
+
+
 	if (angleX % Math.PI != 0) {
-		rotMatrix = [[1, 0, 0], 
+		rotMatrix = [[1, 0, 0],
 					 [0, Math.cos(angleX), -1 * Math.sin(angleX)],
 					 [0, Math.sin(angleX), Math.cos(angleX)]];
 	}
@@ -429,7 +429,7 @@ Point3D.prototype.rotateBy = function (angleX, angleY, angleZ, centerPoint) {
 	rotatedP = multiplyMatrix(rotMatrix, [[p.x], [p.y], [p.z]]);
 
 	return new Point3D(
-		center.x - (-rotatedP[0]), 
+		center.x - (-rotatedP[0]),
 		center.y - (-rotatedP[1]),
 		center.z - (-rotatedP[2]));
 };
@@ -447,7 +447,7 @@ SpriteMorph.prototype.init = function (globals) {
 	this.variables = new VariableFrame(globals || null, this);
 	this.scripts = new ScriptsMorph(this);
 	this.customBlocks = [];
-	this.costumes = new List();	
+	this.costumes = new List();
 	this.costume = null;
 	this.sounds = new List();
 	this.normalExtent = new Point(60, 60); // only for costume-less situation
@@ -522,16 +522,16 @@ SpriteMorph.prototype.drawNew = function () {
 	costumeExtent,
 	ctx,
 	handle;
-	
-	
+
+
 	if (this.isWarped) {
 		this.wantsRedraw = true;
 		return;
 	}
 
 	if (this.costume instanceof Costume3D) {
-		var canvasSize = 
-			(THREED_CAMERA_Z_POSITION / (THREED_CAMERA_Z_POSITION - this.zPosition)) * 
+		var canvasSize =
+			(THREED_CAMERA_Z_POSITION / (THREED_CAMERA_Z_POSITION - this.zPosition)) *
 			THREED_DEFAULT_OBJECT_SIZE;
 		canvasSize = Math.max( canvasSize, 5 );
 		var stageScale = this.parent instanceof StageMorph ? this.parent.scale : 1,
@@ -551,7 +551,7 @@ SpriteMorph.prototype.drawNew = function () {
 		// need this for centering
 		this.rotationOffset = new Point(0, 0)
 			.translateBy(new Point(canvasSize / 2, canvasSize / 2))
-			.scaleBy(this.scale * stageScale);		
+			.scaleBy(this.scale * stageScale);
 
 		this.is3D = true;
 	}
@@ -638,7 +638,7 @@ SpriteMorph.prototype.drawNew = function () {
 		}
 	} // if (this.costume instanceof Costume3D) {
 	this.version = Date.now();
-	
+
 	this.originalPixels = this.image.getContext('2d').createImageData(this.width(), this.height());
 	this.originalPixels = this.image.getContext('2d').getImageData(0, 0, this.width(), this.height());
 };
@@ -646,7 +646,7 @@ SpriteMorph.prototype.drawNew = function () {
 
 SpriteMorph.prototype.compute3dScale = function(geometry, fov, dist, aspect) {
 	// see: http://stackoverflow.com/questions/13350875/three-js-width-of-view/13351534#13351534
-	var sphere = geometry.boundingSphere; // THREE.Sphere	
+	var sphere = geometry.boundingSphere; // THREE.Sphere
 	var visible_height = 2 * Math.tan(radians(fov / 2)) * dist;
 	var visible_width = aspect * visible_height;
 	var scale = Math.min(visible_height / (2 * sphere.radius), visible_width / (2 * sphere.radius));
@@ -662,7 +662,7 @@ SpriteMorph.prototype.jsonLoaderCallback = function (spriteMorph) {
 		myself.geometry = geometry;
 
 		// compute a proper scaling factor and the center of the geometry
-		var results = myself.compute3dScale(geometry, 
+		var results = myself.compute3dScale(geometry,
 											THREEJS_FIELD_OF_VIEW, THREEJS_CAMERA_Z_POSITION,
 											myself.canvas3D.width/myself.canvas3D.height);
 		var scale = results[0], sphere = results[1];
@@ -685,7 +685,7 @@ SpriteMorph.prototype.jsonLoaderCallback = function (spriteMorph) {
 		// create a sphere for debug purpose
 		if (isShowingSphere) {
 			var sphereGeometry = new THREE.SphereGeometry(sphere.radius, 32, 32);
-			var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xcccccc, 
+			var sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xcccccc,
 															   wireframe: true,
 															   transparent: true,
 															   opacity: 0.3 } );
@@ -737,7 +737,7 @@ SpriteMorph.prototype.render3dObject = function (aCanvas, url) {
 	var loader = new THREE.JSONLoader();
 
 	this.scene = new THREE.Scene();
-	this.camera = new THREE.PerspectiveCamera(THREEJS_FIELD_OF_VIEW, 
+	this.camera = new THREE.PerspectiveCamera(THREEJS_FIELD_OF_VIEW,
 											  aCanvas.width/aCanvas.height, 0.1, 1000);
 	this.camera.position.z = THREEJS_CAMERA_Z_POSITION;
 	this.scene.add(this.camera);
@@ -749,7 +749,7 @@ SpriteMorph.prototype.render3dObject = function (aCanvas, url) {
 	if (!this.costumeChange && this.geometry) {
 		// you don't have to read the geometry again - synchronized function call
 		(this.jsonLoaderCallback(this))(this.geometry);
-	} 
+	}
 	else {
 		loader.load(url, this.jsonLoaderCallback(this));
 		this.costumeChange = false;
@@ -768,14 +768,14 @@ SpriteMorph.prototype.update3dObject = function () {
 		this.endWarp();
 	}
 	context.save();
-	
+
 	context.clearRect(0, 0, this.image.width, this.image.height);
 	this.object.rotation.x = radians(this.xRotation);
 	this.object.rotation.y = radians(this.yRotation);
 	this.object.rotation.z = radians(this.zRotation);
-	console.log("rotation (x,y,z)=(" + 
-				this.xRotation + ", " + 
-				this.yRotation + ", " + 
+	console.log("rotation (x,y,z)=(" +
+				this.xRotation + ", " +
+				this.yRotation + ", " +
 				this.zRotation + ")");
 	this.renderer.render(this.scene, this.camera);
 
@@ -786,7 +786,7 @@ SpriteMorph.prototype.update3dObject = function () {
 	}
 
 	// console.timeEnd('update3dObject');
-}	
+}
 
 SpriteMorph.prototype.doStampCube = function () {
 	var stage = this.parent,
@@ -801,7 +801,7 @@ SpriteMorph.prototype.doStampCube = function () {
 	}
 	context.save();
 	context.scale(1 / stage.scale, 1 / stage.scale);
-	
+
 	this.render3dObject( canvas, width, height );
 
 	context.restore();
@@ -875,7 +875,7 @@ Costume3D.prototype.toString = function () {
 
 SpriteMorph.prototype.turn3D = function (degX, degY, degZ) {
     if (this.costume && this.costume.is3D) {
-        
+
         var fullQuaternion = new THREE.Quaternion(), quaternionX = new THREE.Quaternion(), quaternionY = new THREE.Quaternion(), quaternionZ = new THREE.Quaternion();
         quaternionX.setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), radians(3DRotationX + degX) );
         quaternionY.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), radians(3DRotationY + degY) );
