@@ -6,3 +6,5 @@
         console.log(size) // for now
     }
 })();
+
+// This IIFE is for altering and controlling our 3D icosahedron
