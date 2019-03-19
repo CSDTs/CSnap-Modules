@@ -1060,6 +1060,15 @@ SpriteMorph.prototype.renderArc = function(width, height) {
 };
 
 /**
+ * Let's try defining the functionality of our custom new block icosahedron
+ */
+SpriteMorph.prototype.icosahedron = function(radius){
+    // we'll add custom code soon
+    this.render3dShape(new THREE.IcosahedronGeometry(radius, 0));
+    console.log("we dragged in our icosahedron shape from our CSnap-Modules code.js");
+};
+
+/**
  * setting up our ide and stage, activating 3D etc
  * @param globals
  */

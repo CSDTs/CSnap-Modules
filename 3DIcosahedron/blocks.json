@@ -72,7 +72,7 @@
 	"icosahedron": {
 				"type": "command",
 				"category": "pen",
-				"spec": "size of icosahedron: %n",
-				"defaults": [50]
+				"spec": "radius of icosahedron: %n",
+				"defaults": [5]
 	}
 }

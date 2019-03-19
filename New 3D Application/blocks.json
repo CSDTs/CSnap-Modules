@@ -33,6 +33,12 @@
 			"type": "reporter",
 			"category": "motion",
 			"spec": "z position"
-		}
+		},
+		"icosahedron": {
+				"type": "command",
+				"category": "pen",
+				"spec": "radius of icosahedron: %n",
+				"defaults": [5]
+	}
 
 }
