@@ -788,15 +788,6 @@ SpriteMorph.prototype.update3dObject = function () {
 	// console.timeEnd('update3dObject');
 };
 
-/**
- * Let's try defining the functionality of our custom new block icosahedron
- */
-SpriteMorph.prototype.icosahedron = function(radius){
-    // we'll add custom code soon
-    this.render3dShape(new THREE.IcosahedronGeometry(radius, 0));
-    console.log("we dragged in our icosahedron shape from our New 3D Applications code.js");
-};
-
 SpriteMorph.prototype.doStampCube = function () {
 	var stage = this.parent,
 	canvas = stage.penTrails(),
