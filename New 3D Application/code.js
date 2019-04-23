@@ -908,4 +908,39 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
     }
 };
 
+
+SpriteMorph.prototype.icosahedron = function (myself, radius, detail, colorParam){
+    if (this.costume && this.costume.is3D){
+	try {
+            let icosahedron = function () {
+                if (radius === undefined || detail === undefined) {
+                    radius = 1;
+                    detail = 0;
+                }
+
+                let enteredColorToLowerCase = colorParam.toLowerCase();
+                let color = "";
+                let emissive = "";
+
+                if (enteredColorToLowerCase !== undefined) {
+                    color = new THREE.Color(enteredColorToLowerCase);
+                    emissive = color;
+                } else {
+                    color = new THREE.Color('blue');
+                    emissive = color;
+                }
+                let geometry = new THREE.IcosahedronGeometry(radius, detail);
+                let material = new THREE.MeshLambertMaterial({emissive: emissive, color: color});
+                return new THREE.Mesh(geometry, material);
+            };
+            this.render3dShape(icosahedron());
+    } catch (e) {
+        console.log(e);
+    	}
+    } else {
+    	console.log("that didn't work");
+	}
+};
+
+
 //# sourceURL=code.js
