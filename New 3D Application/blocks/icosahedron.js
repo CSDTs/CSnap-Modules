@@ -1,6 +1,6 @@
 //Todo the idea behind adding this code is here is that when a user drags the icosahedron block
 // to create a script, this function will return the 3D object which will be added as a
-// costume to the stage but I need to talk to Ron to figure out how he envisions this.
+// costume to the stage but I need to touch base with Ron to figure out how he envisions this.
 
 // (function () {
 //     return function (radius, detail, colorParam) {

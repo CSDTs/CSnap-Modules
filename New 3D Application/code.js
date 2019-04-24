@@ -909,7 +909,13 @@ SpriteMorph.prototype.point3D = function (degX, degY, degZ) {
 };
 
 
-SpriteMorph.prototype.icosahedron = function (myself, radius, detail, colorParam){
+/**
+ * Unsure about the placement of the function below but I will be confirming with Ron to see if this is how it was done prior to 2019
+ * @param radius this param alters the radius of the 3D object i.e how big you want it to be
+ * @param detail this param alters the vertices of the object default is 0 changing it will turn the polygon to a sphere
+ * @param colorParam this param alters the color of the object
+ */
+SpriteMorph.prototype.icosahedron = function (radius, detail, colorParam){
     if (this.costume && this.costume.is3D){
 	try {
             let icosahedron = function () {
