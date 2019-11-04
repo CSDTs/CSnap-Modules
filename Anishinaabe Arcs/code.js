@@ -976,7 +976,7 @@ StageMorph.prototype.addCoordinatePlane = function() {
 };
 
 this.ide.isAnimating = false;
-this.ide.setStageExtent(new Point(600, 600));
+this.ide.setStageExtent(new Point(700, 525));
 this.ide.isAnimating = true;
 
 StageMorph.prototype.init3D = function() {
@@ -1016,9 +1016,7 @@ StageMorph.prototype.init3D = function() {
     canvas: canvas
   });
   // }
-  // EDIT ME TO CHANGE POSITION OF PLANE ORIGIN!!!!!
-  this.renderer.setSize(canvas.width/2, canvas.height/2);
-
+  this.renderer.setSize(canvas.width, canvas.height);
 }
 
 SpriteMorph.prototype.renderArc = function(width, height) {
