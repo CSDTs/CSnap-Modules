@@ -3,6 +3,34 @@ SpriteMorph.flippedX = false;
 Costume.colored = false;
 var originalContent, ID;
 var FirstCostume = true;
+
+
+
+IDE_Morph.prototype.openProjectString = function (str) {
+    var msg,
+        myself = this;
+    this.nextSteps([
+        function () {
+            msg = myself.showMessage('Opening project...');
+           
+        },
+        function () {
+            myself.rawOpenProjectString(str);
+        },
+        function () {
+            msg.destroy();
+        },
+        function () {
+            // if (config.presentation)
+            // { 
+                myself.toggleAppMode(true);
+                setTimeout(this.stage.fireGreenFlagEvent(),5000);
+            // }
+        }
+    ]);
+};
+
+
 SpriteMorph.prototype.wearCostume = function (costume) {
 	if(this.flippedY)
 	{
@@ -191,3 +219,26 @@ Costume.prototype.copy = function () {
 };
 
 //# sourceURL=code.js
+
+StageMorph.prototype.fireGreenFlagEvent = function () {
+    var procs = [],
+        hats = [],
+        ide = this.parentThatIsA(IDE_Morph),
+        myself = this;
+
+    this.children.concat(this).forEach(function (morph) {
+        if (morph instanceof SpriteMorph || morph instanceof StageMorph) {
+            hats = hats.concat(morph.allHatBlocksFor('__shout__go__'));
+        }
+    });
+    hats.forEach(function (block) {
+        procs.push(myself.threads.startProcess(
+            block,
+            myself.isThreadSafe
+        ));
+    });
+    if (ide) {
+        ide.controlBar.pauseButton.refresh();
+    }
+    return procs;
+};
