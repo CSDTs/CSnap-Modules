@@ -3686,12 +3686,15 @@ for (i = 0; i < btns.length; i++) {
     //scroll
     scrollToLocation(src.href);
 
-    var fixBackgrounds = window.parent.document.getElementsByClassName("CSnapLoadBtn");
-    for (j = 0; j < fixBackgrounds.length; j++) {
-      if (src.href != undefined && src.href != fixBackgrounds[j].href)
-        fixBackgrounds[j].style.backgroundColor = "#fff";
+    if(src.nodeName == "A"){
+      var fixBackgrounds = window.parent.document.getElementsByClassName("CSnapLoadBtn");
+      for (j = 0; j < fixBackgrounds.length; j++) {
+        if (src.href != undefined && src.href != fixBackgrounds[j].href)
+          fixBackgrounds[j].style.backgroundColor = "#fff";
+      }
+      src.style.backgroundColor = "#ebebeb";
     }
-    src.style.backgroundColor = "#ebebeb";
+
 
 
     if (value) {
@@ -3706,15 +3709,15 @@ for (i = 0; i < btns.length; i++) {
 }
 
 
-$('<style type="text/css">' +
-  ' .panel-heading .accordion-toggle:after {' +
-  ' font-family: \'Glyphicons Halflings\';' +
-  ' content: "\\e114";' +
-  ' float: right;' +
-  ' color: grey; }' +
-  ' .panel-heading .accordion-toggle.collapsed:after {' +
-  ' content: "\\e080"; }' +
-  '</style>').appendTo($('head', window.parent.document));
+// $('<style type="text/css">' +
+//   ' .panel-heading .accordion-toggle:after {' +
+//   ' font-family: \'Glyphicons Halflings\';' +
+//   ' content: "\\e114";' +
+//   ' float: right;' +
+//   ' color: grey; }' +
+//   ' .panel-heading .accordion-toggle.collapsed:after {' +
+//   ' content: "\\e080"; }' +
+//   '</style>').appendTo($('head', window.parent.document));
 
 function scrollToLocation(loc) {
   var doc = window.parent.document.documentElement;
