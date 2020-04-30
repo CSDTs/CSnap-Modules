@@ -1017,7 +1017,7 @@ StageMorph.prototype.init3D = function() {
   });
   // }
   // EDIT ME TO CHANGE POSITION OF PLANE ORIGIN!!!!!	
-  this.renderer.setSize(canvas.width/2, canvas.height/2);
+  this.renderer.setSize(canvas.width, canvas.height);
 }
 
 SpriteMorph.prototype.renderArc = function(width, height) {
@@ -1711,7 +1711,8 @@ StageMorph.prototype.exportSTLToServer = function() {
     contentType: false,
     success: function(data) {
       window.StageSTLURL = data.url;
-      window.open(window.StageSTLURL);
+      saveAs(blob, 'anishinaabe_arc.stl');
+      // window.open(window.StageSTLURL);
     }
   }).fail(function() {
     alert("failed");
@@ -1803,6 +1804,8 @@ StageMorph.prototype.toXML = function (serializer) {
                     serializer.store(ide.globalVariables) : ''
     );
 };
+
+
 
 /**
  * @author mrdoob / http://mrdoob.com/
