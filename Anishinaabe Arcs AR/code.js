@@ -1090,7 +1090,7 @@ StageMorph.prototype.init = function(globals) {
   this.shownObjects = new List();
   this.hiddenObjects = new List();
   this.init3D();
-  this.addCoordinatePlane();
+  // this.addCoordinatePlane();
   this.camera.up = new THREE.Vector3(0, 0, 1);
   this.camera.lookAt({
     x: 0,

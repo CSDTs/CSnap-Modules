@@ -44,7 +44,6 @@
 	}
     this.changed();
     this.drawNew();
-		this.shade += num;
 	};
 }());
 

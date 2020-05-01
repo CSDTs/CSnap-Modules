@@ -22,16 +22,5 @@
 				"category": "looks",
 				"spec": "change costume shade by %n",
 				"defaults": [100]
-	},
-   "setCoordinateScale": {
-            "type": "command",
-            "category": "looks",
-            "spec": "set coordinate scale %n",
-            "defaults": [18]
-   },
-   "getCoordinateScale": {
-            "type": "reporter",
-            "category": "looks",
-            "spec": "coordinate scale"
-   }       
+	}
 }
