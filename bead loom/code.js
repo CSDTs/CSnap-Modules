@@ -27,8 +27,8 @@ SpriteMorph.prototype.wearCostume = function (costume) {
     if (costume && costume.is3D) { // if (costume == null), that means a Turtle
         if (costume.geometry != null) {
             // we have loaded a 3D geometry already
-            var color = new THREE.Color(this.color.r/255, 
-                                        this.color.g/255, 
+            var color = new THREE.Color(this.color.r/255,
+                                        this.color.g/255,
                                         this.color.b/255),
                 material, mesh, sphere;
 
@@ -57,8 +57,8 @@ SpriteMorph.prototype.wearCostume = function (costume) {
             // first time we load this geometry
             var loader = new THREE.JSONLoader(), myself = this;
             loader.load(costume.url, function(geometry) {
-                var color = new THREE.Color(myself.color.r/255, 
-                                            myself.color.g/255, 
+                var color = new THREE.Color(myself.color.r/255,
+                                            myself.color.g/255,
                                             myself.color.b/255);
                 var material = new THREE.MeshLambertMaterial({color: color}),
                     mesh = new THREE.Mesh(geometry, material),
@@ -85,7 +85,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
         var x = this.xPosition ? this.xPosition() : null,
         y = this.yPosition ? this.yPosition() : null,
         isWarped = this.isWarped;
-		if (this.costume && this.costume.originalPixels && !FirstCostume) 
+		if (this.costume && this.costume.originalPixels && !FirstCostume)
 		{
 			this.costume.contents.getContext('2d').putImageData(this.costume.originalPixels, 0, 0);
 			this.costume.colored = false;
@@ -107,6 +107,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
             this.positionTalkBubble();
         }
         this.version = Date.now();
+				this.shade = 100;
     }
 
     if (this.updatesPalette) {
@@ -177,7 +178,7 @@ Costume.prototype.setColorWithParent = function(col, myParent) {
 };
 
 IDE_Morph.prototype.updateCorralBar = function () {
-   
+
    var MouseX = this.stage.reportMouseX();
    var MouseY = this.stage.reportMouseY();
    Morph.prototype.trackChanges = false;
@@ -185,10 +186,10 @@ IDE_Morph.prototype.updateCorralBar = function () {
       MouseX > StageMorph.prototype.dimensions.x / 2 ||
       MouseY > StageMorph.prototype.dimensions.y / 2 ||
       MouseX < StageMorph.prototype.dimensions.x / -2 ||
-      MouseY < StageMorph.prototype.dimensions.y / -2) 
+      MouseY < StageMorph.prototype.dimensions.y / -2)
    {
      this.corralBar.children[2].text = "";
-     this.corralBar.children[3].text = "";     
+     this.corralBar.children[3].text = "";
    } else {
      this.corralBar.children[2].text = "X: " + Math.round(this.stage.reportMouseX() / coordinateScale);
      this.corralBar.children[3].text = "Y: " + Math.round(this.stage.reportMouseY() / coordinateScale);
@@ -198,7 +199,7 @@ IDE_Morph.prototype.updateCorralBar = function () {
    this.corralBar.children[3].drawNew();
    Morph.prototype.trackChanges = true;
    this.corralBar.changed();
-  
+
 };
 Costume.prototype.copy = function () {
     var canvas = newCanvas(this.extent()),
