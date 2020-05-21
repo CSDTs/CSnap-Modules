@@ -878,7 +878,7 @@ SpriteMorph.prototype.point3D = function(degX, degY, degZ) {
 };
 
 StageMorph.prototype.addCoordinatePlane = function() {
-  var geometry, textGeometry, textShapes, grid, text, label, xaxis, yaxis, zaxis, material, object, size = 250,
+  var geometry, textGeometry, textShapes, grid, text, label, xaxis, yaxis, zaxis, material, object, size = 240,
     step = 25;
 
   geometry = new THREE.Geometry();
@@ -984,7 +984,7 @@ StageMorph.prototype.init3D = function() {
 
   var vFOV = THREEJS_FIELD_OF_VIEW;
   var dist = THREEJS_CAMERA_DEFAULT_Z_POSITION;
-  var height = 2 * Math.tan(radians(vFOV / 2)) * dist;
+  var height =   2 * Math.tan( ( Math.PI / 180 ) * vFOV/ 2 ) * dist;
   var width = (canvas.width / canvas.height) * height;
 
   this.scene = new THREE.Scene();
@@ -1017,7 +1017,8 @@ StageMorph.prototype.init3D = function() {
   });
   // }
   // EDIT ME TO CHANGE POSITION OF PLANE ORIGIN!!!!!	
-  this.renderer.setSize(canvas.width, canvas.height);
+  this.renderer.setSize((canvas.width / self.devicePixelRatio), (canvas.height / self.devicePixelRatio));
+  
 }
 
 SpriteMorph.prototype.renderArc = function(width, height) {
