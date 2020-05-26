@@ -1017,7 +1017,8 @@ StageMorph.prototype.init3D = function() {
   });
   // }
   // EDIT ME TO CHANGE POSITION OF PLANE ORIGIN!!!!!	
-  this.renderer.setSize(canvas.width, canvas.height);
+  this.renderer.setSize((canvas.width / self.devicePixelRatio), (canvas.height / self.devicePixelRatio));
+  
 }
 
 SpriteMorph.prototype.renderArc = function(width, height) {
