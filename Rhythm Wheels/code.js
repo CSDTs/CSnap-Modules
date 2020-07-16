@@ -320,6 +320,38 @@ SpriteMorph.prototype.initBlocks = function () {
         },
 
         // Sound
+        createWheel: {
+            type: 'command',
+            category: 'sound',
+            spec: 'create wheel %var %c',
+            default: [3]
+        },
+
+        // putSound: {
+        //     type: 'command',
+        //     category: 'sound', // trigger sound, place sound
+        //     spec: 'put sound %snd for a %n in wheel %var'
+        // },
+
+        fullBeat:{
+            type: 'reporter',
+            category: 'sound',
+            spec: 'full beat'
+        },
+
+        halfBeat:{
+            type: 'reporter',
+            category: 'sound',
+            spec: 'half beat'
+        },
+
+        playWheel: {
+            type: 'command',
+            category: 'sound',
+            spec: 'play wheel %var , %n time(s)',
+            defaults:[, 1]
+        },
+
         playSound: {
             type: 'command',
             category: 'sound',
@@ -1695,6 +1727,14 @@ SnapSerializer.prototype.loadValue = function (model) {
 };
 
 function Sound(audio, buf, name, volume) {
+    console.log(soundBuffer);
+    // console.log('OVERLOADED SOUND');
+    // console.log(audio);
+    // console.log(typeof(audio));
+    // console.log(audio.src);
+    // console.log(buf);
+    // console.log(name);
+    // console.log(volume)
 	var myself = this;
 	this.audio = audio;
 	this.name = name || "Sound";
@@ -1703,11 +1743,13 @@ function Sound(audio, buf, name, volume) {
 		this.volume = 100;
 		this.string = buf;
 		str2ArrayBuffer(buf, function(buffer){
-			myself.arrayBuffer = buffer;
+            myself.arrayBuffer = buffer;
+            console.log(buffer);
+            
 			window.audioContext.decodeAudioData(
 				myself.arrayBuffer,
 				function(aud) {
-					myself.audio = aud;
+                    myself.audio = aud;
 				},
 				function(e){
 					alert("Error with decoding audio data");
@@ -1716,6 +1758,7 @@ function Sound(audio, buf, name, volume) {
 	}
 	else
 	{
+        soundBuffer[name] = audio;
 		this.arrayBuffer = buf;
 		this.volume = volume || 100;
 		this.string = "";
@@ -1736,6 +1779,10 @@ Sound.prototype.toXML = function (serializer) {
         this.toDataURL()
     );
 };
+
+SpriteMorph.prototype.playWheel = function(){
+    console.log("HELLO FROM PLAY WHEEL");
+}
 
 SpriteMorph.prototype.playSound = function (name) {   
 	this.playSoundTime(name,0);

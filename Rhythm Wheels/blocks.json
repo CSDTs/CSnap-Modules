@@ -1,4 +1,10 @@
 {
+    "putSound": {
+        "type": "command",
+        "category": "sound",
+        "spec": "sound %snd for a %n in wheel %var"
+    },
+
     "playSoundList": {
                 "type": "command",
                 "category": "sound",
@@ -66,5 +72,6 @@
 				"category": "looks",
 				"spec": "switch to costume number: %n",
 				"defaults": [1]
-	}
+    }
+     
 }
