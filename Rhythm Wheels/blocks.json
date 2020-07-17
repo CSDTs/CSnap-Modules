@@ -5,6 +5,25 @@
         "spec": "sound %snd for a %n in wheel %var"
     },
 
+    "fullBeat":{
+        "type": "reporter",
+        "category": "sound",
+        "spec": "full beat"
+    },
+
+    "halfBeat":{
+        "type": "reporter",
+        "category": "sound",
+        "spec": "half beat"
+    },
+
+      "playWheel": {
+            "type": "command",
+            "category": "sound",
+            "spec": "play wheel %var , %n time(s)",
+            "defaults":[null, 1]
+        },
+
     "playSoundList": {
                 "type": "command",
                 "category": "sound",

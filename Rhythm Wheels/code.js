@@ -333,24 +333,24 @@ SpriteMorph.prototype.initBlocks = function () {
         //     spec: 'put sound %snd for a %n in wheel %var'
         // },
 
-        fullBeat:{
-            type: 'reporter',
-            category: 'sound',
-            spec: 'full beat'
-        },
+        // fullBeat:{
+        //     type: 'reporter',
+        //     category: 'sound',
+        //     spec: 'full beat'
+        // },
 
-        halfBeat:{
-            type: 'reporter',
-            category: 'sound',
-            spec: 'half beat'
-        },
+        // halfBeat:{
+        //     type: 'reporter',
+        //     category: 'sound',
+        //     spec: 'half beat'
+        // },
 
-        playWheel: {
-            type: 'command',
-            category: 'sound',
-            spec: 'play wheel %var , %n time(s)',
-            defaults:[, 1]
-        },
+        // playWheel: {
+        //     type: 'command',
+        //     category: 'sound',
+        //     spec: 'play wheel %var , %n time(s)',
+        //     defaults:[, 1]
+        // },
 
         playSound: {
             type: 'command',
@@ -1727,7 +1727,7 @@ SnapSerializer.prototype.loadValue = function (model) {
 };
 
 function Sound(audio, buf, name, volume) {
-    console.log(soundBuffer);
+    // console.log(soundBuffer);
     // console.log('OVERLOADED SOUND');
     // console.log(audio);
     // console.log(typeof(audio));
@@ -1779,10 +1779,6 @@ Sound.prototype.toXML = function (serializer) {
         this.toDataURL()
     );
 };
-
-SpriteMorph.prototype.playWheel = function(){
-    console.log("HELLO FROM PLAY WHEEL");
-}
 
 SpriteMorph.prototype.playSound = function (name) {   
 	this.playSoundTime(name,0);
