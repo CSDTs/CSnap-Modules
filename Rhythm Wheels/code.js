@@ -1727,14 +1727,6 @@ SnapSerializer.prototype.loadValue = function (model) {
 };
 
 function Sound(audio, buf, name, volume) {
-    // console.log(soundBuffer);
-    // console.log('OVERLOADED SOUND');
-    // console.log(audio);
-    // console.log(typeof(audio));
-    // console.log(audio.src);
-    // console.log(buf);
-    // console.log(name);
-    // console.log(volume)
 	var myself = this;
 	this.audio = audio;
 	this.name = name || "Sound";
@@ -1744,8 +1736,6 @@ function Sound(audio, buf, name, volume) {
 		this.string = buf;
 		str2ArrayBuffer(buf, function(buffer){
             myself.arrayBuffer = buffer;
-            console.log(buffer);
-            
 			window.audioContext.decodeAudioData(
 				myself.arrayBuffer,
 				function(aud) {

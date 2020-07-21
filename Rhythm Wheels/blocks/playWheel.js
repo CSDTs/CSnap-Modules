@@ -27,17 +27,17 @@
             }
         }
 
-        // wheelDuration = long it takes to play every sound in the wheel (audio array) in seconds
         let wheelToPlay = makeAudioContext.createBuffer(1, 48000*(wheelDuration*repeatNumber), 48000);
         let durationSoFar = 0
-
         for(let i =0; i < buffersToRead.length; ++i){
             let setWheelBuff = wheelToPlay.getChannelData(0);
             let dataToSet = buffersToRead[i];
             let bufferToSet = dataToSet.buffer;
-
-            // from Rhythm Wheels GUI, we need to place the slice of audio into amound of time in seconds IN new buffer * 48000
-            setWheelBuff.set(bufferToSet, 48000 * durationSoFar);
+            let byteToSet = Math.floor(48000 * durationSoFar);
+            for(let j = 0; j < bufferToSet.length; ++j){
+                setWheelBuff[byteToSet] += bufferToSet[j];
+                ++byteToSet;
+            } 
             durationSoFar += dataToSet.duration;
         }
         let playNode = makeAudioContext.createBufferSource();
