@@ -15,7 +15,6 @@
     // add amount of time to duration
     // rounding correction, always try to round up, because having too much space in buffer is better than not enough
     secondsPerBeat = Math.ceil(secondsPerBeat * 100) / 100;
-    // Math.max(secondsPerBeat, soundBuffer[soundInput].duration);
     wheelMap[wheelName].duration += Math.max(secondsPerBeat, soundBuffer[soundInput].duration);
     return;
     };
