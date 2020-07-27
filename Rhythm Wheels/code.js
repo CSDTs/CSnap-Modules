@@ -326,32 +326,6 @@ SpriteMorph.prototype.initBlocks = function () {
             spec: 'create wheel %var %c',
             default: [3]
         },
-
-        // putSound: {
-        //     type: 'command',
-        //     category: 'sound', // trigger sound, place sound
-        //     spec: 'put sound %snd for a %n in wheel %var'
-        // },
-
-        // fullBeat:{
-        //     type: 'reporter',
-        //     category: 'sound',
-        //     spec: 'full beat'
-        // },
-
-        // halfBeat:{
-        //     type: 'reporter',
-        //     category: 'sound',
-        //     spec: 'half beat'
-        // },
-
-        // playWheel: {
-        //     type: 'command',
-        //     category: 'sound',
-        //     spec: 'play wheel %var , %n time(s)',
-        //     defaults:[, 1]
-        // },
-
         playSound: {
             type: 'command',
             category: 'sound',
@@ -1284,7 +1258,7 @@ HandMorph.prototype.processDrop = function (event) {
             target = target.parent;
         }
         frd.onloadend = function (e) {
-            target.droppedBinary(e.target.result, aFile.name);
+            target.droppedBinary(e.target.result, aFile.name, aFile);
         };
         frd.readAsArrayBuffer(aFile);
     }

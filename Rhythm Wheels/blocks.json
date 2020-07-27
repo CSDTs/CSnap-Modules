@@ -16,14 +16,17 @@
         "category": "sound",
         "spec": "half beat"
     },
-
-      "playWheel": {
-            "type": "command",
-            "category": "sound",
-            "spec": "play wheel %var , %n time(s)",
-            "defaults":[null, 1]
-        },
-
+    "importWheel": {
+        "type": "command",
+        "category": "sound",
+        "spec": "import file %rwfile , %n into wheel %var"
+    },
+    "playWheel": {
+        "type": "command",
+        "category": "sound",
+        "spec": "play wheel %var , %n time(s)",
+        "defaults":[null, 1]
+    },
     "playSoundList": {
                 "type": "command",
                 "category": "sound",
