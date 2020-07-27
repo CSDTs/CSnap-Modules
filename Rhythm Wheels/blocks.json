@@ -4,13 +4,11 @@
         "category": "sound",
         "spec": "sound %snd for a %n in wheel %var"
     },
-
     "fullBeat":{
         "type": "reporter",
         "category": "sound",
         "spec": "full beat"
     },
-
     "halfBeat":{
         "type": "reporter",
         "category": "sound",
