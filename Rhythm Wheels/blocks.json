@@ -17,7 +17,7 @@
     "importWheel": {
         "type": "command",
         "category": "sound",
-        "spec": "import file %rwfile , %n into wheel %var"
+        "spec": "import wheel number %n from file %rwfile into wheel %var"
     },
     "playWheel": {
         "type": "command",

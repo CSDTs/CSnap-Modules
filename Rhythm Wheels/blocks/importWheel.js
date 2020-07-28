@@ -1,11 +1,12 @@
 (function () {
-    return function (fileName, indexNumber, wheelName) {
+    return function (indexNumber,fileName, wheelName) {
         if (!(wheelMap.hasOwnProperty(wheelName))){
             console.log("Wheel not found/not instantiated");
             throw new Error("Wheel not found/not instantiated");
         }
         let wheelBufferStore = [];
         let file = JSON.stringify(fileBuffer[fileName]);
+
         parser.parse(JSON.parse(file), wheelBufferStore, indexNumber);
 
         let wheelToChange = wheelMap[wheelName];
