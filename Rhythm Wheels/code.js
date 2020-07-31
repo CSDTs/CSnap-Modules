@@ -1224,21 +1224,17 @@ HandMorph.prototype.processDrop = function (event) {
     }
 
     function readAudio(aFile) {
+        var snd = new Audio();
         var frd = new FileReader();
         while (!target.droppedAudio) {
             target = target.parent;
         }
         frd.onloadend = function (e) {
-			window.audioContext.decodeAudioData(
-				e.target.result,
-				function(buffer) {
-                    target.droppedAudio(buffer, e.target.result, aFile.name);
-				},
-				function(e){
-					alert("Error with decoding audio data");
-				});
+            // pass in sound
+            snd.src = e.target.result;
+            target.droppedAudio(snd, e.target.result, aFile.name);
         };
-        frd.readAsArrayBuffer(aFile);
+        frd.readAsDataURL(aFile);
     }
 
     function readText(aFile) {
@@ -1995,7 +1991,7 @@ function Sound(audio, buf, name, volume) {
 	if(typeof buf == "string")
 	{
 		this.volume = 100;
-		this.string = buf;
+        this.string = buf;
 		str2ArrayBuffer(buf, function(buffer){
             myself.arrayBuffer = buffer;
 			window.audioContext.decodeAudioData(
@@ -2005,7 +2001,7 @@ function Sound(audio, buf, name, volume) {
                     myself.audio = aud;
 				},
 				function(e){
-					alert("Error with decoding audio data");
+					alert("Error with decoding audio data! Check how sounds in your stage are encoded");
 				});
 		});
 	}
@@ -2014,8 +2010,7 @@ function Sound(audio, buf, name, volume) {
         this.buffer = audio;
 		this.arrayBuffer = buf;
 		this.volume = volume || 100;
-		this.string = "";
-		ArrayBuffer2str(buf, function(buffer){
+		ArrayBuffer2str(audio.getChannelData(0), function(buffer){
 			myself.string = buffer;
 		});
 	}
@@ -2077,7 +2072,7 @@ function str2ArrayBuffer(str,callback)
 }
 
 function ArrayBuffer2str(arrayBuffer,callback){
-	var blob = new Blob([arrayBuffer]);
+    var blob = new Blob([arrayBuffer], {type:'audio/wav'});
 	var f = new FileReader();
 	f.onload = function(e)
 	{
