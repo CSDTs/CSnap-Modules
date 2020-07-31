@@ -7,16 +7,16 @@
         let wheelBufferStore = [];
         let file = JSON.stringify(fileBuffer[fileName]);
 
-        parser.parse(JSON.parse(file), wheelBufferStore, indexNumber);
+        parser.parse(JSON.parse(file), wheelBufferStore, indexNumber, this);
 
         let wheelToChange = wheelMap[wheelName];
         let secondsPerBeat = (60.0/this.getTempo());
         // now iterate through and put audio wheel data structure
         for (let audio of wheelBufferStore){
-            let addedSound = audio.getChannelData(0);
+            let addedSound = audio.buffer.getChannelData(0);
             wheelToChange.buffer.push({buffer: addedSound, duration: secondsPerBeat});
             secondsPerBeat = Math.ceil(secondsPerBeat * 100) / 100;
-            wheelToChange.duration += Math.max(secondsPerBeat, audio.duration);
+            wheelToChange.duration += Math.max(secondsPerBeat, audio.buffer.duration);
         }
 	};
 }());

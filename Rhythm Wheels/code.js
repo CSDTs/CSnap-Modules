@@ -2001,6 +2001,7 @@ function Sound(audio, buf, name, volume) {
 			window.audioContext.decodeAudioData(
 				myself.arrayBuffer,
 				function(aud) {
+                    myself.buffer = aud;
                     myself.audio = aud;
 				},
 				function(e){
@@ -2010,7 +2011,7 @@ function Sound(audio, buf, name, volume) {
 	}
 	else
 	{
-        soundBuffer[name] = audio;
+        this.buffer = audio;
 		this.arrayBuffer = buf;
 		this.volume = volume || 100;
 		this.string = "";
