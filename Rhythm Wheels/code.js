@@ -3,7 +3,7 @@ SpriteMorph.flippedX = false;
 Costume.colored = false;
 var originalContent, ID;
 var FirstCostume = true;
-
+let currentWheel = '';
 var startTime =0;
 window.audioContext = null, window.gainNode = null, window.analyser = null, window.frequencyDataArray = null;
 try {
@@ -1366,6 +1366,7 @@ StageMorph.prototype.toXML = function (serializer) {
             '<pentrails>$</pentrails>' +
             '<costumes>%</costumes>' +
             '<sounds>%</sounds>' +
+            '<files>%</files>' +
             '<variables>%</variables>' +
             '<blocks>%</blocks>' +
             '<scripts>%</scripts><sprites>%</sprites>' +
@@ -1393,6 +1394,7 @@ StageMorph.prototype.toXML = function (serializer) {
         this.trailsCanvas.toDataURL('image/png'),
         serializer.store(this.costumes, this.name + '_cst'),
         serializer.store(this.sounds, this.name + '_snd'),
+        serializer.store(this.files, this.name +'_rwfile'),
         serializer.store(this.variables),
         serializer.store(this.customBlocks),
         serializer.store(this.scripts),
@@ -1980,6 +1982,16 @@ SnapSerializer.prototype.loadValue = function (model) {
         }
         record();
         return v;
+    case 'rwFile':
+        v = new RWFile(model.attributes.rwFile, model.attributes.name)
+        if (Object.prototype.hasOwnProperty.call(
+            model.attributes,
+            'mediaID'
+        )) {
+        myself.mediaDict[model.attributes.mediaID] = v;
+        } 
+        record();
+        return v;
     }
     return undefined;
 };
@@ -2045,6 +2057,38 @@ Sound.prototype.copy = function () {
     return new sound(this.audio,this.arrayBuffer,this.name,this.volume);
 };
 
+function RWFile(fileToRead, fileName){
+    if (fileName == undefined){
+        // dropped RWFile
+        let fileReader = new FileReader();
+        let fileName = fileToRead.name;
+        console.log(fileToRead);
+        this.name = fileName;
+        let myself = this;
+        // add to dictionary of <name to file>
+        fileReader.onload = function(e){
+            let contents = e.target.result;
+            let data = {
+            string: contents,
+            };
+        myself.data = JSON.stringify(data); 
+        }
+        fileReader.readAsText(fileToRead);
+    }
+    else{
+        // if copied from XML
+        this.name = fileName;
+        this.data = fileToRead;
+    }
+}
+
+RWFile.prototype.toXML = function (serializer){
+    return serializer.format('<rwFile name="@" rwFile="@" ~/>',
+    this.name,
+    this.data,
+    );
+}
+
 SpriteMorph.prototype.playSoundTime = function (name, time) {   
 	sound = detect(
 		this.sounds.asArray(),
@@ -2108,6 +2152,10 @@ SpriteMorph.prototype.doChangeVolume = function (val) {
 
 SpriteMorph.prototype.reportVolume = function () {
     return gainNode.gain.value*100;
+};
+
+SpriteMorph.prototype.addFile = function(fileToRead){
+    this.files.add(new RWFile(fileToRead));
 };
 
 Process.prototype.doPlayNote = function (pitch, time, duration) {

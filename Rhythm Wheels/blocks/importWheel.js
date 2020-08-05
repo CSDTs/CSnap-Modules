@@ -1,13 +1,19 @@
 (function () {
-    return function (indexNumber,fileName, wheelName) {
+    return function (indexNumber,fileName) {
+        wheelName = currentWheel;
         if (!(wheelMap.hasOwnProperty(wheelName))){
             console.log("Wheel not found/not instantiated");
             throw new Error("Wheel not found/not instantiated");
         }
         let wheelBufferStore = [];
-        let file = JSON.stringify(fileBuffer[fileName]);
 
-        parser.parse(JSON.parse(file), wheelBufferStore, indexNumber, this);
+        // search for the file in the 
+        console.log(this.files);
+        let file = detect(this.files.asArray(), function(f){return f.name == fileName});
+        if(!file){
+            throw new Error("File not found!");
+        }
+        parser.parse(JSON.parse(file.data), wheelBufferStore, indexNumber, this);
 
         let wheelToChange = wheelMap[wheelName];
         let secondsPerBeat = (60.0/this.getTempo());

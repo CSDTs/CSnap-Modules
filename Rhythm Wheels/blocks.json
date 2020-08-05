@@ -2,7 +2,7 @@
     "putSound": {
         "type": "command",
         "category": "sound",
-        "spec": "sound %snd for a %n in wheel %var"
+        "spec": "put sound %snd for %n "
     },
     "fullBeat":{
         "type": "reporter",
@@ -17,7 +17,7 @@
     "importWheel": {
         "type": "command",
         "category": "sound",
-        "spec": "import wheel number %n from file %rwfile into wheel %var"
+        "spec": "import wheel number %n from file %rwfile"
     },
     "playWheel": {
         "type": "command",

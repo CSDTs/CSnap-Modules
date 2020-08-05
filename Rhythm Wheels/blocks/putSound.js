@@ -1,6 +1,7 @@
 (function () {
-    return function (soundInput, timeInput, wheelName) {
+    return function (soundInput, timeInput) {
     // check if there is an instanced wheel in WheelMap
+    wheelName = currentWheel;
     if (!(wheelMap.hasOwnProperty(wheelName))){
         console.log("Wheel not found/not instantiated");
         throw new Error("Wheel not found/not instantiated");
