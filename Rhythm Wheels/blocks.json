@@ -1,4 +1,30 @@
 {
+    "putSound": {
+        "type": "command",
+        "category": "sound",
+        "spec": "put sound %snd for %n "
+    },
+    "fullBeat":{
+        "type": "reporter",
+        "category": "sound",
+        "spec": "full beat"
+    },
+    "halfBeat":{
+        "type": "reporter",
+        "category": "sound",
+        "spec": "half beat"
+    },
+    "importWheel": {
+        "type": "command",
+        "category": "sound",
+        "spec": "import wheel number %n from file %rwfile"
+    },
+    "playWheel": {
+        "type": "command",
+        "category": "sound",
+        "spec": "play wheel %var , %n time(s)",
+        "defaults":[null, 1]
+    },
     "playSoundList": {
                 "type": "command",
                 "category": "sound",
@@ -66,5 +92,6 @@
 				"category": "looks",
 				"spec": "switch to costume number: %n",
 				"defaults": [1]
-	}
+    }
+     
 }

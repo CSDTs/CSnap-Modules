@@ -3,7 +3,7 @@ SpriteMorph.flippedX = false;
 Costume.colored = false;
 var originalContent, ID;
 var FirstCostume = true;
-
+let currentWheel = '';
 var startTime =0;
 window.audioContext = null, window.gainNode = null, window.analyser = null, window.frequencyDataArray = null;
 try {
@@ -320,6 +320,12 @@ SpriteMorph.prototype.initBlocks = function () {
         },
 
         // Sound
+        createWheel: {
+            type: 'command',
+            category: 'sound',
+            spec: 'create wheel %var %c',
+            default: [3]
+        },
         playSound: {
             type: 'command',
             category: 'sound',
@@ -1218,21 +1224,17 @@ HandMorph.prototype.processDrop = function (event) {
     }
 
     function readAudio(aFile) {
+        var snd = new Audio();
         var frd = new FileReader();
         while (!target.droppedAudio) {
             target = target.parent;
         }
         frd.onloadend = function (e) {
-			window.audioContext.decodeAudioData(
-				e.target.result,
-				function(buffer) {
-                    target.droppedAudio(buffer, e.target.result, aFile.name);
-				},
-				function(e){
-					alert("Error with decoding audio data");
-				});
+            // pass in sound
+            snd.src = e.target.result;
+            target.droppedAudio(snd, e.target.result, aFile.name);
         };
-        frd.readAsArrayBuffer(aFile);
+        frd.readAsDataURL(aFile);
     }
 
     function readText(aFile) {
@@ -1252,7 +1254,8 @@ HandMorph.prototype.processDrop = function (event) {
             target = target.parent;
         }
         frd.onloadend = function (e) {
-            target.droppedBinary(e.target.result, aFile.name);
+            console.log("DROPPED BINARY");
+            target.droppedBinary(e.target.result, aFile.name, aFile);
         };
         frd.readAsArrayBuffer(aFile);
     }
@@ -1363,6 +1366,7 @@ StageMorph.prototype.toXML = function (serializer) {
             '<pentrails>$</pentrails>' +
             '<costumes>%</costumes>' +
             '<sounds>%</sounds>' +
+            '<files>%</files>' +
             '<variables>%</variables>' +
             '<blocks>%</blocks>' +
             '<scripts>%</scripts><sprites>%</sprites>' +
@@ -1390,6 +1394,7 @@ StageMorph.prototype.toXML = function (serializer) {
         this.trailsCanvas.toDataURL('image/png'),
         serializer.store(this.costumes, this.name + '_cst'),
         serializer.store(this.sounds, this.name + '_snd'),
+        serializer.store(this.files, this.name +'_rwfile'),
         serializer.store(this.variables),
         serializer.store(this.customBlocks),
         serializer.store(this.scripts),
@@ -1404,6 +1409,293 @@ StageMorph.prototype.toXML = function (serializer) {
         (ide && ide.globalVariables) ?
                     serializer.store(ide.globalVariables) : ''
     );
+};
+
+IDE_Morph.prototype.createSpriteBar = function () {
+    // assumes that the categories pane has already been created
+    var rotationStyleButtons = [],
+        thumbSize = new Point(45, 45),
+        nameField,
+        checkbox,
+        checkbox2,
+        thumbnail,
+        tabCorner = 15,
+        tabColors = this.tabColors,
+        tabBar = new AlignmentMorph('row', -tabCorner * 2),
+        tab,
+        myself = this;
+
+    if (this.spriteBar) {
+        this.spriteBar.destroy();
+    }
+
+    this.spriteBar = new Morph();
+    this.spriteBar.color = this.frameColor;
+    this.add(this.spriteBar);
+
+    function addRotationStyleButton(rotationStyle) {
+        var colors = myself.rotationStyleColors,
+            button;
+
+        button = new ToggleButtonMorph(
+            colors,
+            myself, // the IDE is the target
+            function () {
+                if (myself.currentSprite instanceof SpriteMorph) {
+                    myself.currentSprite.rotationStyle = rotationStyle;
+                    myself.currentSprite.changed();
+                    myself.currentSprite.drawNew();
+                    myself.currentSprite.changed();
+                }
+                rotationStyleButtons.forEach(function (each) {
+                    each.refresh();
+                });
+            },
+            ['\u2192', '\u21BB', '\u2194'][rotationStyle], // label
+            function () {  // query
+                return myself.currentSprite instanceof SpriteMorph
+                    && myself.currentSprite.rotationStyle === rotationStyle;
+            },
+            null, // environment
+            localize(
+                [
+                    'don\'t rotate', 'can rotate', 'only face left/right'
+                ][rotationStyle]
+            )
+        );
+
+        button.corner = 8;
+        button.labelMinExtent = new Point(11, 11);
+        button.padding = 0;
+        button.labelShadowOffset = new Point(-1, -1);
+        button.labelShadowColor = colors[1];
+        button.labelColor = myself.buttonLabelColor;
+        button.fixLayout();
+        button.refresh();
+        rotationStyleButtons.push(button);
+        button.setPosition(myself.spriteBar.position().add(2));
+        button.setTop(button.top()
+            + ((rotationStyleButtons.length - 1) * (button.height() + 2))
+            );
+        myself.spriteBar.add(button);
+        if (myself.currentSprite instanceof StageMorph) {
+            button.hide();
+        }
+        return button;
+    }
+
+    addRotationStyleButton(1);
+    addRotationStyleButton(2);
+    addRotationStyleButton(0);
+    this.rotationStyleButtons = rotationStyleButtons;
+
+    thumbnail = new Morph();
+    thumbnail.setExtent(thumbSize);
+    thumbnail.image = this.currentSprite.thumbnail(thumbSize);
+    thumbnail.setPosition(
+        rotationStyleButtons[0].topRight().add(new Point(5, 3))
+    );
+    this.spriteBar.add(thumbnail);
+
+    thumbnail.fps = 3;
+
+    thumbnail.step = function () {
+        if (thumbnail.version !== myself.currentSprite.version) {
+            thumbnail.image = myself.currentSprite.thumbnail(thumbSize);
+            thumbnail.changed();
+            thumbnail.version = myself.currentSprite.version;
+        }
+    };
+
+    nameField = new InputFieldMorph(this.currentSprite.name);
+    nameField.setWidth(100); // fixed dimensions
+    nameField.contrast = 90;
+    nameField.setPosition(thumbnail.topRight().add(new Point(10, 3)));
+    this.spriteBar.add(nameField);
+    nameField.drawNew();
+    nameField.accept = function () {
+        myself.currentSprite.setName(nameField.getValue());
+    };
+    this.spriteBar.reactToEdit = function () {
+        myself.currentSprite.setName(nameField.getValue());
+    };
+
+    // checkbox
+    if (this.currentSprite instanceof StageMorph) {
+        checkbox = new ToggleMorph(
+            'checkbox',
+            null,
+            function () {
+                myself.currentSprite.toggleGrid();
+            },
+            'display grid', // TODO: localize
+            function () {
+                return myself.currentSprite.getGridVisible();
+            }
+        );
+    }
+    else {
+        checkbox = new ToggleMorph(
+            'checkbox',
+            null,
+            function () {
+                myself.currentSprite.isDraggable =
+                    !myself.currentSprite.isDraggable;
+            },
+            localize('draggable'),
+            function () {
+                return myself.currentSprite.isDraggable;
+            }
+        );
+    }
+    checkbox.label.isBold = false;
+    checkbox.label.setColor(this.buttonLabelColor);
+    checkbox.color = tabColors[2];
+    checkbox.highlightColor = tabColors[0];
+    checkbox.pressColor = tabColors[1];
+
+    checkbox.tick.shadowOffset = MorphicPreferences.isFlat ?
+            new Point() : new Point(-1, -1);
+    checkbox.tick.shadowColor = new Color(); // black
+    checkbox.tick.color = this.buttonLabelColor;
+    checkbox.tick.isBold = false;
+    checkbox.tick.drawNew();
+
+    checkbox.setPosition(nameField.bottomLeft().add(2));
+    checkbox.drawNew();
+    this.spriteBar.add(checkbox);
+
+    if (this.currentSprite instanceof SpriteMorph) {
+        checkbox2 = new ToggleMorph(
+            'checkbox',
+            null,
+            function () {
+                myself.currentSprite.toggle3D();
+            },
+            'switch to 3D', // TODO: localize
+            function () {
+                return myself.currentSprite.costume ?
+                    myself.currentSprite.costume.is3D : false;
+            }
+        );
+        checkbox2.label.isBold = false;
+        checkbox2.label.setColor(this.buttonLabelColor);
+        checkbox2.color = tabColors[2];
+        checkbox2.highlightColor = tabColors[0];
+        checkbox2.pressColor = tabColors[1];
+
+        checkbox2.tick.shadowOffset = MorphicPreferences.isFlat ?
+            new Point() : new Point(-1, -1);
+        checkbox2.tick.shadowColor = new Color(); // black
+        checkbox2.tick.color = this.buttonLabelColor;
+        checkbox2.tick.isBold = false;
+        checkbox2.tick.drawNew();
+
+        checkbox2.setPosition(checkbox.topRight().add(new Point(60, 0)));
+        checkbox2.drawNew();
+        this.spriteBar.add(checkbox2);
+    }
+
+    // tab bar
+    tabBar.tabTo = function (tabString) {
+        var active;
+        myself.currentTab = tabString;
+        this.children.forEach(function (each) {
+            each.refresh();
+            if (each.state) {active = each; }
+        });
+        active.refresh(); // needed when programmatically tabbing
+        myself.createSpriteEditor();
+        myself.fixLayout('tabEditor');
+    };
+
+    tab = new TabMorph(
+        tabColors,
+        null, // target
+        function () {tabBar.tabTo('scripts'); },
+        localize('Scripts'), // label
+        function () {  // query
+            return myself.currentTab === 'scripts';
+        }
+    );
+    tab.padding = 3;
+    tab.corner = tabCorner;
+    tab.edge = 1;
+    tab.labelShadowOffset = new Point(-1, -1);
+    tab.labelShadowColor = tabColors[1];
+    tab.labelColor = this.buttonLabelColor;
+    tab.drawNew();
+    tab.fixLayout();
+    tabBar.add(tab);
+
+    tab = new TabMorph(
+        tabColors,
+        null, // target
+        function () {tabBar.tabTo('costumes'); },
+        localize('Costumes'), // label
+        function () {  // query
+            return myself.currentTab === 'costumes';
+        }
+    );
+    tab.padding = 3;
+    tab.corner = tabCorner;
+    tab.edge = 1;
+    tab.labelShadowOffset = new Point(-1, -1);
+    tab.labelShadowColor = tabColors[1];
+    tab.labelColor = this.buttonLabelColor;
+    tab.drawNew();
+    tab.fixLayout();
+    tabBar.add(tab);
+
+    tab = new TabMorph(
+        tabColors,
+        null, // target
+        function () {tabBar.tabTo('sounds'); },
+        localize('Sounds'), // label
+        function () {  // query
+            return myself.currentTab === 'sounds';
+        }
+    );
+    tab.padding = 3;
+    tab.corner = tabCorner;
+    tab.edge = 1;
+    tab.labelShadowOffset = new Point(-1, -1);
+    tab.labelShadowColor = tabColors[1];
+    tab.labelColor = this.buttonLabelColor;
+    tab.drawNew();
+    tab.fixLayout();
+    tabBar.add(tab);
+
+    tab = new TabMorph(
+        tabColors,
+        null, // target
+        function () {tabBar.tabTo('files'); },
+        localize('Files'), // label
+        function () {  // query
+            return myself.currentTab === 'files';
+        }
+    );
+    tab.padding = 3;
+    tab.corner = tabCorner;
+    tab.edge = 1;
+    tab.labelShadowOffset = new Point(-1, -1);
+    tab.labelShadowColor = tabColors[1];
+    tab.labelColor = this.buttonLabelColor;
+    tab.drawNew();
+    tab.fixLayout();
+    tabBar.add(tab);
+
+    tabBar.fixLayout();
+    tabBar.children.forEach(function (each) {
+        each.refresh();
+    });
+    this.spriteBar.tabBar = tabBar;
+    this.spriteBar.add(this.spriteBar.tabBar);
+
+    this.spriteBar.fixLayout = function () {
+        this.tabBar.setLeft(this.left());
+        this.tabBar.setBottom(this.bottom());
+    };
 };
 
 IDE_Morph.prototype.droppedAudio = function (anAudio, buf, name) {
@@ -1690,6 +1982,16 @@ SnapSerializer.prototype.loadValue = function (model) {
         }
         record();
         return v;
+    case 'rwFile':
+        v = new RWFile(model.attributes.rwFile, model.attributes.name)
+        if (Object.prototype.hasOwnProperty.call(
+            model.attributes,
+            'mediaID'
+        )) {
+        myself.mediaDict[model.attributes.mediaID] = v;
+        } 
+        record();
+        return v;
     }
     return undefined;
 };
@@ -1701,25 +2003,26 @@ function Sound(audio, buf, name, volume) {
 	if(typeof buf == "string")
 	{
 		this.volume = 100;
-		this.string = buf;
+        this.string = buf;
 		str2ArrayBuffer(buf, function(buffer){
-			myself.arrayBuffer = buffer;
+            myself.arrayBuffer = buffer;
 			window.audioContext.decodeAudioData(
 				myself.arrayBuffer,
 				function(aud) {
-					myself.audio = aud;
+                    myself.buffer = aud;
+                    myself.audio = aud;
 				},
 				function(e){
-					alert("Error with decoding audio data");
+					alert("Error with decoding audio data! Check how sounds in your stage are encoded");
 				});
 		});
 	}
 	else
 	{
+        this.buffer = audio;
 		this.arrayBuffer = buf;
 		this.volume = volume || 100;
-		this.string = "";
-		ArrayBuffer2str(buf, function(buffer){
+		ArrayBuffer2str(audio.getChannelData(0), function(buffer){
 			myself.string = buffer;
 		});
 	}
@@ -1754,6 +2057,38 @@ Sound.prototype.copy = function () {
     return new sound(this.audio,this.arrayBuffer,this.name,this.volume);
 };
 
+function RWFile(fileToRead, fileName){
+    if (fileName == undefined){
+        // dropped RWFile
+        let fileReader = new FileReader();
+        let fileName = fileToRead.name;
+        console.log(fileToRead);
+        this.name = fileName;
+        let myself = this;
+        // add to dictionary of <name to file>
+        fileReader.onload = function(e){
+            let contents = e.target.result;
+            let data = {
+            string: contents,
+            };
+        myself.data = JSON.stringify(data); 
+        }
+        fileReader.readAsText(fileToRead);
+    }
+    else{
+        // if copied from XML
+        this.name = fileName;
+        this.data = fileToRead;
+    }
+}
+
+RWFile.prototype.toXML = function (serializer){
+    return serializer.format('<rwFile name="@" rwFile="@" ~/>',
+    this.name,
+    this.data,
+    );
+}
+
 SpriteMorph.prototype.playSoundTime = function (name, time) {   
 	sound = detect(
 		this.sounds.asArray(),
@@ -1781,7 +2116,7 @@ function str2ArrayBuffer(str,callback)
 }
 
 function ArrayBuffer2str(arrayBuffer,callback){
-	var blob = new Blob([arrayBuffer]);
+    var blob = new Blob([arrayBuffer], {type:'audio/wav'});
 	var f = new FileReader();
 	f.onload = function(e)
 	{
@@ -1817,6 +2152,10 @@ SpriteMorph.prototype.doChangeVolume = function (val) {
 
 SpriteMorph.prototype.reportVolume = function () {
     return gainNode.gain.value*100;
+};
+
+SpriteMorph.prototype.addFile = function(fileToRead){
+    this.files.add(new RWFile(fileToRead));
 };
 
 Process.prototype.doPlayNote = function (pitch, time, duration) {
