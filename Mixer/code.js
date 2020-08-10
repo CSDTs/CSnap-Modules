@@ -318,6 +318,12 @@ SpriteMorph.prototype.initBlocks = function () {
         },
 
         // Sound
+         createWheel: {
+            type: 'command',
+            category: 'sound',
+            spec: 'create wheel %var %c',
+            default: [3]
+        },
         playSound: {
             type: 'command',
             category: 'sound',
