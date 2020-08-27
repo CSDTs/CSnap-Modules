@@ -1174,6 +1174,12 @@ StageMorph.prototype.blockTemplates = function(category) {
 
   } else if (cat === 'looks') {
 
+    blocks.push('-');
+    blocks.push(block('doSayFor'));
+    blocks.push(block('bubble'));
+    blocks.push(block('doThinkFor'));
+    blocks.push(block('doThink'));
+    blocks.push('-');
     blocks.push(block('doSwitchToCostume'));
     blocks.push(block('doWearNextCostume'));
     blocks.push(watcherToggle('getCostumeIdx'));
