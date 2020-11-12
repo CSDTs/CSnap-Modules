@@ -130,7 +130,7 @@ IDE_Morph.prototype.projectMenu = function () {
         function () {
             myself.droppedText(
                 myself.getURL(
-                    'http://community.csdt.rpi.edu/csnapsource/tools.xml'
+                    'http://csdt.org/csnapsource/tools.xml'
                 ),
                 'tools'
             );
@@ -142,11 +142,11 @@ IDE_Morph.prototype.projectMenu = function () {
         function () {
             // read a list of libraries from an external file,
             var libMenu = new MenuMorph(this, 'Import library'),
-                libUrl = 'http://community.csdt.rpi.edu/csnapsource/libraries/' +
+                libUrl = 'http://csdt.org/csnapsource/libraries/' +
                     'LIBRARIES';
 
             function loadLib(name) {
-                var url = 'http://community.csdt.rpi.edu/csnapsource/libraries/'
+                var url = 'http://csdt.org/csnapsource/libraries/'
                         + name
                         + '.xml';
                 myself.droppedText(myself.getURL(url), name);
